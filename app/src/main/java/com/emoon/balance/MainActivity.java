@@ -19,8 +19,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
-import com.emoon.balance.Adapter.BaseHorizontalListAdapter;
-import com.emoon.balance.Model.Base;
+import com.emoon.balance.Adapter.BurnHorizontalListAdapter;
+import com.emoon.balance.Adapter.EarnHorizontalListAdapter;
+import com.emoon.balance.Etc.Constants;
 import com.emoon.balance.Model.Burn;
 import com.emoon.balance.Model.Earn;
 import com.emoon.balance.Util.Util;
@@ -28,8 +29,11 @@ import com.emoon.balance.Util.Util;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener{
 
     private TextView headerText;
     private ViewGroup earnBtn;
@@ -49,11 +53,13 @@ public class MainActivity extends AppCompatActivity
 
     private int total = 0;
 
-    private List<Base> earnList;
-    private List<Base> burnList;
+    private List<Earn> earnList;
+    private List<Burn> burnList;
 
-    private BaseHorizontalListAdapter earnAdapter;
-    private BaseHorizontalListAdapter burnAdapter;
+    private EarnHorizontalListAdapter earnAdapter;
+    private BurnHorizontalListAdapter burnAdapter;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,24 +94,33 @@ public class MainActivity extends AppCompatActivity
         earnRecyclerView = (RecyclerView) findViewById(R.id.earnRecyclerView);
         burnRecyclerView = (RecyclerView) findViewById(R.id.burnRecyclerView);
 
-        earnList = new ArrayList<>();
-        earnAdapter = new BaseHorizontalListAdapter(this, earnList, new Earn());
-        earnRecyclerView.setAdapter(earnAdapter);
-        earnRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-
         burnList = new ArrayList<>();
-        burnAdapter = new BaseHorizontalListAdapter(this, burnList, new Burn());
+        burnAdapter = new BurnHorizontalListAdapter(this, burnList);
         burnRecyclerView.setAdapter(burnAdapter);
         burnRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+
+        earnList = new ArrayList<>();
+        earnAdapter = new EarnHorizontalListAdapter(this, earnList);
+        earnRecyclerView.setAdapter(earnAdapter);
+        earnRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
         earnProgress.setMax(maxEarn);
         burnProgress.setMax(maxBurn);
         earnProgress.setProgress(0);
         burnProgress.setProgress(0);
 
+        initRealm();
         putFakeData();
-
         addListeners();
+    }
+
+    private void initRealm(){
+        RealmConfiguration config = new RealmConfiguration.Builder(getApplicationContext())
+                .name(Constants.REALM_NAME)
+                .deleteRealmIfMigrationNeeded()
+                .schemaVersion(1)
+                .build();
+        Realm.setDefaultConfiguration(config);
     }
 
     private void putFakeData(){
@@ -154,7 +169,7 @@ public class MainActivity extends AppCompatActivity
 
 
 
-        burnAdapter.setOnItemClickListener(new BaseHorizontalListAdapter.BaseInterfaceListener() {
+        burnAdapter.setOnItemClickListener(new BurnHorizontalListAdapter.BurnInterfaceListener() {
             @Override
             public void onItemClick(int position) {
                 Log.d("MAIN", "burn adapter:" + false);
@@ -163,7 +178,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        earnAdapter.setOnItemClickListener(new BaseHorizontalListAdapter.BaseInterfaceListener() {
+        earnAdapter.setOnItemClickListener(new EarnHorizontalListAdapter.EarnInterfaceListener() {
             @Override
             public void onItemClick(int position) {
                 Log.d("MAIN", "earn adapter:"+false);
