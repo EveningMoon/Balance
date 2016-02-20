@@ -1,32 +1,33 @@
-package com.emoon.balance;
+package com.emoon.balance.Fragment;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 import com.emoon.balance.Adapter.EarnBurnHorizontalListAdapter;
 import com.emoon.balance.Etc.Constants;
 import com.emoon.balance.Model.BalanceType;
 import com.emoon.balance.Model.EarnBurn;
+import com.emoon.balance.Model.UnitType;
+import com.emoon.balance.R;
 import com.emoon.balance.Util.Util;
 import com.zhan.library.CircularView;
 
@@ -34,10 +35,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+public class MainFragment extends Fragment {
+
+    private View view;
 
     private TextView headerText;
     private ViewGroup earnBtn;
@@ -52,8 +53,8 @@ public class MainActivity extends AppCompatActivity
     private RoundCornerProgressBar earnProgress;
     private RoundCornerProgressBar burnProgress;
 
-    private int maxEarn = 20;
-    private int maxBurn = 20;
+    private final int MAX_EARN = 20;
+    private final int MAX_BURN = 20;
 
     private int total = 0;
 
@@ -63,89 +64,106 @@ public class MainActivity extends AppCompatActivity
     private EarnBurnHorizontalListAdapter earnAdapter;
     private EarnBurnHorizontalListAdapter burnAdapter;
 
+    //Spinner
+    private List<String> unitList;
+    private ArrayAdapter<String> unitAdapter;
+
+    private Realm myRealm;
+
+    public MainFragment() {
+        // Required empty public constructor
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        view = inflater.inflate(R.layout.fragment_main, container, false);
+        return view;
+    }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState){
+        super.onActivityCreated(savedInstanceState);
         init();
     }
 
     private void init(){
-        headerText = (TextView) findViewById(R.id.topPanelHeader);
-        earnBtn = (ViewGroup) findViewById(R.id.earnPanel);
-        burnBtn = (ViewGroup) findViewById(R.id.burnPanel);
+        myRealm = Realm.getDefaultInstance();
 
-        earnProgress = (RoundCornerProgressBar) findViewById(R.id.earnProgressBar);
-        burnProgress = (RoundCornerProgressBar) findViewById(R.id.burnProgressBar);
+        headerText = (TextView) view.findViewById(R.id.topPanelHeader);
+        earnBtn = (ViewGroup) view.findViewById(R.id.earnPanel);
+        burnBtn = (ViewGroup) view.findViewById(R.id.burnPanel);
 
-        earnView = (ImageView) findViewById(R.id.earnView);
-        burnView = (ImageView) findViewById(R.id.burnView);
+        earnProgress = (RoundCornerProgressBar) view.findViewById(R.id.earnProgressBar);
+        burnProgress = (RoundCornerProgressBar) view.findViewById(R.id.burnProgressBar);
 
-        earnRecyclerView = (RecyclerView) findViewById(R.id.earnRecyclerView);
-        burnRecyclerView = (RecyclerView) findViewById(R.id.burnRecyclerView);
+        earnView = (ImageView) view.findViewById(R.id.earnView);
+        burnView = (ImageView) view.findViewById(R.id.burnView);
+
+        earnRecyclerView = (RecyclerView) view.findViewById(R.id.earnRecyclerView);
+        burnRecyclerView = (RecyclerView) view.findViewById(R.id.burnRecyclerView);
 
         burnList = new ArrayList<>();
-        burnAdapter = new EarnBurnHorizontalListAdapter(this, burnList);
+        burnAdapter = new EarnBurnHorizontalListAdapter(getActivity(), burnList);
         burnRecyclerView.setAdapter(burnAdapter);
-        burnRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        burnRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
         earnList = new ArrayList<>();
-        earnAdapter = new EarnBurnHorizontalListAdapter(this, earnList);
+        earnAdapter = new EarnBurnHorizontalListAdapter(getActivity(), earnList);
         earnRecyclerView.setAdapter(earnAdapter);
-        earnRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        earnRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
-        earnProgress.setMax(maxEarn);
-        burnProgress.setMax(maxBurn);
+        earnProgress.setMax(MAX_EARN);
+        burnProgress.setMax(MAX_BURN);
         earnProgress.setProgress(0);
         burnProgress.setProgress(0);
 
-        initRealm();
-        putFakeData();
+        isFirstTime();
         addListeners();
+        addUnits();
     }
 
-    private void initRealm(){
-        RealmConfiguration config = new RealmConfiguration.Builder(getApplicationContext())
-                .name(Constants.REALM_NAME)
-                .deleteRealmIfMigrationNeeded()
-                .schemaVersion(1)
-                .build();
-        Realm.setDefaultConfiguration(config);
+    private void isFirstTime(){
+        SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+        boolean isFirstTIme = sharedPreferences.getBoolean(Constants.FIRST_TIME, true);
+
+        if(isFirstTIme){
+            Toast.makeText(getContext(), "first time", Toast.LENGTH_SHORT).show();
+            createDefaultEarnBurnData();
+
+            //set Constants.FIRST_TIME shared preferences to false
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean(Constants.FIRST_TIME, false);
+            editor.apply();
+        }
     }
 
-    private void putFakeData(){
-        for(int i = 0; i < 14; i ++){
-            EarnBurn earn = new EarnBurn();
-            earn.setId(Util.generateUUID());
-            earn.setName("Earn " + i);
-            earn.setType(BalanceType.EARN.toString());
+    private void createDefaultEarnBurnData(){
+        Realm realm = Realm.getDefaultInstance();
 
-            earnList.add(earn);
-        }
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm bgRealm) {
+                for (int i = 0; i < 14; i++) {
+                    EarnBurn earn = bgRealm.createObject(EarnBurn.class);
+                    earn.setId(Util.generateUUID());
+                    earn.setName("Earn " + i);
+                    earn.setType(BalanceType.EARN.toString());
 
-        for(int i = 0; i < 14; i ++){
-            EarnBurn burn = new EarnBurn();
-            burn.setId(Util.generateUUID());
-            burn.setName("Burn " + i);
-            burn.setType(BalanceType.BURN.toString());
+                    earnList.add(earn);
+                }
 
-            burnList.add(burn);
-        }
+                for (int i = 0; i < 14; i++) {
+                    EarnBurn burn = bgRealm.createObject(EarnBurn.class);
+                    burn.setId(Util.generateUUID());
+                    burn.setName("Burn " + i);
+                    burn.setType(BalanceType.BURN.toString());
 
-        earnAdapter.notifyDataSetChanged();
-        burnAdapter.notifyDataSetChanged();
+                    burnList.add(burn);
+                }
+            }
+        });
     }
 
     private void addListeners(){
@@ -156,7 +174,7 @@ public class MainActivity extends AppCompatActivity
                 headerText.setText(addSign(total));
                 setProgressBar();
 
-                displayEarnItems(true);
+                displayEarnItems(true); Toast.makeText(getContext(), "earn btn: "+true, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -167,18 +185,14 @@ public class MainActivity extends AppCompatActivity
                 headerText.setText(addSign(total));
                 setProgressBar();
 
-                displayBurnItems(true);
+                displayBurnItems(true); Toast.makeText(getContext(), "burn btn: "+true, Toast.LENGTH_SHORT).show();
             }
         });
-
-
 
         burnAdapter.setOnItemClickListener(new EarnBurnHorizontalListAdapter.EarnBurnInterfaceListener() {
             @Override
             public void onItemClick(int position) {
                 Log.d("MAIN", "burn adapter:" + false);
-                //after clicking an item, close it
-                //displayBurnItems(false);
                 addEarnBurnTransaction(burnList.get(position));
             }
         });
@@ -187,11 +201,21 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onItemClick(int position) {
                 Log.d("MAIN", "earn adapter:" + false);
-                //after clicking an item, close it
-                //displayEarnItems(false);
                 addEarnBurnTransaction(earnList.get(position));
             }
         });
+    }
+
+    public void addUnits(){
+        unitList = new ArrayList<>();
+        unitList.add(UnitType.MINUTE.toString());
+        unitList.add(UnitType.HOUR.toString());
+        unitList.add(UnitType.KM.toString());
+        unitList.add(UnitType.MILE.toString());
+        unitList.add(UnitType.QUANTITY.toString());
+
+        unitAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, unitList);
+        unitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     }
 
     /**
@@ -199,18 +223,17 @@ public class MainActivity extends AppCompatActivity
      */
     private void addEarnBurnTransaction(EarnBurn data){
         // get prompts.xml view
-        LayoutInflater layoutInflater = LayoutInflater.from(this);
+        LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
 
         //It is ok to put null as the 2nd parameter as this custom layout is being attached to a
         //AlertDialog, where it not necessary to know what the parent is.
         View promptView = layoutInflater.inflate(R.layout.alertdialog_generic, null);
 
-        final EditText input = (EditText) promptView.findViewById(R.id.genericEditText);
-        input.setHint(data.getType());
-
+        //Title
         TextView title = (TextView) promptView.findViewById(R.id.genericTitle);
         title.setText(data.getName());
 
+        //Circular view
         CircularView cv = (CircularView) promptView.findViewById(R.id.genericCircularView);
 
         if(data.getType().equalsIgnoreCase(BalanceType.BURN.toString())){
@@ -221,7 +244,29 @@ public class MainActivity extends AppCompatActivity
             cv.setIconResource(R.drawable.ic_person);
         }
 
-        new AlertDialog.Builder(this)
+        //Edit text
+        final EditText input = (EditText) promptView.findViewById(R.id.genericEditText);
+        input.setHint(data.getType());
+
+        //Spinner
+        final Spinner unitSpinner = (Spinner) promptView.findViewById(R.id.genericSpinner);
+        unitSpinner.setAdapter(unitAdapter);
+        unitSpinner.setPrompt(unitList.get(0));
+        unitSpinner.setSelected(true);
+
+        unitSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                unitSpinner.setSelection(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        new AlertDialog.Builder(getActivity())
                 .setView(promptView)
                 .setCancelable(true)
                 .setOnCancelListener(new DialogInterface.OnCancelListener() {
@@ -266,7 +311,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void displayEarnItems(boolean value){ Log.d("MAIN", "display earn items :"+value);
+    private void displayEarnItems(boolean value){
         if(value) { //display horizontal list view
             earnRecyclerView.setVisibility(View.VISIBLE);
             earnView.setVisibility(View.GONE);
@@ -276,7 +321,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void displayBurnItems(boolean value){ Log.d("MAIN", "display burn items :"+value);
+    private void displayBurnItems(boolean value){
         if(value){ //display horizontal list view
             burnRecyclerView.setVisibility(View.VISIBLE);
             burnView.setVisibility(View.GONE);
@@ -290,72 +335,23 @@ public class MainActivity extends AppCompatActivity
         if(total > 0){
             earnProgress.setProgress(total);
             burnProgress.setProgress(0);
-            headerText.setTextColor(ContextCompat.getColor(this, R.color.red));
+            headerText.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
         }else if(total == 0){
             earnProgress.setProgress(0);
             burnProgress.setProgress(0);
-            headerText.setTextColor(ContextCompat.getColor(this, R.color.gray));
+            headerText.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
         }else{
             earnProgress.setProgress(0);
             burnProgress.setProgress(Math.abs(total));
-            headerText.setTextColor(ContextCompat.getColor(this, R.color.blue));
+            headerText.setTextColor(ContextCompat.getColor(getContext(), R.color.blue));
         }
     }
 
     @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
+    public void onDestroy(){
+        super.onDestroy();
+        if(!myRealm.isClosed()) {
+            myRealm.close();
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
     }
 }

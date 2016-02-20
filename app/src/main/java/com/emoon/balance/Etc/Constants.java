@@ -7,13 +7,13 @@ public class Constants {
     public static final String REALM_NAME = "balance.realm";
     public static final String CSV_NAME = "balance.csv";
 
-/*
+
     //Permissions for Android M
     public static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
 
     //First time
     public static final String FIRST_TIME = "First Time";
-
+/*
     //Activity request
     public static final String REQUEST_NEW_TRANSACTION = "New Transaction";
     public static final String REQUEST_NEW_TRANSACTION_DATE = "New Transaction Date";
