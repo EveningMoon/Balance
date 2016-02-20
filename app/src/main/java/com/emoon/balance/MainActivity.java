@@ -1,4 +1,4 @@
-package com.perzhan.earnandburn;
+package com.emoon.balance;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -19,11 +19,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
-import com.perzhan.earnandburn.Adapter.BaseHorizontalListAdapter;
-import com.perzhan.earnandburn.Model.Base;
-import com.perzhan.earnandburn.Model.Burn;
-import com.perzhan.earnandburn.Model.Earn;
-import com.perzhan.earnandburn.Util.Util;
+import com.emoon.balance.Adapter.BaseHorizontalListAdapter;
+import com.emoon.balance.Model.Base;
+import com.emoon.balance.Model.Burn;
+import com.emoon.balance.Model.Earn;
+import com.emoon.balance.Util.Util;
 
 import java.util.ArrayList;
 import java.util.List;

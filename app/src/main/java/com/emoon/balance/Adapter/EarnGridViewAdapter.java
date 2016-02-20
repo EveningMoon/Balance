@@ -1,4 +1,4 @@
-package com.perzhan.earnandburn.Adapter;
+package com.emoon.balance.Adapter;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -7,8 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.perzhan.earnandburn.Model.Base;
-import com.perzhan.earnandburn.R;
+import com.emoon.balance.Model.Base;
+import com.emoon.balance.R;
 import com.zhan.library.CircularView;
 
 import java.util.List;

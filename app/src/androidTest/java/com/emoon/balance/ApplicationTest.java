@@ -1,4 +1,4 @@
-package com.perzhan.earnandburn;
+package com.perzhan.balance;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

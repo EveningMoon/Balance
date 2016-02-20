@@ -1,4 +1,4 @@
-package com.perzhan.earnandburn;
+package com.perzhan.balance;
 
 import org.junit.Test;
 

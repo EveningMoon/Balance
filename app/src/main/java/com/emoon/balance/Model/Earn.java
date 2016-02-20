@@ -1,4 +1,4 @@
-package com.perzhan.earnandburn.Model;
+package com.emoon.balance.Model;
 
 /**
  * Created by zhanyap on 2016-01-28.

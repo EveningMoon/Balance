@@ -1,4 +1,4 @@
-package com.perzhan.earnandburn.Util;
+package com.emoon.balance.Util;
 
 import java.util.UUID;
 
