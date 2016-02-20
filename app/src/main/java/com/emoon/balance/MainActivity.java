@@ -1,5 +1,7 @@
 package com.emoon.balance;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
@@ -11,20 +13,22 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
-import com.emoon.balance.Adapter.BurnHorizontalListAdapter;
-import com.emoon.balance.Adapter.EarnHorizontalListAdapter;
+import com.emoon.balance.Adapter.EarnBurnHorizontalListAdapter;
 import com.emoon.balance.Etc.Constants;
-import com.emoon.balance.Model.Burn;
-import com.emoon.balance.Model.Earn;
+import com.emoon.balance.Model.BalanceType;
+import com.emoon.balance.Model.EarnBurn;
 import com.emoon.balance.Util.Util;
+import com.zhan.library.CircularView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,13 +57,11 @@ public class MainActivity extends AppCompatActivity
 
     private int total = 0;
 
-    private List<Earn> earnList;
-    private List<Burn> burnList;
+    private List<EarnBurn> earnList;
+    private List<EarnBurn> burnList;
 
-    private EarnHorizontalListAdapter earnAdapter;
-    private BurnHorizontalListAdapter burnAdapter;
-
-
+    private EarnBurnHorizontalListAdapter earnAdapter;
+    private EarnBurnHorizontalListAdapter burnAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,12 +97,12 @@ public class MainActivity extends AppCompatActivity
         burnRecyclerView = (RecyclerView) findViewById(R.id.burnRecyclerView);
 
         burnList = new ArrayList<>();
-        burnAdapter = new BurnHorizontalListAdapter(this, burnList);
+        burnAdapter = new EarnBurnHorizontalListAdapter(this, burnList);
         burnRecyclerView.setAdapter(burnAdapter);
         burnRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
         earnList = new ArrayList<>();
-        earnAdapter = new EarnHorizontalListAdapter(this, earnList);
+        earnAdapter = new EarnBurnHorizontalListAdapter(this, earnList);
         earnRecyclerView.setAdapter(earnAdapter);
         earnRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
@@ -125,17 +127,19 @@ public class MainActivity extends AppCompatActivity
 
     private void putFakeData(){
         for(int i = 0; i < 14; i ++){
-            Earn earn = new Earn();
+            EarnBurn earn = new EarnBurn();
             earn.setId(Util.generateUUID());
             earn.setName("Earn " + i);
+            earn.setType(BalanceType.EARN.toString());
 
             earnList.add(earn);
         }
 
         for(int i = 0; i < 14; i ++){
-            Burn burn = new Burn();
+            EarnBurn burn = new EarnBurn();
             burn.setId(Util.generateUUID());
             burn.setName("Burn " + i);
+            burn.setType(BalanceType.BURN.toString());
 
             burnList.add(burn);
         }
@@ -169,24 +173,89 @@ public class MainActivity extends AppCompatActivity
 
 
 
-        burnAdapter.setOnItemClickListener(new BurnHorizontalListAdapter.BurnInterfaceListener() {
+        burnAdapter.setOnItemClickListener(new EarnBurnHorizontalListAdapter.EarnBurnInterfaceListener() {
             @Override
             public void onItemClick(int position) {
                 Log.d("MAIN", "burn adapter:" + false);
                 //after clicking an item, close it
-                displayBurnItems(false);
+                //displayBurnItems(false);
+                addEarnBurnTransaction(burnList.get(position));
             }
         });
 
-        earnAdapter.setOnItemClickListener(new EarnHorizontalListAdapter.EarnInterfaceListener() {
+        earnAdapter.setOnItemClickListener(new EarnBurnHorizontalListAdapter.EarnBurnInterfaceListener() {
             @Override
             public void onItemClick(int position) {
-                Log.d("MAIN", "earn adapter:"+false);
+                Log.d("MAIN", "earn adapter:" + false);
                 //after clicking an item, close it
-                displayEarnItems(false);
+                //displayEarnItems(false);
+                addEarnBurnTransaction(earnList.get(position));
             }
         });
+    }
 
+    /**
+     * Displays prompt for user to add new EarnBurn.
+     */
+    private void addEarnBurnTransaction(EarnBurn data){
+        // get prompts.xml view
+        LayoutInflater layoutInflater = LayoutInflater.from(this);
+
+        //It is ok to put null as the 2nd parameter as this custom layout is being attached to a
+        //AlertDialog, where it not necessary to know what the parent is.
+        View promptView = layoutInflater.inflate(R.layout.alertdialog_generic, null);
+
+        final EditText input = (EditText) promptView.findViewById(R.id.genericEditText);
+        input.setHint(data.getType());
+
+        TextView title = (TextView) promptView.findViewById(R.id.genericTitle);
+        title.setText(data.getName());
+
+        CircularView cv = (CircularView) promptView.findViewById(R.id.genericCircularView);
+
+        if(data.getType().equalsIgnoreCase(BalanceType.BURN.toString())){
+            cv.setCircleColor(R.color.dark_blue);
+            cv.setIconResource(R.drawable.svg_ic_add);
+        }else{
+            cv.setCircleColor(R.color.dark_red);
+            cv.setIconResource(R.drawable.ic_person);
+        }
+
+        new AlertDialog.Builder(this)
+                .setView(promptView)
+                .setCancelable(true)
+                .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        displayEarnItems(false);
+                        displayBurnItems(false);
+                    }
+                })
+                .setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        /*myRealm.beginTransaction();
+
+                        Account account = myRealm.createObject(Account.class);
+                        account.setId(Util.generateUUID());
+                        account.setName(input.getText().toString());
+
+                        accountListAdapter.clear();
+                        myRealm.commitTransaction();*/
+
+                        displayEarnItems(false);
+                        displayBurnItems(false);
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        displayEarnItems(false);
+                        displayBurnItems(false);
+                    }
+                })
+                .create()
+                .show();
     }
 
     private String addSign(int value){

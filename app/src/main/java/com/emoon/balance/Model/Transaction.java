@@ -4,23 +4,21 @@ import org.parceler.Parcel;
 
 import java.util.Date;
 
-import io.realm.EarnRealmProxy;
 import io.realm.RealmObject;
+import io.realm.TransactionRealmProxy;
 import io.realm.annotations.PrimaryKey;
 
-@Parcel(implementations = {EarnRealmProxy.class},
+@Parcel(implementations = {TransactionRealmProxy.class},
         value = Parcel.Serialization.BEAN,
-        analyze = {Earn.class})
-public class Earn extends RealmObject {
+        analyze = {Transaction.class})
+public class Transaction extends RealmObject{
 
     @PrimaryKey
     private String id;
-    private String name;
     private Date date;
+    private EarnBurn earnBurn;
 
-    private float points;
-
-    public Earn(){
+    public Transaction(){
 
     }
 
@@ -32,14 +30,6 @@ public class Earn extends RealmObject {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Date getDate() {
         return date;
     }
@@ -48,12 +38,11 @@ public class Earn extends RealmObject {
         this.date = date;
     }
 
-
-    public float getPoints() {
-        return points;
+    public EarnBurn getEarnBurn() {
+        return earnBurn;
     }
 
-    public void setPoints(float points) {
-        this.points = points;
+    public void setEarnBurn(EarnBurn earnBurn) {
+        this.earnBurn = earnBurn;
     }
 }

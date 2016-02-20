@@ -2,25 +2,22 @@ package com.emoon.balance.Model;
 
 import org.parceler.Parcel;
 
-import java.util.Date;
-
-import io.realm.BurnRealmProxy;
+import io.realm.EarnBurnRealmProxy;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-@Parcel(implementations = {BurnRealmProxy.class},
+@Parcel(implementations = {EarnBurnRealmProxy.class},
         value = Parcel.Serialization.BEAN,
-        analyze = {Burn.class})
-public class Burn extends RealmObject {
+        analyze = {EarnBurn.class})
+public class EarnBurn extends RealmObject {
     @PrimaryKey
     private String id;
 
     private String name;
-    private Date date;
-
 	private float cost;
+    private String type;
 
-    public Burn(){
+    public EarnBurn(){
         
     }
 
@@ -40,19 +37,19 @@ public class Burn extends RealmObject {
         this.name = name;
     }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
     public float getCost() {
         return cost;
     }
 
     public void setCost(float cost) {
         this.cost = cost;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
