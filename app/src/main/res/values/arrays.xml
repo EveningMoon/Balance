@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="motivationalQuotes">
+        <item>@string/motivation1</item>
+        <item>@string/motivation2</item>
+        <item>@string/motivation3</item>
+        <item>@string/motivation4</item>
+        <item>@string/motivation5</item>
+        <item>@string/motivation6</item>
+        <item>@string/motivation7</item>
+    </string-array>
+
+</resources>
