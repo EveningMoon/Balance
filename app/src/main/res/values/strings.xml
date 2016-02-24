@@ -6,8 +6,59 @@
 
     <string name="action_settings">Settings</string>
 
-    <string name="intro_text_in_top_panel">There is no try, only do and do not.</string>
+    <string name="motivation1">There is no try, only do and do not.</string>
+    <string name="motivation2">You have only to believe if you wish to achieve. That rhymed. Unintentional. - Rod Kimble</string>
+    <string name="motivation3">A diamond is merely a lump of coal that did well under pressure.</string>
+    <string name="motivation4">Do not take life too seriously. You will never get out of it alive. - Elbert Hubbard</string>
+    <string name="motivation5">No rest is worth anything except the rest that is earned. - Jean Paul</string>
+    <string name="motivation6">"The saddest summary of a life contains three descriptions: could have, might have, and should have." - Louis E. Boone</string>
+    <string name="motivation7">It does not matter how slowly you go as long as you do not stop. - Confucius</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="alcohol">Alcohol</string> <!-- alcoholic_drink.xml -->
+    <string name="badminton">Badminton</string> <!-- badminton.xml -->
+    <string name="baseball">Baseball</string> <!-- baseball.xml -->
+    <string name="basketball">Basketball</string> <!-- basketball.xml -->
+    <string name="beachVolleyball">Beach volleyball</string> <!-- beach_volleyball.xml -->
+    <string name="beer">Beer</string> <!-- beer.xml -->
+    <string name="biking">Biking</string> <!-- biking.xml -->
+    <string name="billiards">Billiards</string> <!-- billiards.xml -->
+    <string name="bowling">Bowling</string> <!-- bowling.xml -->
+    <string name="boxing">Boxing</string>  <!-- boxing.xml -->
+    <string name="budget">Budget</string> <!-- budget.xml -->
+    <string name="cricket">Cricket</string> <!-- cricket.xml -->
+    <string name="desserts">Desserts</string> <!-- desserts.xml -->
+    <string name="drink">Drink</string> <!-- drink.xml -->
+    <string name="driving">Driving</string> <!-- driving.xml -->
+    <string name="education">Education</string> <!-- education.xml -->
+    <string name="food">Food</string> <!-- fruit.xml -->
+    <string name="football">Football</string> <!-- ic_local_pizza_24dp.xml -->
+    <string name="fruit">Fruit</string> <!-- fruit.xml -->
+    <string name="groceryShopping">Grocery shopping</string> <!-- grocery_shopping.xml -->
+    <string name="hiking">Hiking</string> <!-- hiking.xml -->
+    <string name="jogging">Jogging</string> <!-- running_stick_figure.xml -->
+    <string name="jumpRope">Jumping rope</string> <!-- jump_rope.xml -->
+    <string name="mountainBiking">Mountain biking</string> <!-- mountain_bike.xml -->
+    <string name="movie">Movie</string> <!-- movie.xml -->
+    <string name="other">Other</string> <!-- other.xml -->
+    <string name="pingPong">Ping pong</string> <!-- ping_pong.xml -->
+    <string name="publicTransit">Public transit</string> <!-- public_transit.xml -->
+    <string name="reading">Reading</string> <!-- reading.xml -->
+    <string name="rockClimbing">Rock climbing</string> <!-- rock_climbing.xml -->
+    <string name="running">Running</string> <!-- running_stick_figure.xml -->
+    <string name="savedMoney">Saved money</string> <!-- savings.xml -->
+    <string name="shopping">Shopping</string> <!-- shopping.xml -->
+    <string name="skiing">Skiing</string> <!-- skiing.xml -->
+    <string name="soccer">Soccer</string> <!-- soccer.xml -->
+    <string name="stairClimbing">Stair climbing</string> <!-- stair_climbing.xml -->
+    <string name="studying">Studying</string> <!-- study.xml -->
+    <string name="sweets">Sweets</string> <!-- candy.xml -->
+    <string name="tennis">Tennis</string> <!-- tennis.xml -->
+    <string name="tv">TV</string> <!-- tv.xml -->
+    <string name="vegetable">Vegetable</string> <!-- vegetable.xml -->
+    <string name="videoGames">Video games</string> <!-- video_game.xml -->
+    <string name="volleyball">Volleyball</string>  <!-- volleyball.xml -->
+    <string name="walking">Walking</string>  <!-- walking.xml -->
+    <string name="weightLifting">Weight lifting</string>  <!-- weight_lifting.xml -->
+    <string name="work">Work</string>  <!-- work.xml -->
+
 </resources>
