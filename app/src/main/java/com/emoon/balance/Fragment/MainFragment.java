@@ -35,6 +35,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmChangeListener;
+import io.realm.RealmResults;
 
 public class MainFragment extends Fragment {
 
@@ -57,6 +59,9 @@ public class MainFragment extends Fragment {
     private final int MAX_BURN = 20;
 
     private int total = 0;
+
+    private RealmResults<EarnBurn> earnRealmResults;
+    private RealmResults<EarnBurn> burnRealmResults;
 
     private List<EarnBurn> earnList;
     private List<EarnBurn> burnList;
@@ -136,13 +141,13 @@ public class MainFragment extends Fragment {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putBoolean(Constants.FIRST_TIME, false);
             editor.apply();
+        }else{
+            Toast.makeText(getContext(), "second time", Toast.LENGTH_SHORT).show();
         }
     }
 
     private void createDefaultEarnBurnData(){
-        Realm realm = Realm.getDefaultInstance();
-
-        realm.executeTransaction(new Realm.Transaction() {
+        myRealm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm bgRealm) {
                 for (int i = 0; i < 14; i++) {
@@ -170,22 +175,22 @@ public class MainFragment extends Fragment {
         earnBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                total++;
+                //total++;
                 headerText.setText(addSign(total));
                 setProgressBar();
 
-                displayEarnItems(true); Toast.makeText(getContext(), "earn btn: "+true, Toast.LENGTH_SHORT).show();
+                displayEarnItems(true);
             }
         });
 
         burnBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                total--;
+                //total--;
                 headerText.setText(addSign(total));
                 setProgressBar();
 
-                displayBurnItems(true); Toast.makeText(getContext(), "burn btn: "+true, Toast.LENGTH_SHORT).show();
+                displayBurnItems(true);
             }
         });
 
@@ -313,8 +318,18 @@ public class MainFragment extends Fragment {
 
     private void displayEarnItems(boolean value){
         if(value) { //display horizontal list view
-            earnRecyclerView.setVisibility(View.VISIBLE);
-            earnView.setVisibility(View.GONE);
+            earnRealmResults = myRealm.where(EarnBurn.class).equalTo("type", BalanceType.EARN.toString()).findAllAsync();
+            earnRealmResults.addChangeListener(new RealmChangeListener() {
+                @Override
+                public void onChange() {
+                    earnList = myRealm.copyFromRealm(earnRealmResults);
+                    earnRecyclerView.setVisibility(View.VISIBLE);
+                    earnView.setVisibility(View.GONE);
+                    earnAdapter.setData(earnList);
+
+                    earnRealmResults.removeChangeListener(this);
+                }
+            });
         }else{ //hide horizontal list view
             earnRecyclerView.setVisibility(View.GONE);
             earnView.setVisibility(View.VISIBLE);
@@ -323,8 +338,18 @@ public class MainFragment extends Fragment {
 
     private void displayBurnItems(boolean value){
         if(value){ //display horizontal list view
-            burnRecyclerView.setVisibility(View.VISIBLE);
-            burnView.setVisibility(View.GONE);
+            burnRealmResults = myRealm.where(EarnBurn.class).equalTo("type", BalanceType.BURN.toString()).findAllAsync();
+            burnRealmResults.addChangeListener(new RealmChangeListener() {
+                @Override
+                public void onChange() {
+                    burnList = myRealm.copyFromRealm(burnRealmResults);
+                    burnRecyclerView.setVisibility(View.VISIBLE);
+                    burnView.setVisibility(View.GONE);
+                    burnAdapter.setData(burnList);
+
+                    burnRealmResults.removeChangeListener(this);
+                }
+            });
         }else{ //hide horizontal list view
             burnRecyclerView.setVisibility(View.GONE);
             burnView.setVisibility(View.VISIBLE);
