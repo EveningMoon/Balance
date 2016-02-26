@@ -11,4 +11,88 @@
         <item>@string/motivation7</item>
     </string-array>
 
+
+
+
+
+
+
+
+
+
+
+    <array name="badminton">
+        <item>@string/badminton</item>
+        <item>@drawable/svg_badminton</item>
+    </array>
+    <array name="baseball">
+        <item>@string/baseball</item>
+        <item>@drawable/svg_baseball</item>
+    </array>
+
+
+
+
+    <array name="list">
+        <item>@array/badminton</item>
+        <item>@array/baseball</item>
+    </array>
+
+
+
+
+
+
+    <string-array name="activities">
+        <item>@string/badminton</item>
+        <item>@string/baseball</item>
+        <item>@string/basketball</item>
+        <item>@string/beachVolleyball</item>
+        <item>@string/biking</item>
+        <item>@string/billiards</item>
+        <item>@string/bowling</item>
+        <item>@string/boxing</item>
+        <item>@string/budget</item>
+        <item>@string/cricket</item>
+        <item>@string/driving</item>
+        <item>@string/education</item>
+        <item>@string/football</item>
+        <item>@string/groceryShopping</item>
+        <item>@string/hiking</item>
+        <item>@string/jogging</item>
+        <item>@string/jumpRope</item>
+        <item>@string/mountainBiking</item>
+        <item>@string/other</item>
+        <item>@string/pingPong</item>
+        <item>@string/publicTransit</item>
+        <item>@string/reading</item>
+        <item>@string/rockClimbing</item>
+        <item>@string/running</item>
+        <item>@string/savedMoney</item>
+        <item>@string/skiing</item>
+        <item>@string/soccer</item>
+        <item>@string/stairClimbing</item>
+        <item>@string/studying</item>
+        <item>@string/tennis</item>
+        <item>@string/volleyball</item>
+        <item>@string/walking</item>
+        <item>@string/weightLifting</item>
+        <item>@string/work</item>
+    </string-array>
+
+    <string-array name="rewards">
+        <item>@string/alcohol</item>
+        <item>@string/beer</item>
+        <item>@string/desserts</item>
+        <item>@string/drink</item>
+        <item>@string/food</item>
+        <item>@string/fruit</item>
+        <item>@string/movie</item>
+        <item>@string/shopping</item>
+        <item>@string/sweets</item>
+        <item>@string/vegetable</item>
+        <item>@string/videoGames</item>
+        <item>@string/tv</item>
+    </string-array>
+
 </resources>

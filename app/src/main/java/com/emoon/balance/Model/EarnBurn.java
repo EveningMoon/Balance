@@ -15,7 +15,7 @@ public class EarnBurn extends RealmObject {
 
     private String name;
     private String type;
-
+    private int icon;
     private float cost;
     private String unit;
 
@@ -61,5 +61,13 @@ public class EarnBurn extends RealmObject {
 
     public void setUnit(String unit) {
         this.unit = unit;
+    }
+
+    public int getIcon() {
+        return icon;
+    }
+
+    public void setIcon(int icon) {
+        this.icon = icon;
     }
 }

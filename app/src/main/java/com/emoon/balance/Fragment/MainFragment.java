@@ -91,6 +91,7 @@ public class MainFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
         init();
+        Util.getListOfActivities(getContext());
     }
 
     private void init(){
