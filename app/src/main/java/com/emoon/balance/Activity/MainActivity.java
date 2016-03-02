@@ -1,5 +1,7 @@
 package com.emoon.balance.Activity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
@@ -12,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.emoon.balance.Etc.Constants;
 import com.emoon.balance.Fragment.MainFragment;
@@ -47,10 +50,12 @@ public class MainActivity extends AppCompatActivity
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        isFirstTime();
+
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -74,6 +79,55 @@ public class MainActivity extends AppCompatActivity
                 .build();
         Realm.setDefaultConfiguration(config);
     }
+
+    private void isFirstTime(){
+        SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+        boolean isFirstTIme = sharedPreferences.getBoolean(Constants.FIRST_TIME, true);
+
+        if(isFirstTIme){
+            Toast.makeText(getApplicationContext(), "first time", Toast.LENGTH_SHORT).show();
+            //createFakeTransactions();
+
+            //set Constants.FIRST_TIME shared preferences to false
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean(Constants.FIRST_TIME, false);
+            editor.apply();
+        }
+    }
+/*
+    private void createFakeTransactions(){
+        Realm realm = Realm.getDefaultInstance();
+
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm bgRealm) {
+                String[] initialActivityName = new String[]{"Running","Walking","Biking"};
+
+                //Create default activity
+                for(int i = 0; i < initialActivityName.length; i++){
+                    EarnBurn earn = bgRealm.createObject(EarnBurn.class);
+                    earn.setId(Util.generateUUID());
+                    earn.setName(initialActivityName[i]);
+                    earn.setType(BalanceType.EARN.toString());
+                    earn.setCost();
+                    earn.setUnit();
+                }
+
+
+            }
+        }, new Realm.Transaction.Callback() {
+            @Override
+            public void onSuccess() {
+
+            }
+
+            @Override
+            public void onError(Exception e) {
+                // transaction is automatically rolled-back, do any cleanup here
+                e.printStackTrace();
+            }
+        });
+    }*/
 
     @Override
     public void onBackPressed() {

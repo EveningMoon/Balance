@@ -14,51 +14,99 @@
     <string name="motivation6">"The saddest summary of a life contains three descriptions: could have, might have, and should have." - Louis E. Boone</string>
     <string name="motivation7">It does not matter how slowly you go as long as you do not stop. - Confucius</string>
 
-    <string name="alcohol">Alcohol</string> <!-- svg_alcoholic_drink.xml.xml -->
-    <string name="badminton">Badminton</string> <!-- svg_badmintonnton.xml -->
-    <string name="baseball">Baseball</string> <!-- svg_baseball.xml.xml -->
-    <string name="basketball">Basketball</string> <!-- svg_basketball.xml.xml -->
-    <string name="beachVolleyball">Beach volleyball</string> <!-- svg_beach_volleyball.xml.xml -->
-    <string name="beer">Beer</string> <!-- svg_beer.xml.xml -->
-    <string name="biking">Biking</string> <!-- svg_bikingking.xml -->
-    <string name="billiards">Billiards</string> <!-- svg_billiards.xml.xml -->
-    <string name="bowling">Bowling</string> <!-- svg_bowlingling.xml -->
-    <string name="boxing">Boxing</string>  <!-- svg_boxing.xml.xml -->
-    <string name="budget">Budget</string> <!-- svg_budgetdget.xml -->
-    <string name="cricket">Cricket</string> <!-- svg_cricket.xml.xml -->
-    <string name="desserts">Desserts</string> <!-- svg_dessertserts.xml -->
-    <string name="drink">Drink</string> <!-- svg_drink.xml.xml -->
-    <string name="driving">Driving</string> <!-- svg_drivingving.xml -->
-    <string name="education">Education</string> <!-- svg_educationtion.xml -->
-    <string name="food">Food</string> <!-- svg_fruit.xml.xml -->
-    <string name="football">Football</string> <!-- ic_local_pizza_24dp.xml -->
-    <string name="fruit">Fruit</string> <!-- svg_fruitruit.xml -->
-    <string name="groceryShopping">Grocery shopping</string> <!-- svg_grocery_shopping.xml.xml -->
-    <string name="hiking">Hiking</string> <!-- svg_hikingking.xml -->
-    <string name="jogging">Jogging</string> <!-- svg_running_stick_figuregure.xml -->
-    <string name="jumpRope">Jumping rope</string> <!-- svg_jump_roperope.xml -->
-    <string name="mountainBiking">Mountain biking</string> <!-- svg_mountain_bikebike.xml -->
-    <string name="movie">Movie</string> <!-- svg_movie.xml.xml -->
-    <string name="other">Other</string> <!-- svg_otherther.xml -->
-    <string name="pingPong">Ping pong</string> <!-- svg_ping_pong.xml.xml -->
-    <string name="publicTransit">Public transit</string> <!-- svg_public_transit.xml.xml -->
-    <string name="reading">Reading</string> <!-- svg_readingding.xml -->
-    <string name="rockClimbing">Rock climbing</string> <!-- svg_rock_climbing.xml.xml -->
-    <string name="running">Running</string> <!-- svg_running_stick_figure.xml.xml -->
-    <string name="savedMoney">Saved money</string> <!-- svg_savings.xml.xml -->
-    <string name="shopping">Shopping</string> <!-- svg_shoppingping.xml -->
-    <string name="skiing">Skiing</string> <!-- svg_skiing.xml.xml -->
-    <string name="soccer">Soccer</string> <!-- svg_soccerccer.xml -->
-    <string name="stairClimbing">Stair climbing</string> <!-- svg_stair_climbingbing.xml -->
-    <string name="studying">Studying</string> <!-- svg_study.xml.xml -->
-    <string name="sweets">Sweets</string> <!-- svg_candy.xml.xml -->
-    <string name="tennis">Tennis</string> <!-- svg_tennisnnis.xml -->
-    <string name="tv">TV</string> <!-- svg_tvg_tv.xml -->
-    <string name="vegetable">Vegetable</string> <!-- svg_vegetable.xml.xml -->
-    <string name="videoGames">Video games</string> <!-- svg_video_gamegame.xml -->
-    <string name="volleyball">Volleyball</string>  <!-- svg_volleyballball.xml -->
-    <string name="walking">Walking</string>  <!-- svg_walking.xml.xml -->
-    <string name="weightLifting">Weight lifting</string>  <!-- svg_weight_lifting.xml.xml -->
-    <string name="work">Work</string>  <!-- svg_work.xml.xml -->
+    <string name="alcohol">Alcohol</string>
+    <!-- svg_alcoholic_drink.xml.xml -->
+    <string name="badminton">Badminton</string>
+    <!-- svg_badmintonnton.xml -->
+    <string name="baseball">Baseball</string>
+    <!-- svg_baseball.xml.xml -->
+    <string name="basketball">Basketball</string>
+    <!-- svg_basketball.xml.xml -->
+    <string name="beachVolleyball">Beach volleyball</string>
+    <!-- svg_beach_volleyball.xml.xml -->
+    <string name="beer">Beer</string>
+    <!-- svg_beer.xml.xml -->
+    <string name="biking">Biking</string>
+    <!-- svg_bikingking.xml -->
+    <string name="billiards">Billiards</string>
+    <!-- svg_billiards.xml.xml -->
+    <string name="bowling">Bowling</string>
+    <!-- svg_bowlingling.xml -->
+    <string name="boxing">Boxing</string>
+    <!-- svg_boxing.xml.xml -->
+    <string name="budget">Budget</string>
+    <!-- svg_budgetdget.xml -->
+    <string name="cricket">Cricket</string>
+    <!-- svg_cricket.xml.xml -->
+    <string name="desserts">Desserts</string>
+    <!-- svg_dessertserts.xml -->
+    <string name="drink">Drink</string>
+    <!-- svg_drink.xml.xml -->
+    <string name="driving">Driving</string>
+    <!-- svg_drivingving.xml -->
+    <string name="education">Education</string>
+    <!-- svg_educationtion.xml -->
+    <string name="food">Food</string>
+    <!-- svg_fruit.xml.xml -->
+    <string name="football">Football</string>
+    <!-- ic_local_pizza_24dp.xml -->
+    <string name="fruit">Fruit</string>
+    <!-- svg_fruitruit.xml -->
+    <string name="groceryShopping">Grocery shopping</string>
+    <!-- svg_grocery_shopping.xml.xml -->
+    <string name="hiking">Hiking</string>
+    <!-- svg_hikingking.xml -->
+    <string name="jogging">Jogging</string>
+    <!-- svg_running_stick_figuregure.xml -->
+    <string name="jumpRope">Jumping rope</string>
+    <!-- svg_jump_roperope.xml -->
+    <string name="mountainBiking">Mountain biking</string>
+    <!-- svg_mountain_bikebike.xml -->
+    <string name="movie">Movie</string>
+    <!-- svg_movie.xml.xml -->
+    <string name="other">Other</string>
+    <!-- svg_otherther.xml -->
+    <string name="pingPong">Ping pong</string>
+    <!-- svg_ping_pong.xml.xml -->
+    <string name="publicTransit">Public transit</string>
+    <!-- svg_public_transit.xml.xml -->
+    <string name="reading">Reading</string>
+    <!-- svg_readingding.xml -->
+    <string name="rockClimbing">Rock climbing</string>
+    <!-- svg_rock_climbing.xml.xml -->
+    <string name="running">Running</string>
+    <!-- svg_running_stick_figure.xml.xml -->
+    <string name="savedMoney">Saved money</string>
+    <!-- svg_savings.xml.xml -->
+    <string name="shopping">Shopping</string>
+    <!-- svg_shoppingping.xml -->
+    <string name="skiing">Skiing</string>
+    <!-- svg_skiing.xml.xml -->
+    <string name="soccer">Soccer</string>
+    <!-- svg_soccerccer.xml -->
+    <string name="stairClimbing">Stair climbing</string>
+    <!-- svg_stair_climbingbing.xml -->
+    <string name="studying">Studying</string>
+    <!-- svg_study.xml.xml -->
+    <string name="sweets">Sweets</string>
+    <!-- svg_candy.xml.xml -->
+    <string name="tennis">Tennis</string>
+    <!-- svg_tennisnnis.xml -->
+    <string name="tv">TV</string>
+    <!-- svg_tvg_tv.xml -->
+    <string name="vegetable">Vegetable</string>
+    <!-- svg_vegetable.xml.xml -->
+    <string name="videoGames">Video games</string>
+    <!-- svg_video_gamegame.xml -->
+    <string name="volleyball">Volleyball</string>
+    <!-- svg_volleyballball.xml -->
+    <string name="walking">Walking</string>
+    <!-- svg_walking.xml.xml -->
+    <string name="weightLifting">Weight lifting</string>
+    <!-- svg_weight_lifting.xml.xml -->
+    <string name="work">Work</string>
+    <string name="title_activity_list">ListActivity</string>
+    <string name="title_activity_info">InfoActivity</string>
+    <!-- svg_work.xml.xml -->
 
 </resources>
