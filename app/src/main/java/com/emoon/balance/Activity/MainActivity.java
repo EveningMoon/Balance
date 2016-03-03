@@ -19,7 +19,11 @@ import android.widget.Toast;
 import com.emoon.balance.Etc.Constants;
 import com.emoon.balance.Fragment.MainFragment;
 import com.emoon.balance.Fragment.SettingFragment;
+import com.emoon.balance.Model.BalanceType;
+import com.emoon.balance.Model.EarnBurn;
+import com.emoon.balance.Model.UnitType;
 import com.emoon.balance.R;
+import com.emoon.balance.Util.Util;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -86,7 +90,7 @@ public class MainActivity extends AppCompatActivity
 
         if(isFirstTIme){
             Toast.makeText(getApplicationContext(), "first time", Toast.LENGTH_SHORT).show();
-            //createFakeTransactions();
+            createDefaultItems();
 
             //set Constants.FIRST_TIME shared preferences to false
             SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -94,26 +98,41 @@ public class MainActivity extends AppCompatActivity
             editor.apply();
         }
     }
-/*
-    private void createFakeTransactions(){
+
+    private void createDefaultItems(){
         Realm realm = Realm.getDefaultInstance();
 
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm bgRealm) {
-                String[] initialActivityName = new String[]{"Running","Walking","Biking"};
 
                 //Create default activity
+                String[] initialActivityName = new String[]{"Running","Walking","Biking"};
+                int[] initialActivityIcon = new int[]{R.drawable.svg_running_stick_figure, R.drawable.svg_walking, R.drawable.svg_biking, R.drawable.svg_other};
+
                 for(int i = 0; i < initialActivityName.length; i++){
                     EarnBurn earn = bgRealm.createObject(EarnBurn.class);
                     earn.setId(Util.generateUUID());
                     earn.setName(initialActivityName[i]);
+                    earn.setIcon(getResources().getResourceEntryName(initialActivityIcon[i]));
                     earn.setType(BalanceType.EARN.toString());
-                    earn.setCost();
-                    earn.setUnit();
+                    earn.setCost(0f);
+                    earn.setUnit(UnitType.MINUTE.toString());
                 }
 
+                //Create default rewards
+                String[] initialRewardName = new String[]{"Food","Drink","Beer"};
+                int[] initialRewardIcon = new int[]{R.drawable.svg_fruit, R.drawable.svg_drink, R.drawable.svg_beer, R.drawable.svg_other};
 
+                for(int i = 0; i < initialActivityName.length; i++){
+                    EarnBurn burn = bgRealm.createObject(EarnBurn.class);
+                    burn.setId(Util.generateUUID());
+                    burn.setName(initialRewardName[i]);
+                    burn.setIcon(getResources().getResourceEntryName(initialRewardIcon[i]));
+                    burn.setType(BalanceType.BURN.toString());
+                    burn.setCost(0f);
+                    burn.setUnit(UnitType.QUANTITY.toString());
+                }
             }
         }, new Realm.Transaction.Callback() {
             @Override
@@ -127,7 +146,7 @@ public class MainActivity extends AppCompatActivity
                 e.printStackTrace();
             }
         });
-    }*/
+    }
 
     @Override
     public void onBackPressed() {

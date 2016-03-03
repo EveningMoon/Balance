@@ -14,8 +14,8 @@
     <color name="black">#000000</color>
     <color name="gray">#D3D3D3</color>
     <color name="darkgray">#888888</color>
-    <color name="dark_blue">#056fb6</color>
-    <color name="dark_red">#760002</color>
+    <color name="dark_blue">#368fcc</color>
+    <color name="dark_red">#d64b3d</color>
     <color name="lightGray">#e3e3e3</color>
     <color name="lightPurple">#BE90D4</color>
     <color name="cyan">#1ABC9C</color>
@@ -57,4 +57,9 @@
     <color name="pumpkin">#d35400</color>
     <color name="pomegranate">#c0392b</color>
     <color name="asbestos">#7f8c8d</color>
+
+
+    <color name="icon_red">#bf362b</color>
+    <color name="icon_blue">#346d9c</color>
+
 </resources>

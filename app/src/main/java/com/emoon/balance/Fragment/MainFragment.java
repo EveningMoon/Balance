@@ -1,14 +1,11 @@
 package com.emoon.balance.Fragment;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,12 +14,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
-import com.emoon.balance.Adapter.EarnBurnHorizontalListAdapter;
+import com.emoon.balance.Activity.ListActivity;
 import com.emoon.balance.Etc.Constants;
 import com.emoon.balance.Model.BalanceType;
 import com.emoon.balance.Model.EarnBurn;
@@ -49,9 +46,6 @@ public class MainFragment extends Fragment {
     private ImageView earnView;
     private ImageView burnView;
 
-    private RecyclerView earnRecyclerView;
-    private RecyclerView burnRecyclerView;
-
     private RoundCornerProgressBar earnProgress;
     private RoundCornerProgressBar burnProgress;
 
@@ -66,8 +60,20 @@ public class MainFragment extends Fragment {
     private List<EarnBurn> earnList;
     private List<EarnBurn> burnList;
 
-    private EarnBurnHorizontalListAdapter earnAdapter;
-    private EarnBurnHorizontalListAdapter burnAdapter;
+    private ViewGroup earnGroup;
+    private CircularView topEarn1;
+    private CircularView topEarn2;
+    private CircularView topEarn3;
+    private CircularView otherEarn;
+
+    private ViewGroup burnGroup;
+    private CircularView topBurn1;
+    private CircularView topBurn2;
+    private CircularView topBurn3;
+    private CircularView otherBurn;
+
+
+
 
     //Spinner
     private List<String> unitList;
@@ -107,69 +113,29 @@ public class MainFragment extends Fragment {
         earnView = (ImageView) view.findViewById(R.id.earnView);
         burnView = (ImageView) view.findViewById(R.id.burnView);
 
-        earnRecyclerView = (RecyclerView) view.findViewById(R.id.earnRecyclerView);
-        burnRecyclerView = (RecyclerView) view.findViewById(R.id.burnRecyclerView);
+        earnGroup = (LinearLayout) view.findViewById(R.id.earnGroup);
+        burnGroup = (LinearLayout) view.findViewById(R.id.burnGroup);
+
+        topEarn1 = (CircularView) view.findViewById(R.id.topEarn1);
+        topEarn2 = (CircularView) view.findViewById(R.id.topEarn2);
+        topEarn3 = (CircularView) view.findViewById(R.id.topEarn3);
+        otherEarn = (CircularView) view.findViewById(R.id.otherEarn);
+
+        topBurn1 = (CircularView) view.findViewById(R.id.topBurn1);
+        topBurn2 = (CircularView) view.findViewById(R.id.topBurn2);
+        topBurn3 = (CircularView) view.findViewById(R.id.topBurn3);
+        otherBurn = (CircularView) view.findViewById(R.id.otherBurn);
 
         burnList = new ArrayList<>();
-        burnAdapter = new EarnBurnHorizontalListAdapter(getActivity(), burnList);
-        burnRecyclerView.setAdapter(burnAdapter);
-        burnRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-
         earnList = new ArrayList<>();
-        earnAdapter = new EarnBurnHorizontalListAdapter(getActivity(), earnList);
-        earnRecyclerView.setAdapter(earnAdapter);
-        earnRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
         earnProgress.setMax(MAX_EARN);
         burnProgress.setMax(MAX_BURN);
         earnProgress.setProgress(0);
         burnProgress.setProgress(0);
 
-        isFirstTime();
         addListeners();
         addUnits();
-    }
-
-    private void isFirstTime(){
-        SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-        boolean isFirstTIme = sharedPreferences.getBoolean(Constants.FIRST_TIME, true);
-
-        if(isFirstTIme){
-            Toast.makeText(getContext(), "first time", Toast.LENGTH_SHORT).show();
-            createDefaultEarnBurnData();
-
-            //set Constants.FIRST_TIME shared preferences to false
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putBoolean(Constants.FIRST_TIME, false);
-            editor.apply();
-        }else{
-            Toast.makeText(getContext(), "second time", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void createDefaultEarnBurnData(){
-        myRealm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm bgRealm) {
-                for (int i = 0; i < 14; i++) {
-                    EarnBurn earn = bgRealm.createObject(EarnBurn.class);
-                    earn.setId(Util.generateUUID());
-                    earn.setName("Earn " + i);
-                    earn.setType(BalanceType.EARN.toString());
-
-                    earnList.add(earn);
-                }
-
-                for (int i = 0; i < 14; i++) {
-                    EarnBurn burn = bgRealm.createObject(EarnBurn.class);
-                    burn.setId(Util.generateUUID());
-                    burn.setName("Burn " + i);
-                    burn.setType(BalanceType.BURN.toString());
-
-                    burnList.add(burn);
-                }
-            }
-        });
     }
 
     private void addListeners(){
@@ -195,21 +161,77 @@ public class MainFragment extends Fragment {
             }
         });
 
-        burnAdapter.setOnItemClickListener(new EarnBurnHorizontalListAdapter.EarnBurnInterfaceListener() {
+
+        topBurn1.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(int position) {
-                Log.d("MAIN", "burn adapter:" + false);
-                addEarnBurnTransaction(burnList.get(position));
+            public void onClick(View v) {
+                Log.d("ZHAN", "top 1 burn is " + burnList.get(0).getName());
+                addEarnBurnTransaction(burnList.get(0));
             }
         });
 
-        earnAdapter.setOnItemClickListener(new EarnBurnHorizontalListAdapter.EarnBurnInterfaceListener() {
+        topBurn2.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(int position) {
-                Log.d("MAIN", "earn adapter:" + false);
-                addEarnBurnTransaction(earnList.get(position));
+            public void onClick(View v) {
+                Log.d("ZHAN", "top  2 burn is "+burnList.get(1).getName());
+                addEarnBurnTransaction(burnList.get(1));
             }
         });
+
+        topBurn3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("ZHAN", "top 3 burn is " + burnList.get(2).getName());
+                addEarnBurnTransaction(burnList.get(2));
+            }
+        });
+
+        otherBurn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("ZHAN", "other burn ");
+                goToOther(BalanceType.BURN);
+            }
+        });
+
+        topEarn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("ZHAN", "top 1 earn is " + earnList.get(0).getName());
+                addEarnBurnTransaction(earnList.get(0));
+            }
+        });
+
+        topEarn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("ZHAN", "top  2 earn is "+earnList.get(1).getName());
+                addEarnBurnTransaction(earnList.get(1));
+            }
+        });
+
+        topEarn3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("ZHAN", "top 3 earn is "+earnList.get(2).getName());
+                addEarnBurnTransaction(earnList.get(2));
+            }
+        });
+
+        otherEarn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("ZHAN", "other earn ");
+                goToOther(BalanceType.EARN);
+            }
+        });
+
+    }
+
+    private void goToOther(BalanceType type){
+        Intent intent = new Intent(getContext(), ListActivity.class);
+        intent.putExtra(Constants.REQUEST_LIST_OTHER_TYPE, type.toString());
+        startActivity(intent);
     }
 
     public void addUnits(){
@@ -225,7 +247,7 @@ public class MainFragment extends Fragment {
     }
 
     /**
-     * Displays prompt for user to add new EarnBurn.
+     * Displays prompt for user to add new transaction.
      */
     private void addEarnBurnTransaction(EarnBurn data){
         // get prompts.xml view
@@ -241,13 +263,14 @@ public class MainFragment extends Fragment {
 
         //Circular view
         CircularView cv = (CircularView) promptView.findViewById(R.id.genericCircularView);
+        cv.setIconResource(Util.getIconID(getContext(), data.getIcon()));
 
         if(data.getType().equalsIgnoreCase(BalanceType.BURN.toString())){
             cv.setCircleColor(R.color.dark_blue);
-            cv.setIconResource(R.drawable.svg_ic_add);
+            cv.setIconColor(R.color.icon_blue);
         }else{
             cv.setCircleColor(R.color.dark_red);
-            cv.setIconResource(R.drawable.ic_person);
+            cv.setIconColor(R.color.icon_red);
         }
 
         //Edit text
@@ -324,15 +347,20 @@ public class MainFragment extends Fragment {
                 @Override
                 public void onChange() {
                     earnList = myRealm.copyFromRealm(earnRealmResults);
-                    earnRecyclerView.setVisibility(View.VISIBLE);
+
                     earnView.setVisibility(View.GONE);
-                    earnAdapter.setData(earnList);
+                    earnGroup.setVisibility(View.VISIBLE);
+
+                    topEarn1.setIconResource(Util.getIconID(getContext(), earnList.get(0).getIcon()));
+                    topEarn2.setIconResource(Util.getIconID(getContext(), earnList.get(1).getIcon()));
+                    topEarn3.setIconResource(Util.getIconID(getContext(), earnList.get(2).getIcon()));
+                    otherEarn.setIconResource(R.drawable.svg_other);
 
                     earnRealmResults.removeChangeListener(this);
                 }
             });
         }else{ //hide horizontal list view
-            earnRecyclerView.setVisibility(View.GONE);
+            earnGroup.setVisibility(View.GONE);
             earnView.setVisibility(View.VISIBLE);
         }
     }
@@ -344,15 +372,20 @@ public class MainFragment extends Fragment {
                 @Override
                 public void onChange() {
                     burnList = myRealm.copyFromRealm(burnRealmResults);
-                    burnRecyclerView.setVisibility(View.VISIBLE);
+
+                    burnGroup.setVisibility(View.VISIBLE);
                     burnView.setVisibility(View.GONE);
-                    burnAdapter.setData(burnList);
+
+                    topBurn1.setIconResource(Util.getIconID(getContext(), burnList.get(0).getIcon()));
+                    topBurn2.setIconResource(Util.getIconID(getContext(), burnList.get(1).getIcon()));
+                    topBurn3.setIconResource(Util.getIconID(getContext(), burnList.get(2).getIcon()));
+                    otherBurn.setIconResource(R.drawable.svg_other);
 
                     burnRealmResults.removeChangeListener(this);
                 }
             });
         }else{ //hide horizontal list view
-            burnRecyclerView.setVisibility(View.GONE);
+            burnGroup.setVisibility(View.GONE);
             burnView.setVisibility(View.VISIBLE);
         }
     }

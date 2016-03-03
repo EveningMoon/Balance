@@ -12,10 +12,9 @@ import io.realm.annotations.PrimaryKey;
 public class EarnBurn extends RealmObject {
     @PrimaryKey
     private String id;
-
     private String name;
     private String type;
-    private int icon;
+    private String icon;
     private float cost;
     private String unit;
 
@@ -63,11 +62,11 @@ public class EarnBurn extends RealmObject {
         this.unit = unit;
     }
 
-    public int getIcon() {
+    public String getIcon() {
         return icon;
     }
 
-    public void setIcon(int icon) {
+    public void setIcon(String icon) {
         this.icon = icon;
     }
 }

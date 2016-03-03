@@ -13,10 +13,13 @@ public class Constants {
 
     //First time
     public static final String FIRST_TIME = "First Time";
-/*
+
+
+
     //Activity request
-    public static final String REQUEST_NEW_TRANSACTION = "New Transaction";
-    public static final String REQUEST_NEW_TRANSACTION_DATE = "New Transaction Date";
+    public static final String REQUEST_VIEW_LIST = "View list";
+    public static final String REQUEST_LIST_OTHER_TYPE = "List type";
+/*    public static final String REQUEST_NEW_TRANSACTION_DATE = "New Transaction Date";
     public static final String REQUEST_NEW_CATEGORY = "New Category";
     public static final String REQUEST_EDIT_CATEGORY = "Edit Category";
     public static final String REQUEST_ALL_TRANSACTION_FOR_CATEGORY_MONTH = "Request all transaction for category month";

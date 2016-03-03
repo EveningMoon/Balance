@@ -28,31 +28,22 @@ public final class Util {
     public static List<EarnBurn> getListOfActivities(Context context){
         TypedArray activities = context.getResources().obtainTypedArray(R.array.list);
 
-        int[][] array = new int[activities.length()][];
         List<EarnBurn> earnList = new ArrayList<>();
         for(int i = 0; i < activities.length(); i++){
 
-            int id = activities.getResourceId(i, 0);
-
-            if(id > 0){
-                array[i] = context.getResources().getIntArray(id);
+            int rs = activities.getResourceId(i, 0);
 
 
-                EarnBurn earn = new EarnBurn();
-                earn.setId(generateUUID());
-                earn.setType(BalanceType.EARN.toString());
-                earn.setCost(10f);
-                earn.setName(context.getResources().getResourceName(array[i][0]));
-                earn.setUnit(UnitType.MINUTE.toString());
-                earn.setIcon(array[i][1]);
+            EarnBurn earn = new EarnBurn();
+            earn.setId(generateUUID());
+            earn.setType(BalanceType.EARN.toString());
+            earn.setCost(10f);
+            earn.setName(context.getResources().getResourceName(rs));
+            earn.setUnit(UnitType.MINUTE.toString());
+            earn.setIcon(context.getResources().getResourceEntryName(rs));
 
-                Log.d("ZHAN", "name:"+earn.getName()+" -> "+earn.getIcon());
-                earnList.add(earn);
-            }else{
-                //something wrong with the xml
-            }
-
-
+            Log.d("ZHAN", "name:"+earn.getName()+" -> "+earn.getIcon());
+            earnList.add(earn);
         }
 
         //Important
@@ -75,9 +66,13 @@ public final class Util {
             burn.setCost(10f);
             burn.setName(context.getResources().getResourceName(rs));
             burn.setUnit(UnitType.QUANTITY.toString());
-            burn.setIcon(rs);
+            burn.setIcon(context.getResources().getResourceEntryName(rs));
             burnList.add(burn);
         }
         return burnList;
+    }
+
+    public static int getIconID(Context context, String value){
+        return context.getResources().getIdentifier(value, "drawable", context.getPackageName());
     }
 }
