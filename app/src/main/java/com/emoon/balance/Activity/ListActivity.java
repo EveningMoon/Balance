@@ -6,13 +6,22 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+import android.widget.ListView;
 
+import com.emoon.balance.Adapter.ListAdapter;
 import com.emoon.balance.Etc.Constants;
 import com.emoon.balance.Model.BalanceType;
+import com.emoon.balance.Model.EarnBurn;
 import com.emoon.balance.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.realm.Realm;
+import io.realm.RealmChangeListener;
+import io.realm.RealmResults;
 
 public class ListActivity extends AppCompatActivity {
 
@@ -21,6 +30,11 @@ public class ListActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private FloatingActionButton fab;
 
+    private ListView listView;
+    private List<EarnBurn> itemList;
+    private ListAdapter listAdapter;
+    private RealmResults<EarnBurn> realmResults;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,10 +42,10 @@ public class ListActivity extends AppCompatActivity {
 
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
-
-
-
-
+        listView = (ListView) findViewById(R.id.listView);
+        itemList = new ArrayList<>();
+        listAdapter = new ListAdapter(getApplicationContext(), itemList);
+        listView.setAdapter(listAdapter);
 
         //get intents from caller activity
         balanceType = (getIntent().getExtras().getString(Constants.REQUEST_LIST_OTHER_TYPE));
@@ -73,7 +87,23 @@ public class ListActivity extends AppCompatActivity {
     private void init(){
         myRealm = Realm.getDefaultInstance();
 
-        //get
+        realmResults = myRealm.where(EarnBurn.class).equalTo("type", balanceType).findAllAsync();
+        realmResults.addChangeListener(new RealmChangeListener() {
+            @Override
+            public void onChange() {
+                Log.d("ZHAN", "There are "+realmResults.size()+" items 1");
+
+                itemList = myRealm.copyFromRealm(realmResults);
+                Log.d("ZHAN", "There are "+itemList.size()+" items 2");
+
+                listAdapter.clear();
+                listAdapter.addAll(itemList);
+                listAdapter.notifyDataSetChanged();
+
+                realmResults.removeChangeListener(this);
+            }
+        });
+
     }
 
     private void addListeners(){
