@@ -37,7 +37,7 @@ public final class Util {
             EarnBurn earn = new EarnBurn();
             earn.setId(generateUUID());
             earn.setType(BalanceType.EARN.toString());
-            earn.setCost(10f);
+            //earn.setCost(10f);
             earn.setName(context.getResources().getResourceName(rs));
             earn.setUnit(UnitType.MINUTE.toString());
             earn.setIcon(context.getResources().getResourceEntryName(rs));
@@ -63,7 +63,7 @@ public final class Util {
             EarnBurn burn = new EarnBurn();
             burn.setId(generateUUID());
             burn.setType(BalanceType.BURN.toString());
-            burn.setCost(10f);
+            //burn.setCost(10f);
             burn.setName(context.getResources().getResourceName(rs));
             burn.setUnit(UnitType.QUANTITY.toString());
             burn.setIcon(context.getResources().getResourceEntryName(rs));

@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity
                     earn.setName(initialActivityName[i]);
                     earn.setIcon(getResources().getResourceEntryName(initialActivityIcon[i]));
                     earn.setType(BalanceType.EARN.toString());
-                    earn.setCost(0f);
+                    //earn.setCost(0f);
                     earn.setUnit(UnitType.MINUTE.toString());
                 }
 
@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity
                     burn.setName(initialRewardName[i]);
                     burn.setIcon(getResources().getResourceEntryName(initialRewardIcon[i]));
                     burn.setType(BalanceType.BURN.toString());
-                    burn.setCost(0f);
+                    //burn.setCost(0f);
                     burn.setUnit(UnitType.QUANTITY.toString());
                 }
             }

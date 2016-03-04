@@ -54,6 +54,13 @@ public class ListActivity extends AppCompatActivity {
         init();
         addListeners();
     }
+/*
+    private void changeTheme(){
+        ContextThemeWrapper themeWrapper = new ContextThemeWrapper(this, R.style.AppThemeWithColorScheme2);
+        LayoutInflater layoutInflater = LayoutInflater.from(themeWrapper);
+        viewContainer.removeAllViews();
+        layoutInflater.inflate(R.layout.my_layout, viewContainer, true );
+    }*/
 
     /**
      * Create toolbar

@@ -15,8 +15,9 @@ public class EarnBurn extends RealmObject {
     private String name;
     private String type;
     private String icon;
-    private float cost;
     private String unit;
+
+    //private RealmList<Cost> costList;
 
     public EarnBurn(){
         
@@ -36,14 +37,6 @@ public class EarnBurn extends RealmObject {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public float getCost() {
-        return cost;
-    }
-
-    public void setCost(float cost) {
-        this.cost = cost;
     }
 
     public String getType() {
@@ -69,4 +62,12 @@ public class EarnBurn extends RealmObject {
     public void setIcon(String icon) {
         this.icon = icon;
     }
+/*
+    public RealmList<Cost> getCostList() {
+        return costList;
+    }
+
+    public void setCostList(RealmList<Cost> costList) {
+        this.costList = costList;
+    }*/
 }
