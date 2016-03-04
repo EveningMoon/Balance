@@ -17,8 +17,9 @@ public class Constants {
 
 
     //Activity request
-    public static final String REQUEST_VIEW_LIST = "View list";
     public static final String REQUEST_LIST_OTHER_TYPE = "List type";
+    public static final String REQUEST_CREATE_NEW = "Create new";
+
 /*    public static final String REQUEST_NEW_TRANSACTION_DATE = "New Transaction Date";
     public static final String REQUEST_NEW_CATEGORY = "New Category";
     public static final String REQUEST_EDIT_CATEGORY = "Edit Category";

@@ -1,8 +1,8 @@
 package com.emoon.balance.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -40,7 +40,6 @@ public class ListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
-
         fab = (FloatingActionButton) findViewById(R.id.fab);
         listView = (ListView) findViewById(R.id.listView);
         itemList = new ArrayList<>();
@@ -51,7 +50,6 @@ public class ListActivity extends AppCompatActivity {
         balanceType = (getIntent().getExtras().getString(Constants.REQUEST_LIST_OTHER_TYPE));
 
         createToolbar();
-
 
         init();
         addListeners();
@@ -64,7 +62,6 @@ public class ListActivity extends AppCompatActivity {
         //Create the toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
         toolbar.setNavigationIcon(R.drawable.svg_ic_back);
         toolbar.setTitleTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
@@ -107,11 +104,19 @@ public class ListActivity extends AppCompatActivity {
     }
 
     private void addListeners(){
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(getApplicationContext(), InfoActivity.class);
+                intent.putExtra(Constants.REQUEST_CREATE_NEW, balanceType);
+                startActivity(intent);
             }
         });
     }

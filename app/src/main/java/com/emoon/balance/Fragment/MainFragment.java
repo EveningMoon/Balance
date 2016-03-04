@@ -72,9 +72,6 @@ public class MainFragment extends Fragment {
     private CircularView topBurn3;
     private CircularView otherBurn;
 
-
-
-
     //Spinner
     private List<String> unitList;
     private ArrayAdapter<String> unitAdapter;
@@ -225,7 +222,6 @@ public class MainFragment extends Fragment {
                 goToOther(BalanceType.EARN);
             }
         });
-
     }
 
     private void goToOther(BalanceType type){

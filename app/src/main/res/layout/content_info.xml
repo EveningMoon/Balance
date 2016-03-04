@@ -15,7 +15,7 @@
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/activityName"
+        android:id="@+id/activityNameEditText"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:editable="true"
@@ -27,7 +27,7 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/activityName"
+        android:layout_below="@+id/activityNameEditText"
         android:layout_marginBottom="@dimen/margin_small">
 
         <EditText
