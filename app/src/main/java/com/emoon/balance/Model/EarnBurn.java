@@ -1,14 +1,9 @@
 package com.emoon.balance.Model;
 
-import org.parceler.Parcel;
-
-import io.realm.EarnBurnRealmProxy;
+import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-@Parcel(implementations = {EarnBurnRealmProxy.class},
-        value = Parcel.Serialization.BEAN,
-        analyze = {EarnBurn.class})
 public class EarnBurn extends RealmObject {
     @PrimaryKey
     private String id;
@@ -17,7 +12,7 @@ public class EarnBurn extends RealmObject {
     private String icon;
     private String unit;
 
-    //private RealmList<Cost> costList;
+    private RealmList<Cost> costList;
 
     public EarnBurn(){
         
@@ -62,12 +57,12 @@ public class EarnBurn extends RealmObject {
     public void setIcon(String icon) {
         this.icon = icon;
     }
-/*
+
     public RealmList<Cost> getCostList() {
         return costList;
     }
 
     public void setCostList(RealmList<Cost> costList) {
         this.costList = costList;
-    }*/
+    }
 }

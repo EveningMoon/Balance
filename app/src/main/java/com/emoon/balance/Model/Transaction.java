@@ -1,16 +1,10 @@
 package com.emoon.balance.Model;
 
-import org.parceler.Parcel;
-
 import java.util.Date;
 
 import io.realm.RealmObject;
-import io.realm.TransactionRealmProxy;
 import io.realm.annotations.PrimaryKey;
 
-@Parcel(implementations = {TransactionRealmProxy.class},
-        value = Parcel.Serialization.BEAN,
-        analyze = {Transaction.class})
 public class Transaction extends RealmObject{
 
     @PrimaryKey

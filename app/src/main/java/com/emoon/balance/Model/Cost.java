@@ -1,14 +1,9 @@
 package com.emoon.balance.Model;
 
-import org.parceler.Parcel;
-
-import io.realm.CostRealmProxy;
 import io.realm.RealmObject;
 import io.realm.annotations.Required;
 
-@Parcel(implementations = {CostRealmProxy.class},
-        value = Parcel.Serialization.BEAN,
-        analyze = {Cost.class})
+
 public class Cost extends RealmObject {
 
     @Required

@@ -3,6 +3,7 @@ package com.emoon.balance.Util;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.Log;
+import android.util.TypedValue;
 
 import com.emoon.balance.Model.BalanceType;
 import com.emoon.balance.Model.EarnBurn;
@@ -74,5 +75,17 @@ public final class Util {
 
     public static int getIconID(Context context, String value){
         return context.getResources().getIdentifier(value, "drawable", context.getPackageName());
+    }
+
+    /**
+     * Converting DP to PX
+     *
+     * @param context Context
+     * @param dp      dp to be converted to px
+     * @return px
+     */
+    public static int dp2px(Context context, int dp) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
+                context.getResources().getDisplayMetrics());
     }
 }
