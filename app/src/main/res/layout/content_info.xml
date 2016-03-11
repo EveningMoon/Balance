@@ -21,17 +21,10 @@
     <com.baoyz.swipemenulistview.SwipeMenuListView
         android:id="@+id/costListView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:divider="@color/white"
         android:dividerHeight="1dp"
         android:layout_below="@+id/activityNameEditText"
         android:descendantFocusability="beforeDescendants"  />
 
-    <ImageButton
-        android:id="@+id/addCostButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/svg_ic_add"
-        android:tint="@color/amethyst"
-        android:layout_below="@+id/costListView" />
 </RelativeLayout>
