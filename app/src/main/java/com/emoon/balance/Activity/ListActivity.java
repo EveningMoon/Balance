@@ -1,10 +1,8 @@
 package com.emoon.balance.Activity;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -19,13 +17,13 @@ import com.emoon.balance.R;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.realm.Realm;
 import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 
-public class ListActivity extends AppCompatActivity {
+public class ListActivity extends BaseActivity {
 
-    private Realm myRealm;
+    private static final String TAG = "ListActivity";
+
     private String balanceType;
     private Toolbar toolbar;
     private FloatingActionButton fab;
@@ -36,24 +34,10 @@ public class ListActivity extends AppCompatActivity {
     private RealmResults<EarnBurn> realmResults;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list);
-
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        listView = (ListView) findViewById(R.id.listView);
-        itemList = new ArrayList<>();
-        listAdapter = new ListAdapter(getApplicationContext(), itemList);
-        listView.setAdapter(listAdapter);
-
-        //get intents from caller activity
-        balanceType = (getIntent().getExtras().getString(Constants.REQUEST_LIST_OTHER_TYPE));
-
-        createToolbar();
-
-        init();
-        addListeners();
+    protected int getActivityLayout() {
+        return R.layout.activity_list;
     }
+
 /*
     private void changeTheme(){
         ContextThemeWrapper themeWrapper = new ContextThemeWrapper(this, R.style.AppThemeWithColorScheme2);
@@ -88,26 +72,21 @@ public class ListActivity extends AppCompatActivity {
         }
     }
 
-    private void init(){
-        myRealm = Realm.getDefaultInstance();
+    @Override
+    protected void init(){
+        super.init();
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        listView = (ListView) findViewById(R.id.listView);
+        itemList = new ArrayList<>();
+        listAdapter = new ListAdapter(getApplicationContext(), itemList);
+        listView.setAdapter(listAdapter);
 
-        realmResults = myRealm.where(EarnBurn.class).equalTo("type", balanceType).findAllAsync();
-        realmResults.addChangeListener(new RealmChangeListener() {
-            @Override
-            public void onChange() {
-                Log.d("ZHAN", "There are "+realmResults.size()+" items 1");
+        //get intent's data from caller activity
+        balanceType = (getIntent().getExtras().getString(Constants.REQUEST_LIST_OTHER_TYPE));
+        Log.d(TAG, "balance type :"+balanceType);
 
-                itemList = myRealm.copyFromRealm(realmResults);
-                Log.d("ZHAN", "There are "+itemList.size()+" items 2");
-
-                listAdapter.clear();
-                listAdapter.addAll(itemList);
-                listAdapter.notifyDataSetChanged();
-
-                realmResults.removeChangeListener(this);
-            }
-        });
-
+        createToolbar();
+        addListeners();
     }
 
     private void addListeners(){
@@ -128,4 +107,24 @@ public class ListActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onStart(){
+        super.onStart();
+
+        realmResults = myRealm.where(EarnBurn.class).equalTo("type", balanceType).findAllAsync();
+        realmResults.addChangeListener(new RealmChangeListener() {
+            @Override
+            public void onChange() {
+                Log.d("ZHAN", "There are " + realmResults.size() + " items 1");
+                itemList = myRealm.copyFromRealm(realmResults);
+                Log.d("ZHAN", "There are " + itemList.size() + " items 2");
+
+                listAdapter.clear();
+                listAdapter.addAll(itemList);
+                listAdapter.notifyDataSetChanged();
+
+                realmResults.removeChangeListener(this);
+            }
+        });
+    }
 }

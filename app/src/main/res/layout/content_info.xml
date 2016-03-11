@@ -9,7 +9,7 @@
     tools:showIn="@layout/activity_info">
 
     <EditText
-        android:id="@+id/activityNameEditText"
+        android:id="@+id/nameEditText"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -24,7 +24,7 @@
         android:layout_height="match_parent"
         android:divider="@color/white"
         android:dividerHeight="1dp"
-        android:layout_below="@+id/activityNameEditText"
+        android:layout_below="@+id/nameEditText"
         android:descendantFocusability="beforeDescendants"  />
 
 </RelativeLayout>

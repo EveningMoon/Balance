@@ -2,11 +2,10 @@ package com.emoon.balance.Activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,7 +13,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.NumberPicker;
 import android.widget.Toast;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
@@ -25,14 +24,17 @@ import com.emoon.balance.Adapter.CostAdapter;
 import com.emoon.balance.Etc.Constants;
 import com.emoon.balance.Model.BalanceType;
 import com.emoon.balance.Model.Cost;
-import com.emoon.balance.Model.UnitType;
+import com.emoon.balance.Model.EarnBurn;
 import com.emoon.balance.R;
 import com.emoon.balance.Util.Util;
+import com.emoon.balance.View.ExtendedNumberPicker;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class InfoActivity extends AppCompatActivity {
+public class InfoActivity extends BaseActivity {
+
+    private static final String TAG = "InfoActivity";
 
     private Toolbar toolbar;
 
@@ -42,17 +44,30 @@ public class InfoActivity extends AppCompatActivity {
     private CostAdapter costAdapter;
     private SwipeMenuListView costListView;
     private List<Cost> costList;
+    private EditText nameEditText;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_info);
+    protected int getActivityLayout() {
+        return R.layout.activity_info;
+    }
 
-        //get intents from caller activity
+    @Override
+    protected void init(){
+        super.init();
+
+        //Get intent's data of which type of earnBurn to show (Activity or Reward)
         balanceType = (getIntent().getExtras().getString(Constants.REQUEST_CREATE_NEW));
+        Log.d(TAG, "balance type :" + balanceType);
+
+        costListView = (SwipeMenuListView) findViewById(R.id.costListView);
+        costList = new ArrayList<>();
+        costAdapter = new CostAdapter(this, costList);
+        costListView.setAdapter(costAdapter);
+
+        nameEditText = (EditText)findViewById(R.id.nameEditText);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
 
         createToolbar();
-        init();
         addListeners();
         createSwipeMenu();
     }
@@ -67,6 +82,8 @@ public class InfoActivity extends AppCompatActivity {
         toolbar.setNavigationIcon(R.drawable.svg_ic_close);
 
         if(getSupportActionBar() != null){
+            Log.d(TAG, "balance type :"+balanceType);
+
             if(balanceType.equalsIgnoreCase(BalanceType.BURN.toString())){
                 getSupportActionBar().setTitle("Add Reward");
                 toolbar.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.blue));
@@ -75,15 +92,6 @@ public class InfoActivity extends AppCompatActivity {
                 toolbar.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.red));
             }
         }
-    }
-
-    private void init(){
-        costListView = (SwipeMenuListView) findViewById(R.id.costListView);
-        costList = new ArrayList<>();
-        costAdapter = new CostAdapter(this, costList);
-        costListView.setAdapter(costAdapter);
-
-        fab = (FloatingActionButton) findViewById(R.id.fab);
     }
 
     private void addListeners(){
@@ -117,7 +125,7 @@ public class InfoActivity extends AppCompatActivity {
     }
 
     private EditText pointsEditText, valueEditText;
-    private Spinner measureSpinner;
+    private ExtendedNumberPicker measureNumberPicker;
     private Cost editCost;
     private void loadCostDialog(final int position){
         // get cost.xml view
@@ -131,13 +139,36 @@ public class InfoActivity extends AppCompatActivity {
 
         pointsEditText = (EditText) promptView.findViewById(R.id.pointsEditText);
         valueEditText = (EditText) promptView.findViewById(R.id.valueEditText);
-        measureSpinner = (Spinner) promptView.findViewById(R.id.measureSpinner);
+        measureNumberPicker = (ExtendedNumberPicker) promptView.findViewById(R.id.measureNumberPicker);
 
         pointsEditText.setHint("Points earned per");
 
         pointsEditText.setText(String.valueOf(editCost.getPointsEarnPer()));
         valueEditText.setText(String.valueOf(editCost.getUnitCost()));
-        //measure.setSelection(0);
+
+        //Initializing a new string array with elements
+        final String[] values= {"MINUTE", "HOUR", "KM", "MILE", "QUANTITY"};
+
+        measureNumberPicker.setMinValue(0);
+        measureNumberPicker.setMaxValue(values.length - 1);
+        measureNumberPicker.setDisplayedValues(values);
+        measureNumberPicker.setWrapSelectorWheel(true);
+
+        for(int i = 0; i < values.length; i++){
+            if(values[i].equalsIgnoreCase(editCost.getUnitType())){
+                measureNumberPicker.setValue(i);
+                break;
+            }
+        }
+
+        measureNumberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                //Display the newly selected value from picker
+                Log.d("WHEEL", "Selected value : " + values[newVal]);
+                selectedNumberPickerIndex = newVal;
+            }
+        });
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setView(promptView)
@@ -149,7 +180,7 @@ public class InfoActivity extends AppCompatActivity {
 
                             editCost.setPointsEarnPer(Integer.parseInt(pointsEditText.getText().toString()));
                             editCost.setUnitCost(Integer.parseInt(valueEditText.getText().toString()));
-                            editCost.setUnitType(UnitType.HOUR.toString());
+                            editCost.setUnitType(values[selectedNumberPickerIndex]);
 
                             costList.set(position, editCost);
                             costAdapter.notifyDataSetChanged();
@@ -165,10 +196,11 @@ public class InfoActivity extends AppCompatActivity {
                 });
 
         AlertDialog noteDialog = builder.create();
-        noteDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        //noteDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         noteDialog.show();
     }
 
+    int selectedNumberPickerIndex;
     private void createNewCostDialog(){
         // get cost.xml view
         LayoutInflater layoutInflater = getLayoutInflater();
@@ -179,7 +211,28 @@ public class InfoActivity extends AppCompatActivity {
 
         final EditText points = (EditText) promptView.findViewById(R.id.pointsEditText);
         final EditText value = (EditText) promptView.findViewById(R.id.valueEditText);
-        final Spinner measure = (Spinner) promptView.findViewById(R.id.measureSpinner);
+        final ExtendedNumberPicker measureNumberPicker = (ExtendedNumberPicker) promptView.findViewById(R.id.measureNumberPicker);
+
+        //Initializing a new string array with elements
+        final String[] values= {"MINUTE", "HOUR", "KM", "MILE", "QUANTITY"};
+
+        measureNumberPicker.setMinValue(0);
+        measureNumberPicker.setMaxValue(values.length - 1);
+        measureNumberPicker.setDisplayedValues(values);
+        measureNumberPicker.setWrapSelectorWheel(true);
+
+        measureNumberPicker.setValue(3);
+
+        selectedNumberPickerIndex = 0;
+
+        measureNumberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                //Display the newly selected value from picker
+                Log.d("WHEEL", "Selected value : " + values[newVal]);
+                selectedNumberPickerIndex = newVal;
+            }
+        });
 
         points.setHint("Points earned per");
 
@@ -196,7 +249,7 @@ public class InfoActivity extends AppCompatActivity {
 
                             cost.setPointsEarnPer(Integer.parseInt(points.getText().toString()));
                             cost.setUnitCost(Integer.parseInt(value.getText().toString()));
-                            cost.setUnitType(UnitType.HOUR.toString());
+                            cost.setUnitType(values[selectedNumberPickerIndex]);
 
                             costList.add(cost);
                             costAdapter.notifyDataSetChanged();
@@ -217,34 +270,33 @@ public class InfoActivity extends AppCompatActivity {
     }
 
     private void save(){
-        Toast.makeText(getApplicationContext(), "SAVING", Toast.LENGTH_SHORT).show();
-/*
-        for(int i = 0; i < costList.size(); i++){
+        if(!nameEditText.getText().toString().isEmpty()) {
+            Toast.makeText(getApplicationContext(), "SAVING", Toast.LENGTH_SHORT).show();
+            myRealm.beginTransaction();
 
-            View v = getViewByPosition(i, costListView);
+            EarnBurn earnBurn = myRealm.createObject(EarnBurn.class);
+            earnBurn.setId(Util.generateUUID());
+            earnBurn.setName(nameEditText.getText().toString());
+            earnBurn.setType(balanceType);
+            earnBurn.setIcon("svg_running_stick_figure");
+            earnBurn.setUnit("");
 
+            for(int i = 0; i < costList.size(); i++){
+                Cost cost = myRealm.createObject(Cost.class);
+                cost.setId(costList.get(i).getId());
+                cost.setPointsEarnPer(costList.get(i).getPointsEarnPer());
+                cost.setUnitCost(costList.get(i).getUnitCost());
+                cost.setUnitType(costList.get(i).getUnitType());
 
-            Log.d("COST_DEBUG", i+" cost id : "+costList.get(i).getId());
-            Log.d("COST_DEBUG", i+" cost points : "+((EditText)v.findViewById(R.id.pointsEditText)).getText());
-            Log.d("COST_DEBUG", i+" cost unit : "+((EditText)v.findViewById(R.id.valueEditText)).getText());
-            Log.d("COST_DEBUG", i+" cost type : "+((Spinner)v.findViewById(R.id.measureSpinner)).getSelectedItem().toString());
-            Log.d("COST_DEBUG", "----------");
+                earnBurn.getCostList().add(cost);
+            }
+
+            myRealm.commitTransaction();
+            finish();
+        }else{
+            Toast.makeText(getApplicationContext(), "Please input a name for this "+balanceType.toLowerCase(), Toast.LENGTH_SHORT).show();
         }
-*/
-
     }
-/*
-    public View getViewByPosition(int pos, ListView listView) {
-        final int firstListItemPosition = listView.getFirstVisiblePosition();
-        final int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
-
-        if (pos < firstListItemPosition || pos > lastListItemPosition ) {
-            return listView.getAdapter().getView(pos, null, listView);
-        } else {
-            final int childIndex = pos - firstListItemPosition;
-            return listView.getChildAt(childIndex);
-        }
-    }*/
 
     /**
      * Add swipe capability on list view to delete that item.

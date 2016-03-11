@@ -20,6 +20,10 @@ public class Constants {
     public static final String REQUEST_LIST_OTHER_TYPE = "List type";
     public static final String REQUEST_CREATE_NEW = "Create new";
 
+    //Return result
+    public static final int RETURN_NEW_EARN_BURN = 1;
+    public static final int RETURN_EDIT_EARN_BURN = 2;
+
 /*    public static final String REQUEST_NEW_TRANSACTION_DATE = "New Transaction Date";
     public static final String REQUEST_NEW_CATEGORY = "New Category";
     public static final String REQUEST_EDIT_CATEGORY = "Edit Category";
