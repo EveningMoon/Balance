@@ -78,6 +78,8 @@ public class MainFragment extends Fragment {
 
     private Realm myRealm;
 
+    private TextView motivationTextView;
+
     public MainFragment() {
         // Required empty public constructor
     }
@@ -94,7 +96,6 @@ public class MainFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
         init();
-        //Util.getListOfActivities(getContext());
     }
 
     private void init(){
@@ -130,6 +131,9 @@ public class MainFragment extends Fragment {
         burnProgress.setMax(MAX_BURN);
         earnProgress.setProgress(0);
         burnProgress.setProgress(0);
+
+        motivationTextView = (TextView) view.findViewById(R.id.topPanelIntro);
+        motivationTextView.setText(Util.getRandomMotivationalSpeech(getContext()));
 
         addListeners();
         addUnits();

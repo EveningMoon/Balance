@@ -12,6 +12,7 @@ import com.emoon.balance.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 /**
@@ -70,7 +71,24 @@ public final class Util {
             burn.setIcon(context.getResources().getResourceEntryName(rs));
             burnList.add(burn);
         }
+        rewards.recycle();
         return burnList;
+    }
+
+    public static String getRandomMotivationalSpeech(Context context){
+        TypedArray speech = context.getResources().obtainTypedArray(R.array.motivationalQuotes);
+
+        List<String> listOfSpeech = new ArrayList<>();
+        for(int i = 0; i < speech.length(); i++){
+            // get resource ID by index
+            int rs = speech.getResourceId(i, 0);
+
+            listOfSpeech.add(context.getResources().getString(rs));
+        }
+        speech.recycle();
+
+        Random random = new Random();
+        return listOfSpeech.get(random.nextInt(speech.length()));
     }
 
     public static int getIconID(Context context, String value){
