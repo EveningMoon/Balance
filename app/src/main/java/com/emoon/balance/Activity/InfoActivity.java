@@ -7,7 +7,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,7 +14,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -44,10 +42,6 @@ public class InfoActivity extends AppCompatActivity {
     private CostAdapter costAdapter;
     private SwipeMenuListView costListView;
     private List<Cost> costList;
-
-
-    private int numCost = 0;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +78,6 @@ public class InfoActivity extends AppCompatActivity {
     }
 
     private void init(){
-
         costListView = (SwipeMenuListView) findViewById(R.id.costListView);
         costList = new ArrayList<>();
         costAdapter = new CostAdapter(this, costList);
@@ -123,13 +116,12 @@ public class InfoActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), value, Toast.LENGTH_SHORT).show();
     }
 
-
     private EditText pointsEditText, valueEditText;
     private Spinner measureSpinner;
     private Cost editCost;
     private void loadCostDialog(final int position){
         // get cost.xml view
-        LayoutInflater layoutInflater = LayoutInflater.from(this);
+        LayoutInflater layoutInflater = getLayoutInflater();
 
         //It is ok to put null as the 2nd parameter as this custom layout is being attached to a
         //AlertDialog, where it not necessary to know what the parent is.
@@ -143,8 +135,8 @@ public class InfoActivity extends AppCompatActivity {
 
         pointsEditText.setHint("Points earned per");
 
-        pointsEditText.setText(editCost.getPointsEarnPer());
-        valueEditText.setText(editCost.getUnitCost());
+        pointsEditText.setText(String.valueOf(editCost.getPointsEarnPer()));
+        valueEditText.setText(String.valueOf(editCost.getUnitCost()));
         //measure.setSelection(0);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
@@ -179,7 +171,7 @@ public class InfoActivity extends AppCompatActivity {
 
     private void createNewCostDialog(){
         // get cost.xml view
-        LayoutInflater layoutInflater = LayoutInflater.from(this);
+        LayoutInflater layoutInflater = getLayoutInflater();
 
         //It is ok to put null as the 2nd parameter as this custom layout is being attached to a
         //AlertDialog, where it not necessary to know what the parent is.
@@ -226,7 +218,7 @@ public class InfoActivity extends AppCompatActivity {
 
     private void save(){
         Toast.makeText(getApplicationContext(), "SAVING", Toast.LENGTH_SHORT).show();
-
+/*
         for(int i = 0; i < costList.size(); i++){
 
             View v = getViewByPosition(i, costListView);
@@ -238,10 +230,10 @@ public class InfoActivity extends AppCompatActivity {
             Log.d("COST_DEBUG", i+" cost type : "+((Spinner)v.findViewById(R.id.measureSpinner)).getSelectedItem().toString());
             Log.d("COST_DEBUG", "----------");
         }
-
+*/
 
     }
-
+/*
     public View getViewByPosition(int pos, ListView listView) {
         final int firstListItemPosition = listView.getFirstVisiblePosition();
         final int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
@@ -252,7 +244,7 @@ public class InfoActivity extends AppCompatActivity {
             final int childIndex = pos - firstListItemPosition;
             return listView.getChildAt(childIndex);
         }
-    }
+    }*/
 
     /**
      * Add swipe capability on list view to delete that item.
@@ -282,7 +274,6 @@ public class InfoActivity extends AppCompatActivity {
                 switch (index) {
                     case 0:
                         // delete
-                        numCost--;
                         Toast.makeText(getApplicationContext(), "DELETING @ "+position, Toast.LENGTH_SHORT).show();
                         costList.remove(position);
 
