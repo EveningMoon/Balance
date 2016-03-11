@@ -110,6 +110,8 @@
     <string name="work">Work</string>
     <string name="title_activity_list">ListActivity</string>
     <string name="title_activity_info">InfoActivity</string>
+    <string name="alert_cost_points">Points earned per</string>
+    <string name="generic_value">10</string>
     <!-- svg_work.xml.xml -->
 
 </resources>
