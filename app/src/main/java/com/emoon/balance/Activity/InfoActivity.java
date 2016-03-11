@@ -1,17 +1,20 @@
 package com.emoon.balance.Activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -24,6 +27,7 @@ import com.emoon.balance.Adapter.CostAdapter;
 import com.emoon.balance.Etc.Constants;
 import com.emoon.balance.Model.BalanceType;
 import com.emoon.balance.Model.Cost;
+import com.emoon.balance.Model.UnitType;
 import com.emoon.balance.R;
 import com.emoon.balance.Util.Util;
 
@@ -41,7 +45,6 @@ public class InfoActivity extends AppCompatActivity {
     private SwipeMenuListView costListView;
     private List<Cost> costList;
 
-    private ImageButton addCostBtn;
 
     private int numCost = 0;
 
@@ -81,7 +84,6 @@ public class InfoActivity extends AppCompatActivity {
     }
 
     private void init(){
-        addCostBtn = (ImageButton) findViewById(R.id.addCostButton);
 
         costListView = (SwipeMenuListView) findViewById(R.id.costListView);
         costList = new ArrayList<>();
@@ -99,28 +101,127 @@ public class InfoActivity extends AppCompatActivity {
             }
         });
 
+        costListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                showToast("click on "+position);
+                loadCostDialog(position);
+            }
+        });
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
-        addCostBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                numCost++;
-
-                if (numCost <= 5) {
-                    Cost cost = new Cost();
-                    cost.setId(Util.generateUUID());
-
-                    costList.add(cost);
-                    costAdapter.notifyDataSetChanged();
+                if(costList.size() < 5){
+                    createNewCostDialog();
                 }
             }
         });
+    }
+
+    private void showToast(String value){
+        Toast.makeText(getApplicationContext(), value, Toast.LENGTH_SHORT).show();
+    }
+
+
+    private EditText pointsEditText, valueEditText;
+    private Spinner measureSpinner;
+    private Cost editCost;
+    private void loadCostDialog(final int position){
+        // get cost.xml view
+        LayoutInflater layoutInflater = LayoutInflater.from(this);
+
+        //It is ok to put null as the 2nd parameter as this custom layout is being attached to a
+        //AlertDialog, where it not necessary to know what the parent is.
+        View promptView = layoutInflater.inflate(R.layout.alertdialog_cost, null);
+
+        editCost = costList.get(position);
+
+        pointsEditText = (EditText) promptView.findViewById(R.id.pointsEditText);
+        valueEditText = (EditText) promptView.findViewById(R.id.valueEditText);
+        measureSpinner = (Spinner) promptView.findViewById(R.id.measureSpinner);
+
+        pointsEditText.setHint("Points earned per");
+
+        pointsEditText.setText(editCost.getPointsEarnPer());
+        valueEditText.setText(editCost.getUnitCost());
+        //measure.setSelection(0);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setView(promptView)
+                .setTitle("Add new cost")
+                .setPositiveButton("DONE", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        if (Util.isNotNullNotEmptyNotWhiteSpaceOnlyByJava(pointsEditText.getText().toString()) &&
+                                Util.isNotNullNotEmptyNotWhiteSpaceOnlyByJava(valueEditText.getText().toString())) {
+
+                            editCost.setPointsEarnPer(Integer.parseInt(pointsEditText.getText().toString()));
+                            editCost.setUnitCost(Integer.parseInt(valueEditText.getText().toString()));
+                            editCost.setUnitType(UnitType.HOUR.toString());
+
+                            costList.set(position, editCost);
+                            costAdapter.notifyDataSetChanged();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Please input a value", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                })
+                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog noteDialog = builder.create();
+        noteDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        noteDialog.show();
+    }
+
+    private void createNewCostDialog(){
+        // get cost.xml view
+        LayoutInflater layoutInflater = LayoutInflater.from(this);
+
+        //It is ok to put null as the 2nd parameter as this custom layout is being attached to a
+        //AlertDialog, where it not necessary to know what the parent is.
+        View promptView = layoutInflater.inflate(R.layout.alertdialog_cost, null);
+
+        final EditText points = (EditText) promptView.findViewById(R.id.pointsEditText);
+        final EditText value = (EditText) promptView.findViewById(R.id.valueEditText);
+        final Spinner measure = (Spinner) promptView.findViewById(R.id.measureSpinner);
+
+        points.setHint("Points earned per");
+
+        final Cost cost = new Cost();
+        cost.setId(Util.generateUUID());
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setView(promptView)
+                .setTitle("Add new cost")
+                .setPositiveButton("DONE", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        if (Util.isNotNullNotEmptyNotWhiteSpaceOnlyByJava(points.getText().toString()) &&
+                                Util.isNotNullNotEmptyNotWhiteSpaceOnlyByJava(value.getText().toString())) {
+
+                            cost.setPointsEarnPer(Integer.parseInt(points.getText().toString()));
+                            cost.setUnitCost(Integer.parseInt(value.getText().toString()));
+                            cost.setUnitType(UnitType.HOUR.toString());
+
+                            costList.add(cost);
+                            costAdapter.notifyDataSetChanged();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Please input a value", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                })
+                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog noteDialog = builder.create();
+        noteDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        noteDialog.show();
     }
 
     private void save(){

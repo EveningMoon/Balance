@@ -5,14 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.emoon.balance.Model.Cost;
-import com.emoon.balance.Model.UnitType;
 import com.emoon.balance.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,9 +21,7 @@ public class CostAdapter extends ArrayAdapter<Cost>{
     private List<Cost> costList;
 
     static class ViewHolder {
-        public EditText points;
-        public EditText quantity;
-        public Spinner measure;
+        public TextView points, quantity, measure;
     }
 
     public CostAdapter(Activity activity, List<Cost> costList){
@@ -52,9 +47,9 @@ public class CostAdapter extends ArrayAdapter<Cost>{
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.item_cost, parent, false);
 
-            viewHolder.points = (EditText) convertView.findViewById(R.id.pointsEditText);
-            viewHolder.quantity = (EditText) convertView.findViewById(R.id.valueEditText);
-            viewHolder.measure = (Spinner) convertView.findViewById(R.id.measureSpinner);
+            viewHolder.points = (TextView) convertView.findViewById(R.id.pointsTextView);
+            viewHolder.quantity = (TextView) convertView.findViewById(R.id.valueTextView);
+            viewHolder.measure = (TextView) convertView.findViewById(R.id.measureTextView);
 
             // The tag can be any Object, this just happens to be the ViewHolder
             convertView.setTag(viewHolder);
@@ -68,17 +63,7 @@ public class CostAdapter extends ArrayAdapter<Cost>{
 
         viewHolder.points.setText(cost.getPointsEarnPer()+"");
         viewHolder.quantity.setText(cost.getUnitCost() + "");
-
-        ArrayAdapter<String> measureAdapter;
-        List<String> measureList = new ArrayList<>();
-        for(UnitType ut : UnitType.values()){
-            measureList.add(ut.toString());
-        }
-        measureAdapter = new ArrayAdapter<String>(this.activity.getApplicationContext(), android.R.layout.simple_spinner_item, measureList);
-        measureAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        viewHolder.measure.setAdapter(measureAdapter);
-
-        viewHolder.measure.setSelection(0);
+        viewHolder.measure.setText(cost.getUnitType());
 
         return convertView;
     }
