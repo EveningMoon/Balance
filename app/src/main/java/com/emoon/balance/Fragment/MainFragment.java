@@ -10,12 +10,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
@@ -26,6 +24,7 @@ import com.emoon.balance.Model.EarnBurn;
 import com.emoon.balance.Model.UnitType;
 import com.emoon.balance.R;
 import com.emoon.balance.Util.Util;
+import com.emoon.balance.View.ExtendedNumberPicker;
 import com.zhan.library.CircularView;
 
 import java.util.ArrayList;
@@ -36,6 +35,7 @@ import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 
 public class MainFragment extends Fragment {
+    private static final String TAG = "MainFragment";
 
     private View view;
 
@@ -99,7 +99,7 @@ public class MainFragment extends Fragment {
     }
 
     private void init(){
-        myRealm = Realm.getDefaultInstance();
+        resumeRealm();
 
         headerText = (TextView) view.findViewById(R.id.topPanelHeader);
         earnBtn = (ViewGroup) view.findViewById(R.id.earnPanel);
@@ -214,7 +214,7 @@ public class MainFragment extends Fragment {
         topEarn3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("ZHAN", "top 3 earn is "+earnList.get(2).getName());
+                Log.d("ZHAN", "top 3 earn is " + earnList.get(2).getName());
                 addEarnBurnTransaction(earnList.get(2));
             }
         });
@@ -277,23 +277,20 @@ public class MainFragment extends Fragment {
         final EditText input = (EditText) promptView.findViewById(R.id.genericEditText);
         input.setHint(data.getType());
 
-        //Spinner
-        final Spinner unitSpinner = (Spinner) promptView.findViewById(R.id.genericSpinner);
-        unitSpinner.setAdapter(unitAdapter);
-        unitSpinner.setPrompt(unitList.get(0));
-        unitSpinner.setSelected(true);
+        //NumberPicker
+        final ExtendedNumberPicker unitNumberPicker = (ExtendedNumberPicker) promptView.findViewById(R.id.genericNumberPicker);
 
-        unitSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                unitSpinner.setSelection(position);
-            }
+        List<String> ssList = new ArrayList<>();
+        for(int i = 0; i < data.getCostList().size(); i++){
+            ssList.add(data.getCostList().get(i).getUnitType());
+        }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+        final String[] values = ssList.toArray(new String[0]);
 
-            }
-        });
+        unitNumberPicker.setMinValue(0);
+        unitNumberPicker.setMaxValue(values.length - 1);
+        unitNumberPicker.setDisplayedValues(values);
+        unitNumberPicker.setWrapSelectorWheel(true);
 
         new AlertDialog.Builder(getActivity())
                 .setView(promptView)
@@ -407,10 +404,44 @@ public class MainFragment extends Fragment {
     }
 
     @Override
-    public void onDestroy(){
-        super.onDestroy();
-        if(!myRealm.isClosed()) {
+    public void onStart(){
+        super.onStart();
+        Log.d(TAG, "onStart");
+        resumeRealm();
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        Log.d(TAG, "onResume");
+        resumeRealm();
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        Log.d(TAG, "onPause");
+        closeRealm();
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        Log.d(TAG, "onStop");
+        closeRealm();
+    }
+
+    public void resumeRealm(){
+        if(myRealm == null || myRealm.isClosed()){
+            myRealm = Realm.getDefaultInstance();
+            Log.d(TAG, "resumeRealm");
+        }
+    }
+
+    public void closeRealm(){
+        if(myRealm != null && !myRealm.isClosed()){
             myRealm.close();
+            Log.d(TAG, "closeRealm");
         }
     }
 }

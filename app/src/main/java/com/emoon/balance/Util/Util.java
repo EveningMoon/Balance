@@ -41,7 +41,7 @@ public final class Util {
             earn.setType(BalanceType.EARN.toString());
             //earn.setCost(10f);
             earn.setName(context.getResources().getResourceName(rs));
-            earn.setUnit(UnitType.MINUTE.toString());
+            //earn.setUnit(UnitType.MINUTE.toString());
             earn.setIcon(context.getResources().getResourceEntryName(rs));
 
             Log.d("ZHAN", "name:"+earn.getName()+" -> "+earn.getIcon());
@@ -67,7 +67,7 @@ public final class Util {
             burn.setType(BalanceType.BURN.toString());
             //burn.setCost(10f);
             burn.setName(context.getResources().getResourceName(rs));
-            burn.setUnit(UnitType.QUANTITY.toString());
+            //burn.setUnit(UnitType.QUANTITY.toString());
             burn.setIcon(context.getResources().getResourceEntryName(rs));
             burnList.add(burn);
         }
@@ -122,5 +122,14 @@ public final class Util {
      */
     public static boolean isNotNullNotEmptyNotWhiteSpaceOnlyByJava(final String string) {
         return string != null && !string.isEmpty() && !string.trim().isEmpty();
+    }
+
+    public static String[] getListOfUnits(){
+        List<String> listString = new ArrayList<>();
+        for(UnitType ut : UnitType.values()){
+            listString.add(ut.toString());
+        }
+
+        return listString.toArray(new String[0]);
     }
 }

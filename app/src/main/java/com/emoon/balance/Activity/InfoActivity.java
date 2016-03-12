@@ -180,8 +180,7 @@ public class InfoActivity extends BaseActivity {
         pointsEditText.setText(String.valueOf(editCost.getPointsEarnPer()));
         valueEditText.setText(String.valueOf(editCost.getUnitCost()));
 
-        //Initializing a new string array with elements
-        final String[] values= {"MINUTE", "HOUR", "KM", "MILE", "QUANTITY"};
+        final String[] values = Util.getListOfUnits();
 
         measureNumberPicker.setMinValue(0);
         measureNumberPicker.setMaxValue(values.length - 1);
@@ -247,8 +246,7 @@ public class InfoActivity extends BaseActivity {
         final EditText value = (EditText) promptView.findViewById(R.id.valueEditText);
         final ExtendedNumberPicker measureNumberPicker = (ExtendedNumberPicker) promptView.findViewById(R.id.measureNumberPicker);
 
-        //Initializing a new string array with elements
-        final String[] values= {"MINUTE", "HOUR", "KM", "MILE", "QUANTITY"};
+        final String[] values = Util.getListOfUnits();
 
         measureNumberPicker.setMinValue(0);
         measureNumberPicker.setMaxValue(values.length - 1);
@@ -393,7 +391,6 @@ public class InfoActivity extends BaseActivity {
                 earnBurn.setName(nameEditText.getText().toString());
                 earnBurn.setType(balanceType);
                 earnBurn.setIcon("svg_running_stick_figure");
-                earnBurn.setUnit("");
 
                 Log.d(TAG, "------- SAVING ------");
                 for(int i = 0; i < costList.size(); i++){

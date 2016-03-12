@@ -50,12 +50,19 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true" />
         <requestFocus />
-
+        <!--
         <Spinner
             android:id="@+id/genericSpinner"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true" />
+        -->
+        <com.emoon.balance.View.ExtendedNumberPicker
+            android:id="@+id/genericNumberPicker"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"/>
     </RelativeLayout>
 </LinearLayout>

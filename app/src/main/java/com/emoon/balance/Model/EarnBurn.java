@@ -10,8 +10,6 @@ public class EarnBurn extends RealmObject {
     private String name;
     private String type;
     private String icon;
-    private String unit;
-
     private RealmList<Cost> costList;
 
     public EarnBurn(){
@@ -40,14 +38,6 @@ public class EarnBurn extends RealmObject {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public String getUnit() {
-        return unit;
-    }
-
-    public void setUnit(String unit) {
-        this.unit = unit;
     }
 
     public String getIcon() {

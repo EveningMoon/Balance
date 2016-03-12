@@ -19,13 +19,14 @@ import com.emoon.balance.Etc.Constants;
 import com.emoon.balance.Fragment.MainFragment;
 import com.emoon.balance.Fragment.SettingFragment;
 import com.emoon.balance.Model.BalanceType;
+import com.emoon.balance.Model.Cost;
 import com.emoon.balance.Model.EarnBurn;
-import com.emoon.balance.Model.UnitType;
 import com.emoon.balance.R;
 import com.emoon.balance.Util.Util;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
+import io.realm.RealmList;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener{
@@ -120,8 +121,17 @@ public class MainActivity extends BaseActivity
                     earn.setName(initialActivityName[i]);
                     earn.setIcon(getResources().getResourceEntryName(initialActivityIcon[i]));
                     earn.setType(BalanceType.EARN.toString());
-                    //earn.setCost(0f);
-                    earn.setUnit(UnitType.MINUTE.toString());
+
+                    RealmList<Cost> costRealmList = new RealmList<Cost>();
+                    for(int k = 0 ; k < 2; k++){
+                        Cost cost = bgRealm.createObject(Cost.class);
+                        cost.setId(Util.generateUUID());
+                        cost.setPointsEarnPer(k);
+                        cost.setUnitCost(k + 1);
+                        cost.setUnitType("HOUR");
+                        costRealmList.add(cost);
+                    }
+                    earn.setCostList(costRealmList);
 
                     Log.d(TAG, "Creating activity :"+earn.getName());
                 }
@@ -136,8 +146,18 @@ public class MainActivity extends BaseActivity
                     burn.setName(initialRewardName[i]);
                     burn.setIcon(getResources().getResourceEntryName(initialRewardIcon[i]));
                     burn.setType(BalanceType.BURN.toString());
-                    //burn.setCost(0f);
-                    burn.setUnit(UnitType.QUANTITY.toString());
+
+                    RealmList<Cost> costRealmList = new RealmList<Cost>();
+                    for(int k = 0 ; k < 2; k++){
+                        Cost cost = bgRealm.createObject(Cost.class);
+                        cost.setId(Util.generateUUID());
+                        cost.setPointsEarnPer(k);
+                        cost.setUnitCost(k+2);
+                        cost.setUnitType("MINUTE");
+                        costRealmList.add(cost);
+                    }
+                    burn.setCostList(costRealmList);
+
                     Log.d(TAG, "Creating reward :" + burn.getName());
                 }
             }
@@ -154,6 +174,8 @@ public class MainActivity extends BaseActivity
             }
         });
     }
+
+
 
     @Override
     public void onBackPressed() {
