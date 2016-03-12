@@ -6,6 +6,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.emoon.balance.Adapter.ListAdapter;
@@ -101,7 +102,20 @@ public class ListActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), InfoActivity.class);
-                intent.putExtra(Constants.REQUEST_CREATE_NEW, balanceType);
+                intent.putExtra(Constants.REQUEST_IS_EDIT_EARNBURN, false);
+                intent.putExtra(Constants.REQUEST_CREATE_EARNBURN, balanceType);
+                startActivity(intent);
+            }
+        });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d(TAG, "click on item :"+itemList.get(position).getId()+", "+itemList.get(position).getName());
+
+                Intent intent = new Intent(getApplicationContext(), InfoActivity.class);
+                intent.putExtra(Constants.REQUEST_IS_EDIT_EARNBURN, true);
+                intent.putExtra(Constants.REQUEST_EDIT_EARNBURN, itemList.get(position).getId());
                 startActivity(intent);
             }
         });

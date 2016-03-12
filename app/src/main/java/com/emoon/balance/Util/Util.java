@@ -76,6 +76,12 @@ public final class Util {
     }
 
     public static String getRandomMotivationalSpeech(Context context){
+        List<String> speech = getListOfMotivationalSpeech(context);
+        Random random = new Random();
+        return speech.get(random.nextInt(speech.size()));
+    }
+
+    public static List<String> getListOfMotivationalSpeech(Context context){
         TypedArray speech = context.getResources().obtainTypedArray(R.array.motivationalQuotes);
 
         List<String> listOfSpeech = new ArrayList<>();
@@ -86,9 +92,7 @@ public final class Util {
             listOfSpeech.add(context.getResources().getString(rs));
         }
         speech.recycle();
-
-        Random random = new Random();
-        return listOfSpeech.get(random.nextInt(speech.length()));
+        return listOfSpeech;
     }
 
     public static int getIconID(Context context, String value){

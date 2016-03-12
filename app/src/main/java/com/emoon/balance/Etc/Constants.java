@@ -18,7 +18,11 @@ public class Constants {
 
     //Activity request
     public static final String REQUEST_LIST_OTHER_TYPE = "List type";
-    public static final String REQUEST_CREATE_NEW = "Create new";
+
+    //List activity to Info activity
+    public static final String REQUEST_IS_EDIT_EARNBURN = "Is edit EarnBurn";
+    public static final String REQUEST_CREATE_EARNBURN = "Create EarnBurn";
+    public static final String REQUEST_EDIT_EARNBURN = "Edit EarnBurn";
 
     //Return result
     public static final int RETURN_NEW_EARN_BURN = 1;

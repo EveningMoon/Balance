@@ -3,7 +3,6 @@ package com.emoon.balance.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -200,9 +199,9 @@ public class MainActivity extends BaseActivity
         drawer.closeDrawer(GravityCompat.START);
 
         //Creates a 250 millisecond delay to remove lag when drawer is closing
-        new Handler().postDelayed(new Runnable() {
+        /*new Handler().postDelayed(new Runnable() {
             @Override
-            public void run() {
+            public void run() {*/
                 Fragment fragment = null;
                 String title = getString(R.string.app_name);
 
@@ -227,7 +226,7 @@ public class MainActivity extends BaseActivity
                 if (getSupportActionBar() != null) {
                     getSupportActionBar().setTitle(title);
                 }
-            }
-        }, 300);
+            /*}
+        }, 300);*/
     }
 }

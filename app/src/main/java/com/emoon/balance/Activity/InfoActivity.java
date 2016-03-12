@@ -32,6 +32,8 @@ import com.emoon.balance.View.ExtendedNumberPicker;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.RealmList;
+
 public class InfoActivity extends BaseActivity {
 
     private static final String TAG = "InfoActivity";
@@ -40,11 +42,15 @@ public class InfoActivity extends BaseActivity {
 
     private FloatingActionButton fab;
 
+    private boolean isEditMode;
+
     private String balanceType;
     private CostAdapter costAdapter;
     private SwipeMenuListView costListView;
     private List<Cost> costList;
     private EditText nameEditText;
+
+    private EarnBurn editEarnBurn;
 
     @Override
     protected int getActivityLayout() {
@@ -55,10 +61,6 @@ public class InfoActivity extends BaseActivity {
     protected void init(){
         super.init();
 
-        //Get intent's data of which type of earnBurn to show (Activity or Reward)
-        balanceType = (getIntent().getExtras().getString(Constants.REQUEST_CREATE_NEW));
-        Log.d(TAG, "balance type :" + balanceType);
-
         costListView = (SwipeMenuListView) findViewById(R.id.costListView);
         costList = new ArrayList<>();
         costAdapter = new CostAdapter(this, costList);
@@ -66,6 +68,28 @@ public class InfoActivity extends BaseActivity {
 
         nameEditText = (EditText)findViewById(R.id.nameEditText);
         fab = (FloatingActionButton) findViewById(R.id.fab);
+
+        //Get intent's data of whether the user is editing or creating new earnBurn
+        isEditMode = (getIntent().getExtras().getBoolean(Constants.REQUEST_IS_EDIT_EARNBURN));
+
+        if(isEditMode) {
+            String id = (getIntent().getExtras().getString(Constants.REQUEST_EDIT_EARNBURN));
+            editEarnBurn = myRealm.where(EarnBurn.class).equalTo("id", id).findFirst();
+            Log.d(TAG, "found item first : "+editEarnBurn.getId()+", "+editEarnBurn.getName());
+            balanceType = editEarnBurn.getType();
+
+            //Set name
+            nameEditText.setText(editEarnBurn.getName());
+
+            //Set list of cost attached to this earnBurn
+            costList = deepCopyCost(editEarnBurn.getCostList());
+            costAdapter.clear();
+            costAdapter.addAll(costList);
+        }else{
+            //Get intent's data of which type of earnBurn to show (Activity or Reward)
+            balanceType = (getIntent().getExtras().getString(Constants.REQUEST_CREATE_EARNBURN));
+            Log.d(TAG, "balance type :" + balanceType);
+        }
 
         createToolbar();
         addListeners();
@@ -85,10 +109,20 @@ public class InfoActivity extends BaseActivity {
             Log.d(TAG, "balance type :"+balanceType);
 
             if(balanceType.equalsIgnoreCase(BalanceType.BURN.toString())){
-                getSupportActionBar().setTitle("Add Reward");
+                if(isEditMode){
+                    getSupportActionBar().setTitle("Edit Reward");
+                }else{
+                    getSupportActionBar().setTitle("Add Reward");
+                }
+
                 toolbar.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.blue));
             }else{
-                getSupportActionBar().setTitle("Add Activity");
+                if(isEditMode){
+                    getSupportActionBar().setTitle("Edit Activity");
+                }else{
+                    getSupportActionBar().setTitle("Add Activity");
+                }
+
                 toolbar.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.red));
             }
         }
@@ -244,9 +278,12 @@ public class InfoActivity extends BaseActivity {
                 .setTitle("Add new cost")
                 .setPositiveButton("DONE", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        Log.d(TAG, "1 new values are "+points.getText().toString()+"->"+value.getText().toString()+"->"+values[selectedNumberPickerIndex]);
+
                         if (Util.isNotNullNotEmptyNotWhiteSpaceOnlyByJava(points.getText().toString()) &&
                                 Util.isNotNullNotEmptyNotWhiteSpaceOnlyByJava(value.getText().toString())) {
 
+                            Log.d(TAG, "2 new values are "+points.getText().toString()+"->"+value.getText().toString()+"->"+values[selectedNumberPickerIndex]);
                             cost.setPointsEarnPer(Integer.parseInt(points.getText().toString()));
                             cost.setUnitCost(Integer.parseInt(value.getText().toString()));
                             cost.setUnitType(values[selectedNumberPickerIndex]);
@@ -267,35 +304,6 @@ public class InfoActivity extends BaseActivity {
         AlertDialog noteDialog = builder.create();
         noteDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         noteDialog.show();
-    }
-
-    private void save(){
-        if(!nameEditText.getText().toString().isEmpty()) {
-            Toast.makeText(getApplicationContext(), "SAVING", Toast.LENGTH_SHORT).show();
-            myRealm.beginTransaction();
-
-            EarnBurn earnBurn = myRealm.createObject(EarnBurn.class);
-            earnBurn.setId(Util.generateUUID());
-            earnBurn.setName(nameEditText.getText().toString());
-            earnBurn.setType(balanceType);
-            earnBurn.setIcon("svg_running_stick_figure");
-            earnBurn.setUnit("");
-
-            for(int i = 0; i < costList.size(); i++){
-                Cost cost = myRealm.createObject(Cost.class);
-                cost.setId(costList.get(i).getId());
-                cost.setPointsEarnPer(costList.get(i).getPointsEarnPer());
-                cost.setUnitCost(costList.get(i).getUnitCost());
-                cost.setUnitType(costList.get(i).getUnitType());
-
-                earnBurn.getCostList().add(cost);
-            }
-
-            myRealm.commitTransaction();
-            finish();
-        }else{
-            Toast.makeText(getApplicationContext(), "Please input a name for this "+balanceType.toLowerCase(), Toast.LENGTH_SHORT).show();
-        }
     }
 
     /**
@@ -329,7 +337,9 @@ public class InfoActivity extends BaseActivity {
                         Toast.makeText(getApplicationContext(), "DELETING @ "+position, Toast.LENGTH_SHORT).show();
                         costList.remove(position);
 
-                        costAdapter.notifyDataSetChanged();
+                        costAdapter.clear();
+                        costAdapter.addAll(costList);
+                        //costAdapter.notifyDataSetChanged();
 
                         break;
                 }
@@ -354,6 +364,75 @@ public class InfoActivity extends BaseActivity {
         });
     }
 
+    private void save(){
+        if(!nameEditText.getText().toString().isEmpty()) {
+            Toast.makeText(getApplicationContext(), "SAVING", Toast.LENGTH_SHORT).show();
+            myRealm.beginTransaction();
+
+            if(isEditMode){
+                editEarnBurn.setName(nameEditText.getText().toString());
+                editEarnBurn.setCostList(new RealmList<Cost>());
+
+                Log.d(TAG, "------- SAVING ------");
+                for(int i = 0; i < costList.size(); i++){
+                    Log.d(TAG, i+") cost :"+costList.get(i).getId()+"-> "+ costList.get(i).getPointsEarnPer()+", "+costList.get(i).getUnitCost()+", "+costList.get(i).getUnitType());
+                    Cost cost = myRealm.createObject(Cost.class);
+                    cost.setId(costList.get(i).getId());
+                    cost.setPointsEarnPer(costList.get(i).getPointsEarnPer());
+                    cost.setUnitCost(costList.get(i).getUnitCost());
+                    cost.setUnitType(costList.get(i).getUnitType());
+
+                    editEarnBurn.getCostList().add(cost);
+                }
+                Log.d(TAG, "------- DONE SAVING ------");
+
+                myRealm.copyToRealmOrUpdate(editEarnBurn);
+            }else{
+                EarnBurn earnBurn = myRealm.createObject(EarnBurn.class);
+                earnBurn.setId(Util.generateUUID());
+                earnBurn.setName(nameEditText.getText().toString());
+                earnBurn.setType(balanceType);
+                earnBurn.setIcon("svg_running_stick_figure");
+                earnBurn.setUnit("");
+
+                Log.d(TAG, "------- SAVING ------");
+                for(int i = 0; i < costList.size(); i++){
+                    Log.d(TAG, i+") cost :"+costList.get(i).getId()+"-> "+ costList.get(i).getPointsEarnPer()+", "+costList.get(i).getUnitCost()+", "+costList.get(i).getUnitType());
+                    Cost cost = myRealm.createObject(Cost.class);
+                    cost.setId(costList.get(i).getId());
+                    cost.setPointsEarnPer(costList.get(i).getPointsEarnPer());
+                    cost.setUnitCost(costList.get(i).getUnitCost());
+                    cost.setUnitType(costList.get(i).getUnitType());
+
+                    earnBurn.getCostList().add(cost);
+                }
+                Log.d(TAG, "------- DONE SAVING ------");
+            }
+
+            myRealm.commitTransaction();
+            finish();
+        }else{
+            Toast.makeText(getApplicationContext(), "Please input a name for this "+balanceType.toLowerCase(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * Do this so that we dont copy Realm version of Cost class which will throw an exception if
+     * we try to modify data when not inside a transaction.
+     *
+     */
+    private List<Cost> deepCopyCost(List<Cost> costList){
+        List<Cost> newCostList = new ArrayList<>();
+        for(int i = 0; i < costList.size(); i++){
+            Cost cost = new Cost();
+            cost.setId(costList.get(i).getId());
+            cost.setPointsEarnPer(costList.get(i).getPointsEarnPer());
+            cost.setUnitCost(costList.get(i).getUnitCost());
+            cost.setUnitType(costList.get(i).getUnitType());
+            newCostList.add(cost);
+        }
+        return newCostList;
+    }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //
@@ -383,6 +462,5 @@ public class InfoActivity extends BaseActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
 
 }
