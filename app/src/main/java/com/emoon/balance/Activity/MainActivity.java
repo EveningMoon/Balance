@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.emoon.balance.Etc.Constants;
 import com.emoon.balance.Fragment.MainFragment;
 import com.emoon.balance.Fragment.SettingFragment;
+import com.emoon.balance.Fragment.TransactionFragment;
 import com.emoon.balance.Model.BalanceType;
 import com.emoon.balance.Model.Cost;
 import com.emoon.balance.Model.EarnBurn;
@@ -34,6 +35,7 @@ public class MainActivity extends BaseActivity
     private final static String TAG = "MainActivity";
 
     private MainFragment mainFragment;
+    private TransactionFragment transactionFragment;
     private SettingFragment settingFragment;
 
     private DrawerLayout drawer;
@@ -80,6 +82,7 @@ public class MainActivity extends BaseActivity
     private void createFragments(){
         mainFragment = new MainFragment();
         settingFragment = new SettingFragment();
+        transactionFragment = new TransactionFragment();
     }
 
     private void initRealm(){
@@ -235,6 +238,10 @@ public class MainActivity extends BaseActivity
                     case R.id.nav_setting:
                         fragment = settingFragment;
                         title = "Setting";
+                        break;
+                    case R.id.nav_transaction:
+                        fragment = transactionFragment;
+                        title = "Transaction";
                         break;
                 }
 

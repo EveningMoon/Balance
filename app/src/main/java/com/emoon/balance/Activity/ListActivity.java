@@ -135,7 +135,7 @@ public class ListActivity extends BaseActivity {
 
                 listAdapter.clear();
                 listAdapter.addAll(itemList);
-                listAdapter.notifyDataSetChanged();
+                //listAdapter.notifyDataSetChanged();
 
                 realmResults.removeChangeListener(this);
             }

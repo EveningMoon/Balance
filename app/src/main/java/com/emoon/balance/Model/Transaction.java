@@ -11,6 +11,9 @@ public class Transaction extends RealmObject{
     private String id;
     private Date date;
     private EarnBurn earnBurn;
+    private int unitCost;
+    private String costType;
+
 
     public Transaction(){
 
@@ -38,5 +41,21 @@ public class Transaction extends RealmObject{
 
     public void setEarnBurn(EarnBurn earnBurn) {
         this.earnBurn = earnBurn;
+    }
+
+    public int getUnitCost() {
+        return unitCost;
+    }
+
+    public void setUnitCost(int unitCost) {
+        this.unitCost = unitCost;
+    }
+
+    public String getCostType() {
+        return costType;
+    }
+
+    public void setCostType(String costType) {
+        this.costType = costType;
     }
 }
