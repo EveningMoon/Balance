@@ -349,7 +349,7 @@ public class MainFragment extends Fragment {
                 @Override
                 public void onChange() {
                     //earnList = myRealm.copyFromRealm(earnRealmResults);
-
+Log.d("ZHAN", "There are "+earnRealmResults.size());
                     earnView.setVisibility(View.GONE);
                     earnGroup.setVisibility(View.VISIBLE);
 

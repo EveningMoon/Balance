@@ -97,8 +97,9 @@ public class MainActivity extends BaseActivity
     private void isFirstTime(){
         SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
         boolean isFirstTIme = sharedPreferences.getBoolean(Constants.FIRST_TIME, true);
+        Log.d("ZHAN", "isFirstTime?");
 
-        if(isFirstTIme){
+       /* if(isFirstTIme){ Log.d("ZHAN", "isFirstTime= true");
             Toast.makeText(getApplicationContext(), "first time", Toast.LENGTH_SHORT).show();
             createDefaultItems();
 
@@ -106,13 +107,16 @@ public class MainActivity extends BaseActivity
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putBoolean(Constants.FIRST_TIME, false);
             editor.apply();
-        }
+        }*/
+        createDefaultItems();
+
     }
 
     private void createDefaultItems(){
         myRealm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm bgRealm) {
+                Log.d("ZHAN", "create default items");
 
                 //Create default activity
                 String[] initialActivityName = new String[]{"Running","Walking","Biking"};
@@ -136,7 +140,7 @@ public class MainActivity extends BaseActivity
                     }
                     earn.setCostList(costRealmList);
 
-                    Log.d(TAG, "Creating activity :"+earn.getName());
+                    Log.d("ZHAN", "Creating activity :"+earn.getName());
                 }
 
                 //Create default rewards
@@ -161,7 +165,7 @@ public class MainActivity extends BaseActivity
                     }
                     burn.setCostList(costRealmList);
 
-                    Log.d(TAG, "Creating reward :" + burn.getName());
+                    Log.d("ZHAN", "Creating reward :" + burn.getName());
                 }
             }
         }, new Realm.Transaction.Callback() {
