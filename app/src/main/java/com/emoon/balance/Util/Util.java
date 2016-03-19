@@ -2,7 +2,6 @@ package com.emoon.balance.Util;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.util.Log;
 import android.util.TypedValue;
 
 import com.emoon.balance.Model.BalanceType;
@@ -28,51 +27,47 @@ public final class Util {
     }
 
     public static List<EarnBurn> getListOfActivities(Context context){
-        TypedArray activities = context.getResources().obtainTypedArray(R.array.list);
+        TypedArray name = context.getResources().obtainTypedArray(R.array.list_activity_name);
+        TypedArray icon = context.getResources().obtainTypedArray(R.array.list_activity_icon);
 
-        List<EarnBurn> earnList = new ArrayList<>();
-        for(int i = 0; i < activities.length(); i++){
+        List<EarnBurn> activityList = new ArrayList<>();
+        for(int i = 0; i < name.length(); i++){
+            // get resource ID by index
+            int s1 = name.getResourceId(i, 0);
+            int s2 = icon.getResourceId(i, 0);
 
-            int rs = activities.getResourceId(i, 0);
+            EarnBurn activity = new EarnBurn();
+            activity.setId(generateUUID());
+            activity.setName(context.getResources().getString(s1));
+            activity.setType(BalanceType.EARN.toString());
+            activity.setIcon(context.getResources().getResourceEntryName(s2));
 
-
-            EarnBurn earn = new EarnBurn();
-            earn.setId(generateUUID());
-            earn.setType(BalanceType.EARN.toString());
-            //earn.setCost(10f);
-            earn.setName(context.getResources().getResourceName(rs));
-            //earn.setUnit(UnitType.MINUTE.toString());
-            earn.setIcon(context.getResources().getResourceEntryName(rs));
-
-            Log.d("ZHAN", "name:"+earn.getName()+" -> "+earn.getIcon());
-            earnList.add(earn);
+            activityList.add(activity);
         }
-
-        //Important
-        activities.recycle();
-
-        return earnList;
+        name.recycle();
+        return activityList;
     }
 
     public static List<EarnBurn> getListOfRewards(Context context){
-        TypedArray rewards = context.getResources().obtainTypedArray(R.array.rewards);
+        TypedArray name = context.getResources().obtainTypedArray(R.array.list_reward_name);
+        TypedArray icon = context.getResources().obtainTypedArray(R.array.list_reward_icon);
 
-        List<EarnBurn> burnList = new ArrayList<>();
-        for(int i = 0; i < rewards.length(); i++){
+        List<EarnBurn> activityList = new ArrayList<>();
+        for(int i = 0; i < name.length(); i++){
             // get resource ID by index
-            int rs = rewards.getResourceId(i, 0);
+            int s1 = name.getResourceId(i, 0);
+            int s2 = icon.getResourceId(i, 0);
 
-            EarnBurn burn = new EarnBurn();
-            burn.setId(generateUUID());
-            burn.setType(BalanceType.BURN.toString());
-            //burn.setCost(10f);
-            burn.setName(context.getResources().getResourceName(rs));
-            //burn.setUnit(UnitType.QUANTITY.toString());
-            burn.setIcon(context.getResources().getResourceEntryName(rs));
-            burnList.add(burn);
+            EarnBurn activity = new EarnBurn();
+            activity.setId(generateUUID());
+            activity.setName(context.getResources().getString(s1));
+            activity.setType(BalanceType.BURN.toString());
+            activity.setIcon(context.getResources().getResourceEntryName(s2));
+
+            activityList.add(activity);
         }
-        rewards.recycle();
-        return burnList;
+        name.recycle();
+        return activityList;
     }
 
     public static String getRandomMotivationalSpeech(Context context){

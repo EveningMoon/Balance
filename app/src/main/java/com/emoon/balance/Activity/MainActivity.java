@@ -10,7 +10,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -19,15 +18,14 @@ import com.emoon.balance.Etc.Constants;
 import com.emoon.balance.Fragment.MainFragment;
 import com.emoon.balance.Fragment.SettingFragment;
 import com.emoon.balance.Fragment.TransactionFragment;
-import com.emoon.balance.Model.BalanceType;
-import com.emoon.balance.Model.Cost;
 import com.emoon.balance.Model.EarnBurn;
 import com.emoon.balance.R;
 import com.emoon.balance.Util.Util;
 
+import java.util.List;
+
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
-import io.realm.RealmList;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener{
@@ -110,75 +108,14 @@ public class MainActivity extends BaseActivity
     }
 
     private void createDefaultItems(){
-        myRealm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm bgRealm) {
+        List<EarnBurn> listOfActivity = Util.getListOfActivities(getApplicationContext());
+        List<EarnBurn> listOfReward = Util.getListOfRewards(getApplicationContext());
 
-                //Create default activity
-                String[] initialActivityName = new String[]{"Running","Walking","Biking"};
-                int[] initialActivityIcon = new int[]{R.drawable.svg_running_stick_figure, R.drawable.svg_walking, R.drawable.svg_biking, R.drawable.svg_other};
-
-                for(int i = 0; i < initialActivityName.length; i++){
-                    EarnBurn earn = bgRealm.createObject(EarnBurn.class);
-                    earn.setId(Util.generateUUID());
-                    earn.setName(initialActivityName[i]);
-                    earn.setIcon(getResources().getResourceEntryName(initialActivityIcon[i]));
-                    earn.setType(BalanceType.EARN.toString());
-
-                    RealmList<Cost> costRealmList = new RealmList<Cost>();
-                    for(int k = 0 ; k < 2; k++){
-                        Cost cost = bgRealm.createObject(Cost.class);
-                        cost.setId(Util.generateUUID());
-                        cost.setPointsEarnPer(k);
-                        cost.setUnitCost(k + 1);
-                        cost.setUnitType("HOUR");
-                        costRealmList.add(cost);
-                    }
-                    earn.setCostList(costRealmList);
-
-                    Log.d(TAG, "Creating activity :"+earn.getName());
-                }
-
-                //Create default rewards
-                String[] initialRewardName = new String[]{"Food","Drink","Beer"};
-                int[] initialRewardIcon = new int[]{R.drawable.svg_fruit, R.drawable.svg_drink, R.drawable.svg_beer, R.drawable.svg_other};
-
-                for(int i = 0; i < initialActivityName.length; i++){
-                    EarnBurn burn = bgRealm.createObject(EarnBurn.class);
-                    burn.setId(Util.generateUUID());
-                    burn.setName(initialRewardName[i]);
-                    burn.setIcon(getResources().getResourceEntryName(initialRewardIcon[i]));
-                    burn.setType(BalanceType.BURN.toString());
-
-                    RealmList<Cost> costRealmList = new RealmList<Cost>();
-                    for(int k = 0 ; k < 2; k++){
-                        Cost cost = bgRealm.createObject(Cost.class);
-                        cost.setId(Util.generateUUID());
-                        cost.setPointsEarnPer(k);
-                        cost.setUnitCost(k+2);
-                        cost.setUnitType("MINUTE");
-                        costRealmList.add(cost);
-                    }
-                    burn.setCostList(costRealmList);
-
-                    Log.d(TAG, "Creating reward :" + burn.getName());
-                }
-            }
-        }, new Realm.Transaction.Callback() {
-            @Override
-            public void onSuccess() {
-
-            }
-
-            @Override
-            public void onError(Exception e) {
-                // transaction is automatically rolled-back, do any cleanup here
-                e.printStackTrace();
-            }
-        });
+        myRealm.beginTransaction();
+        myRealm.copyToRealmOrUpdate(listOfActivity);
+        myRealm.copyToRealmOrUpdate(listOfReward);
+        myRealm.commitTransaction();
     }
-
-
 
     @Override
     public void onBackPressed() {

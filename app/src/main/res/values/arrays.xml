@@ -14,39 +14,8 @@
         <item>@string/motivation10</item>
     </string-array>
 
-
-
-
-
-
-
-
-
-
-
-    <array name="badminton">
-        <item>@string/badminton</item>
-        <item>@drawable/svg_badminton</item>
-    </array>
-    <array name="baseball">
-        <item>@string/baseball</item>
-        <item>@drawable/svg_baseball</item>
-    </array>
-
-
-
-
-    <array name="list">
-        <item>@array/badminton</item>
-        <item>@array/baseball</item>
-    </array>
-
-
-
-
-
-
-    <string-array name="activities">
+    <!-- List of strings -->
+    <string-array name="list_activity_name">
         <item>@string/badminton</item>
         <item>@string/baseball</item>
         <item>@string/basketball</item>
@@ -83,7 +52,7 @@
         <item>@string/work</item>
     </string-array>
 
-    <string-array name="rewards">
+    <string-array name="list_reward_name">
         <item>@string/alcohol</item>
         <item>@string/beer</item>
         <item>@string/desserts</item>
@@ -96,6 +65,59 @@
         <item>@string/vegetable</item>
         <item>@string/videoGames</item>
         <item>@string/tv</item>
+    </string-array>
+
+    <!-- List of icons -->
+    <string-array name="list_activity_icon">
+        <item>@drawable/svg_badminton</item>
+        <item>@drawable/svg_baseball</item>
+        <item>@drawable/svg_basketball</item>
+        <item>@drawable/svg_beach_volleyball</item>
+        <item>@drawable/svg_biking</item>
+        <item>@drawable/svg_billiards</item>
+        <item>@drawable/svg_bowling</item>
+        <item>@drawable/svg_boxing</item>
+        <item>@drawable/svg_budget</item>
+        <item>@drawable/svg_cricket</item>
+        <item>@drawable/svg_driving</item>
+        <item>@drawable/svg_education</item>
+        <item>@drawable/svg_soccer</item>
+        <item>@drawable/svg_grocery_shopping</item>
+        <item>@drawable/svg_hiking</item>
+        <item>@drawable/svg_running_stick_figure</item>
+        <item>@drawable/svg_jump_rope</item>
+        <item>@drawable/svg_mountain_bike</item>
+        <item>@drawable/svg_other</item>
+        <item>@drawable/svg_ping_pong</item>
+        <item>@drawable/svg_public_transit</item>
+        <item>@drawable/svg_reading</item>
+        <item>@drawable/svg_rock_climbing</item>
+        <item>@drawable/svg_running_stick_figure</item>
+        <item>@drawable/svg_savings</item>
+        <item>@drawable/svg_skiing</item>
+        <item>@drawable/svg_soccer</item>
+        <item>@drawable/svg_stair_climbing</item>
+        <item>@drawable/svg_study</item>
+        <item>@drawable/svg_tennis</item>
+        <item>@drawable/svg_volleyball</item>
+        <item>@drawable/svg_walking</item>
+        <item>@drawable/svg_weight_lifting</item>
+        <item>@drawable/svg_work</item>
+    </string-array>
+
+    <string-array name="list_reward_icon">
+        <item>@drawable/svg_beer</item>
+        <item>@drawable/svg_beer</item>
+        <item>@drawable/svg_desserts</item>
+        <item>@drawable/svg_drink</item>
+        <item>@drawable/svg_fruit</item>
+        <item>@drawable/svg_fruit</item>
+        <item>@drawable/svg_movie</item>
+        <item>@drawable/svg_shopping</item>
+        <item>@drawable/svg_candy</item>
+        <item>@drawable/svg_vegetable</item>
+        <item>@drawable/svg_video_game</item>
+        <item>@drawable/svg_tv</item>
     </string-array>
 
 </resources>

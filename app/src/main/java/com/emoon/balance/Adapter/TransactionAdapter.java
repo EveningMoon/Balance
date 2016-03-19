@@ -1,17 +1,18 @@
 package com.emoon.balance.Adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.emoon.balance.Model.BalanceType;
 import com.emoon.balance.Model.Transaction;
 import com.emoon.balance.R;
 import com.emoon.balance.Util.Util;
-import com.zhan.library.CircularView;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class TransactionAdapter extends ArrayAdapter<Transaction>{
     private List<Transaction> transactionList;
 
     static class ViewHolder {
-        public CircularView circularView;
+        public ImageView icon;
         public TextView name, points, unitType;
     }
 
@@ -50,7 +51,7 @@ public class TransactionAdapter extends ArrayAdapter<Transaction>{
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.item_transaction, parent, false);
 
-            viewHolder.circularView = (CircularView) convertView.findViewById(R.id.transactionIcon);
+            viewHolder.icon = (ImageView) convertView.findViewById(R.id.transactionIcon);
             viewHolder.points = (TextView) convertView.findViewById(R.id.transactionPointsPerUnit);
             viewHolder.unitType = (TextView) convertView.findViewById(R.id.transactionUnitType);
             viewHolder.name = (TextView) convertView.findViewById(R.id.earnBurnName);
@@ -66,13 +67,11 @@ public class TransactionAdapter extends ArrayAdapter<Transaction>{
         Transaction transaction = transactionList.get(position);
 
         if(transaction.getEarnBurn().getType().equalsIgnoreCase(BalanceType.BURN.toString())) {
-            viewHolder.circularView.setIconColor(R.color.icon_blue);
-            viewHolder.circularView.setCircleColor(R.color.blue);
+            viewHolder.icon.setColorFilter(Color.parseColor(context.getResources().getString(0 + R.color.icon_blue)));
         }else {
-            viewHolder.circularView.setIconColor(R.color.icon_red);
-            viewHolder.circularView.setCircleColor(R.color.red);
+            viewHolder.icon.setColorFilter(Color.parseColor(context.getResources().getString(0 + R.color.icon_red)));
         }
-        viewHolder.circularView.setIconResource(Util.getIconID(this.context, transaction.getEarnBurn().getIcon()));
+        viewHolder.icon.setImageResource(Util.getIconID(this.context, transaction.getEarnBurn().getIcon()));
 
         viewHolder.name.setText(transaction.getEarnBurn().getName());
         viewHolder.points.setText(String.valueOf(transaction.getUnitCost()));
