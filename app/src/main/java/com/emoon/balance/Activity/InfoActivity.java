@@ -147,6 +147,7 @@ public class InfoActivity extends BaseActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d("ZHAP","click fab");
                 if(costList.size() < 5){
                     createNewCostDialog();
                 }
@@ -202,19 +203,22 @@ public class InfoActivity extends BaseActivity {
                 selectedNumberPickerIndex = newVal;
             }
         });
+        Log.d("ZHAP", "dialog ");
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setView(promptView)
                 .setTitle("Add new cost")
                 .setPositiveButton("DONE", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        Log.d("ZHAP", "click done on dialog "+position);
+
+
                         if (Util.isNotNullNotEmptyNotWhiteSpaceOnlyByJava(pointsEditText.getText().toString()) &&
                                 Util.isNotNullNotEmptyNotWhiteSpaceOnlyByJava(valueEditText.getText().toString())) {
 
                             editCost.setPointsEarnPer(Integer.parseInt(pointsEditText.getText().toString()));
                             editCost.setUnitCost(Integer.parseInt(valueEditText.getText().toString()));
                             editCost.setUnitType(values[selectedNumberPickerIndex]);
-
                             costList.set(position, editCost);
                             costAdapter.notifyDataSetChanged();
                         } else {
@@ -229,7 +233,6 @@ public class InfoActivity extends BaseActivity {
                 });
 
         AlertDialog noteDialog = builder.create();
-        //noteDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         noteDialog.show();
     }
 
@@ -276,17 +279,18 @@ public class InfoActivity extends BaseActivity {
                 .setTitle("Add new cost")
                 .setPositiveButton("DONE", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Log.d(TAG, "1 new values are "+points.getText().toString()+"->"+value.getText().toString()+"->"+values[selectedNumberPickerIndex]);
-
                         if (Util.isNotNullNotEmptyNotWhiteSpaceOnlyByJava(points.getText().toString()) &&
                                 Util.isNotNullNotEmptyNotWhiteSpaceOnlyByJava(value.getText().toString())) {
 
-                            Log.d(TAG, "2 new values are "+points.getText().toString()+"->"+value.getText().toString()+"->"+values[selectedNumberPickerIndex]);
+                            Log.d("ZHAP", "2 new values are "+points.getText().toString()+"->"+value.getText().toString()+"->"+values[selectedNumberPickerIndex]);
                             cost.setPointsEarnPer(Integer.parseInt(points.getText().toString()));
                             cost.setUnitCost(Integer.parseInt(value.getText().toString()));
                             cost.setUnitType(values[selectedNumberPickerIndex]);
 
                             costList.add(cost);
+
+                            Log.d("ZHAP", "size : "+costList.size());
+
                             costAdapter.notifyDataSetChanged();
                         } else {
                             Toast.makeText(getApplicationContext(), "Please input a value", Toast.LENGTH_SHORT).show();

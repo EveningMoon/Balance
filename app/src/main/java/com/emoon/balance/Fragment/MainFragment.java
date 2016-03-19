@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
+import com.emoon.balance.Activity.InfoActivity;
 import com.emoon.balance.Activity.ListActivity;
 import com.emoon.balance.Etc.Constants;
 import com.emoon.balance.Model.BalanceType;
@@ -168,24 +169,24 @@ public class MainFragment extends Fragment {
         topBurn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("ZHAN", "top 1 burn is " + burnRealmResults.get(0).getName());
-                addEarnBurnTransaction(burnRealmResults.get(0));
+                Log.d("ZHAN", "top 1 burn is " + burnList.get(0).getName());
+                addEarnBurnTransaction(burnList.get(0));
             }
         });
 
         topBurn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("ZHAN", "top  2 burn is "+burnRealmResults.get(1).getName());
-                addEarnBurnTransaction(burnRealmResults.get(1));
+                Log.d("ZHAN", "top  2 burn is "+burnList.get(1).getName());
+                addEarnBurnTransaction(burnList.get(1));
             }
         });
 
         topBurn3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("ZHAN", "top 3 burn is " + burnRealmResults.get(2).getName());
-                addEarnBurnTransaction(burnRealmResults.get(2));
+                Log.d("ZHAN", "top 3 burn is " + burnList.get(2).getName());
+                addEarnBurnTransaction(burnList.get(2));
             }
         });
 
@@ -200,24 +201,24 @@ public class MainFragment extends Fragment {
         topEarn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("ZHAN", "top 1 earn is " + earnRealmResults.get(0).getName());
-                addEarnBurnTransaction(earnRealmResults.get(0));
+                Log.d("ZHAN", "top 1 earn is " + earnList.get(0).getName());
+                addEarnBurnTransaction(earnList.get(0));
             }
         });
 
         topEarn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("ZHAN", "top  2 earn is "+earnRealmResults.get(1).getName());
-                addEarnBurnTransaction(earnRealmResults.get(1));
+                Log.d("ZHAN", "top  2 earn is "+earnList.get(1).getName());
+                addEarnBurnTransaction(earnList.get(1));
             }
         });
 
         topEarn3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("ZHAN", "top 3 earn is " + earnRealmResults.get(2).getName());
-                addEarnBurnTransaction(earnRealmResults.get(2));
+                Log.d("ZHAN", "top 3 earn is " + earnList.get(2).getName());
+                addEarnBurnTransaction(earnList.get(2));
             }
         });
 
@@ -251,8 +252,9 @@ public class MainFragment extends Fragment {
     /**
      * Displays prompt for user to add new transaction.
      */
-    private void addEarnBurnTransaction(final EarnBurn data){
-        //earnBurnToView = data;
+    private void addEarnBurnTransaction(final EarnBurn data1){
+        final EarnBurn data = myRealm.where(EarnBurn.class).equalTo("id", data1.getId()).findFirst();
+
         // get prompts.xml view
         LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
 
@@ -289,49 +291,56 @@ public class MainFragment extends Fragment {
         }
 
         final String[] values = ssList.toArray(new String[0]);
-
+Log.d("ZHAP", "----> "+values.length);
         unitNumberPicker.setMinValue(0);
-        unitNumberPicker.setMaxValue(values.length - 1);
-        unitNumberPicker.setDisplayedValues(values);
-        unitNumberPicker.setWrapSelectorWheel(true);
+        if(values.length > 0){
+            unitNumberPicker.setMaxValue(values.length - 1);
+            unitNumberPicker.setDisplayedValues(values);
+            unitNumberPicker.setWrapSelectorWheel(true);
 
-        new AlertDialog.Builder(getActivity())
-                .setView(promptView)
-                .setCancelable(true)
-                .setOnCancelListener(new DialogInterface.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-                        displayEarnItems(false);
-                        displayBurnItems(false);
-                    }
-                })
-                .setPositiveButton("Save", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        if (!input.getText().toString().isEmpty()) {
-                            myRealm.beginTransaction();
-                            Transaction transaction = myRealm.createObject(Transaction.class);
-                            transaction.setId(Util.generateUUID());
-                            transaction.setDate(new Date());
-                            transaction.setEarnBurn(data);
-                            transaction.setUnitCost(Integer.parseInt(input.getText().toString()));
-                            transaction.setCostType(values[unitNumberPicker.getValue()]);
-                            myRealm.commitTransaction();
-
+            new AlertDialog.Builder(getActivity())
+                    .setView(promptView)
+                    .setCancelable(true)
+                    .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface dialog) {
                             displayEarnItems(false);
                             displayBurnItems(false);
                         }
-                    }
-                })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                        displayEarnItems(false);
-                        displayBurnItems(false);
-                    }
-                })
-                .create()
-                .show();
+                    })
+                    .setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            if (!input.getText().toString().isEmpty()) {
+                                myRealm.beginTransaction();
+                                Transaction transaction = myRealm.createObject(Transaction.class);
+                                transaction.setId(Util.generateUUID());
+                                transaction.setDate(new Date());
+                                transaction.setEarnBurn(data);
+                                transaction.setUnitCost(Integer.parseInt(input.getText().toString()));
+                                transaction.setCostType(values[unitNumberPicker.getValue()]);
+                                myRealm.commitTransaction();
+
+                                displayEarnItems(false);
+                                displayBurnItems(false);
+                            }
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                            displayEarnItems(false);
+                            displayBurnItems(false);
+                        }
+                    })
+                    .create()
+                    .show();
+        }else{
+            Intent firstTimeEarnBurn = new Intent(getContext(), InfoActivity.class);
+            firstTimeEarnBurn.putExtra(Constants.REQUEST_IS_EDIT_EARNBURN, true);
+            firstTimeEarnBurn.putExtra(Constants.REQUEST_EDIT_EARNBURN, data.getId());
+            startActivity(firstTimeEarnBurn);
+        }
     }
 
     private String addSign(int value){
@@ -348,18 +357,18 @@ public class MainFragment extends Fragment {
             earnRealmResults.addChangeListener(new RealmChangeListener() {
                 @Override
                 public void onChange() {
-                    //earnList = myRealm.copyFromRealm(earnRealmResults);
+                    earnList = myRealm.copyFromRealm(earnRealmResults);
 
                     earnView.setVisibility(View.GONE);
                     earnGroup.setVisibility(View.VISIBLE);
 
-                    //topEarn1.setIconResource(Util.getIconID(getContext(), earnList.get(0).getIcon()));
-                    //topEarn2.setIconResource(Util.getIconID(getContext(), earnList.get(1).getIcon()));
-                    //topEarn3.setIconResource(Util.getIconID(getContext(), earnList.get(2).getIcon()));
+                    topEarn1.setIconResource(Util.getIconID(getContext(), earnList.get(0).getIcon()));
+                    topEarn2.setIconResource(Util.getIconID(getContext(), earnList.get(1).getIcon()));
+                    topEarn3.setIconResource(Util.getIconID(getContext(), earnList.get(2).getIcon()));
 
-                    topEarn1.setIconResource(Util.getIconID(getContext(), earnRealmResults.get(0).getIcon()));
-                    topEarn2.setIconResource(Util.getIconID(getContext(), earnRealmResults.get(1).getIcon()));
-                    topEarn3.setIconResource(Util.getIconID(getContext(), earnRealmResults.get(2).getIcon()));
+                    //topEarn1.setIconResource(Util.getIconID(getContext(), earnRealmResults.get(0).getIcon()));
+                    //topEarn2.setIconResource(Util.getIconID(getContext(), earnRealmResults.get(1).getIcon()));
+                    //topEarn3.setIconResource(Util.getIconID(getContext(), earnRealmResults.get(2).getIcon()));
                     otherEarn.setIconResource(R.drawable.svg_other);
 
                     earnRealmResults.removeChangeListener(this);
@@ -377,18 +386,18 @@ public class MainFragment extends Fragment {
             burnRealmResults.addChangeListener(new RealmChangeListener() {
                 @Override
                 public void onChange() {
-                    //burnList = myRealm.copyFromRealm(burnRealmResults);
+                    burnList = myRealm.copyFromRealm(burnRealmResults);
 
                     burnGroup.setVisibility(View.VISIBLE);
                     burnView.setVisibility(View.GONE);
 
-                    //topBurn1.setIconResource(Util.getIconID(getContext(), burnList.get(0).getIcon()));
-                    //topBurn2.setIconResource(Util.getIconID(getContext(), burnList.get(1).getIcon()));
-                    //topBurn3.setIconResource(Util.getIconID(getContext(), burnList.get(2).getIcon()));
+                    topBurn1.setIconResource(Util.getIconID(getContext(), burnList.get(0).getIcon()));
+                    topBurn2.setIconResource(Util.getIconID(getContext(), burnList.get(1).getIcon()));
+                    topBurn3.setIconResource(Util.getIconID(getContext(), burnList.get(2).getIcon()));
 
-                    topBurn1.setIconResource(Util.getIconID(getContext(), burnRealmResults.get(0).getIcon()));
-                    topBurn2.setIconResource(Util.getIconID(getContext(), burnRealmResults.get(1).getIcon()));
-                    topBurn3.setIconResource(Util.getIconID(getContext(), burnRealmResults.get(2).getIcon()));
+                    //topBurn1.setIconResource(Util.getIconID(getContext(), burnRealmResults.get(0).getIcon()));
+                    //topBurn2.setIconResource(Util.getIconID(getContext(), burnRealmResults.get(1).getIcon()));
+                    //topBurn3.setIconResource(Util.getIconID(getContext(), burnRealmResults.get(2).getIcon()));
                     otherBurn.setIconResource(R.drawable.svg_other);
 
                     burnRealmResults.removeChangeListener(this);
