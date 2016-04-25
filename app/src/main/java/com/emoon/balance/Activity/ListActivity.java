@@ -2,7 +2,6 @@ package com.emoon.balance.Activity;
 
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -11,7 +10,6 @@ import android.widget.ListView;
 
 import com.emoon.balance.Adapter.ListAdapter;
 import com.emoon.balance.Etc.Constants;
-import com.emoon.balance.Model.BalanceType;
 import com.emoon.balance.Model.EarnBurn;
 import com.emoon.balance.R;
 
@@ -56,7 +54,7 @@ public class ListActivity extends BaseActivity {
         setSupportActionBar(toolbar);
 
         toolbar.setNavigationIcon(R.drawable.svg_ic_back);
-        toolbar.setTitleTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
+        /*toolbar.setTitleTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
 
         if(getSupportActionBar() != null){
             if(balanceType.equalsIgnoreCase(BalanceType.BURN.toString())){
@@ -70,7 +68,7 @@ public class ListActivity extends BaseActivity {
                 fab.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.red));
             }
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+        }*/
     }
 
     @Override

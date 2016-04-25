@@ -3,7 +3,6 @@ package com.emoon.balance.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -115,7 +114,7 @@ public class InfoActivity extends BaseActivity {
                     getSupportActionBar().setTitle("Add Reward");
                 }
 
-                toolbar.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.blue));
+                //toolbar.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.blue));
             }else{
                 if(isEditMode){
                     getSupportActionBar().setTitle("Edit Activity");
@@ -123,7 +122,7 @@ public class InfoActivity extends BaseActivity {
                     getSupportActionBar().setTitle("Add Activity");
                 }
 
-                toolbar.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.red));
+                //toolbar.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.red));
             }
         }
     }
