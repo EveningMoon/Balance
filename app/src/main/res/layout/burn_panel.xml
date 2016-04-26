@@ -13,14 +13,6 @@
         android:tint="@color/white"
         android:paddingLeft="@dimen/main_page_padding"
         android:paddingRight="@dimen/main_page_padding" />
-<!--
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/burnRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="invisible"/>
-    -->
-
 
     <LinearLayout
         android:id="@+id/burnGroup"
@@ -29,53 +21,62 @@
         android:orientation="horizontal"
         android:visibility="invisible">
 
-        <com.zhan.library.CircularView
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.1"/>
+
+        <ImageView
             android:id="@+id/topBurn1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            custom:cv_iconColor="@color/icon_blue"
-            custom:cv_bgColor="@color/dark_blue"
-            custom:cv_iconTopPadding="10dp"
-            custom:cv_iconBottomPadding="10dp"
-            custom:cv_iconLeftPadding="10dp"
-            custom:cv_iconRightPadding="10dp"/>
+            android:src="@drawable/svg_badminton"
+            android:tint="@color/white"
+            android:layout_weight="1"/>
 
-        <com.zhan.library.CircularView
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.1"/>
+
+        <ImageView
             android:id="@+id/topBurn2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            custom:cv_iconColor="@color/icon_blue"
-            custom:cv_bgColor="@color/dark_blue"
-            custom:cv_iconTopPadding="10dp"
-            custom:cv_iconBottomPadding="10dp"
-            custom:cv_iconLeftPadding="10dp"
-            custom:cv_iconRightPadding="10dp"/>
+            android:src="@drawable/svg_badminton"
+            android:tint="@color/white"
+            android:layout_weight="1"/>
 
-        <com.zhan.library.CircularView
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.1"/>
+
+        <ImageView
             android:id="@+id/topBurn3"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            custom:cv_iconColor="@color/icon_blue"
-            custom:cv_bgColor="@color/dark_blue"
-            custom:cv_iconTopPadding="10dp"
-            custom:cv_iconBottomPadding="10dp"
-            custom:cv_iconLeftPadding="10dp"
-            custom:cv_iconRightPadding="10dp"/>
+            android:src="@drawable/svg_badminton"
+            android:tint="@color/white"
+            android:layout_weight="1"/>
 
-        <com.zhan.library.CircularView
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.1"/>
+
+        <ImageView
             android:id="@+id/otherBurn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            custom:cv_iconColor="@color/icon_blue"
-            custom:cv_bgColor="@color/dark_blue"
-            custom:cv_iconTopPadding="10dp"
-            custom:cv_iconBottomPadding="10dp"
-            custom:cv_iconLeftPadding="10dp"
-            custom:cv_iconRightPadding="10dp"
-            custom:cv_iconDrawable="@drawable/svg_other"/>
+            android:src="@drawable/svg_badminton"
+            android:tint="@color/white"
+            android:layout_weight="1"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.1"/>
+
     </LinearLayout>
 </RelativeLayout>

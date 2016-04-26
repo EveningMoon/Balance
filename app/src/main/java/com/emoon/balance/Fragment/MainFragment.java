@@ -64,16 +64,10 @@ public class MainFragment extends Fragment {
     private List<EarnBurn> burnList;
 
     private ViewGroup earnGroup;
-    private CircularView topEarn1;
-    private CircularView topEarn2;
-    private CircularView topEarn3;
-    private CircularView otherEarn;
+    private ImageView topEarn1, topEarn2, topEarn3, otherEarn;
 
     private ViewGroup burnGroup;
-    private CircularView topBurn1;
-    private CircularView topBurn2;
-    private CircularView topBurn3;
-    private CircularView otherBurn;
+    private ImageView topBurn1, topBurn2, topBurn3, otherBurn;
 
     //Spinner
     private List<String> unitList;
@@ -117,15 +111,15 @@ public class MainFragment extends Fragment {
         earnGroup = (LinearLayout) view.findViewById(R.id.earnGroup);
         burnGroup = (LinearLayout) view.findViewById(R.id.burnGroup);
 
-        topEarn1 = (CircularView) view.findViewById(R.id.topEarn1);
-        topEarn2 = (CircularView) view.findViewById(R.id.topEarn2);
-        topEarn3 = (CircularView) view.findViewById(R.id.topEarn3);
-        otherEarn = (CircularView) view.findViewById(R.id.otherEarn);
+        topEarn1 = (ImageView) view.findViewById(R.id.topEarn1);
+        topEarn2 = (ImageView) view.findViewById(R.id.topEarn2);
+        topEarn3 = (ImageView) view.findViewById(R.id.topEarn3);
+        otherEarn = (ImageView) view.findViewById(R.id.otherEarn);
 
-        topBurn1 = (CircularView) view.findViewById(R.id.topBurn1);
-        topBurn2 = (CircularView) view.findViewById(R.id.topBurn2);
-        topBurn3 = (CircularView) view.findViewById(R.id.topBurn3);
-        otherBurn = (CircularView) view.findViewById(R.id.otherBurn);
+        topBurn1 = (ImageView) view.findViewById(R.id.topBurn1);
+        topBurn2 = (ImageView) view.findViewById(R.id.topBurn2);
+        topBurn3 = (ImageView) view.findViewById(R.id.topBurn3);
+        otherBurn = (ImageView) view.findViewById(R.id.otherBurn);
 
         burnList = new ArrayList<>();
         earnList = new ArrayList<>();
@@ -291,7 +285,7 @@ public class MainFragment extends Fragment {
         }
 
         final String[] values = ssList.toArray(new String[0]);
-Log.d("ZHAP", "----> "+values.length);
+
         unitNumberPicker.setMinValue(0);
         if(values.length > 0){
             unitNumberPicker.setMaxValue(values.length - 1);
@@ -362,14 +356,10 @@ Log.d("ZHAP", "----> "+values.length);
                     earnView.setVisibility(View.GONE);
                     earnGroup.setVisibility(View.VISIBLE);
 
-                    topEarn1.setIconResource(Util.getIconID(getContext(), earnList.get(0).getIcon()));
-                    topEarn2.setIconResource(Util.getIconID(getContext(), earnList.get(1).getIcon()));
-                    topEarn3.setIconResource(Util.getIconID(getContext(), earnList.get(2).getIcon()));
-
-                    //topEarn1.setIconResource(Util.getIconID(getContext(), earnRealmResults.get(0).getIcon()));
-                    //topEarn2.setIconResource(Util.getIconID(getContext(), earnRealmResults.get(1).getIcon()));
-                    //topEarn3.setIconResource(Util.getIconID(getContext(), earnRealmResults.get(2).getIcon()));
-                    otherEarn.setIconResource(R.drawable.svg_other);
+                    topEarn1.setImageResource(Util.getIconID(getContext(), earnList.get(0).getIcon()));
+                    topEarn1.setImageResource(Util.getIconID(getContext(), earnList.get(1).getIcon()));
+                    topEarn1.setImageResource(Util.getIconID(getContext(), earnList.get(2).getIcon()));
+                    otherEarn.setImageResource(R.drawable.svg_other);
 
                     earnRealmResults.removeChangeListener(this);
                 }
@@ -391,14 +381,10 @@ Log.d("ZHAP", "----> "+values.length);
                     burnGroup.setVisibility(View.VISIBLE);
                     burnView.setVisibility(View.GONE);
 
-                    topBurn1.setIconResource(Util.getIconID(getContext(), burnList.get(0).getIcon()));
-                    topBurn2.setIconResource(Util.getIconID(getContext(), burnList.get(1).getIcon()));
-                    topBurn3.setIconResource(Util.getIconID(getContext(), burnList.get(2).getIcon()));
-
-                    //topBurn1.setIconResource(Util.getIconID(getContext(), burnRealmResults.get(0).getIcon()));
-                    //topBurn2.setIconResource(Util.getIconID(getContext(), burnRealmResults.get(1).getIcon()));
-                    //topBurn3.setIconResource(Util.getIconID(getContext(), burnRealmResults.get(2).getIcon()));
-                    otherBurn.setIconResource(R.drawable.svg_other);
+                    topBurn1.setImageResource(Util.getIconID(getContext(), burnList.get(0).getIcon()));
+                    topBurn2.setImageResource(Util.getIconID(getContext(), burnList.get(1).getIcon()));
+                    topBurn3.setImageResource(Util.getIconID(getContext(), burnList.get(2).getIcon()));
+                    otherBurn.setImageResource(R.drawable.svg_other);
 
                     burnRealmResults.removeChangeListener(this);
                 }
