@@ -24,14 +24,19 @@ import com.emoon.balance.Etc.Constants;
 import com.emoon.balance.Model.BalanceType;
 import com.emoon.balance.Model.Cost;
 import com.emoon.balance.Model.EarnBurn;
+import com.emoon.balance.Model.UnitType;
 import com.emoon.balance.R;
 import com.emoon.balance.Util.Util;
 import com.emoon.balance.View.ExtendedNumberPicker;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import io.realm.RealmList;
+import io.realm.RealmResults;
 
 public class InfoActivity extends BaseActivity {
 
@@ -88,6 +93,19 @@ public class InfoActivity extends BaseActivity {
             //Get intent's data of which type of earnBurn to show (Activity or Reward)
             balanceType = (getIntent().getExtras().getString(Constants.REQUEST_CREATE_EARNBURN));
             Log.d(TAG, "balance type :" + balanceType);
+        }
+
+        unitsThisEarnBurnHave = new ArrayList<>();
+
+        if(isEditMode){
+            String id = (getIntent().getExtras().getString(Constants.REQUEST_EDIT_EARNBURN));
+            EarnBurn eb = myRealm.where(EarnBurn.class).equalTo("id", id).findFirst();
+            List<Cost> ccList = eb.getCostList();
+
+            //convert cost into string
+            for(int i = 0; i < ccList.size(); i++){
+                unitsThisEarnBurnHave.add(ccList.get(i).getUnitType());
+            }
         }
 
         createToolbar();
@@ -236,6 +254,10 @@ public class InfoActivity extends BaseActivity {
     }
 
     int selectedNumberPickerIndex;
+
+
+    private List<String> unitsThisEarnBurnHave;
+
     private void createNewCostDialog(){
         // get cost.xml view
         LayoutInflater layoutInflater = getLayoutInflater();
@@ -248,11 +270,32 @@ public class InfoActivity extends BaseActivity {
         final EditText value = (EditText) promptView.findViewById(R.id.valueEditText);
         final ExtendedNumberPicker measureNumberPicker = (ExtendedNumberPicker) promptView.findViewById(R.id.measureNumberPicker);
 
-        final String[] values = Util.getListOfUnits();
+        //Gets all list of units
+        final List<String> values1 = Util.getListOfUnits1();
+/*
+        //Get what list of units this activity/reward already has.
+        String id = (getIntent().getExtras().getString(Constants.REQUEST_EDIT_EARNBURN));
+        EarnBurn eb = myRealm.where(EarnBurn.class).equalTo("id", id).findFirst();
+        List<Cost> ccList = eb.getCostList();
+
+        //convert cost into string
+        List<String> values2 = new ArrayList<>();
+        for(int i = 0; i < ccList.size(); i++){
+            values2.add(ccList.get(i).getUnitType());
+        }*/
+
+        //Display only the difference (to avoid duplicated of units)
+        Set<String> ad1 = new HashSet<>(values1); //contains all
+        Set<String> ad2 = new HashSet<>(unitsThisEarnBurnHave); //contains subset
+        ad1.removeAll(ad2);//find differences
+
+        //Convert set back into array
+        final String[] valueDiff = ad1.toArray(new String[ad1.size()]);
+
 
         measureNumberPicker.setMinValue(0);
-        measureNumberPicker.setMaxValue(values.length - 1);
-        measureNumberPicker.setDisplayedValues(values);
+        measureNumberPicker.setMaxValue(valueDiff.length - 1);
+        measureNumberPicker.setDisplayedValues(valueDiff);
         measureNumberPicker.setWrapSelectorWheel(true);
 
         measureNumberPicker.setValue(3);
@@ -263,7 +306,7 @@ public class InfoActivity extends BaseActivity {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
                 //Display the newly selected value from picker
-                Log.d("WHEEL", "Selected value : " + values[newVal]);
+                Log.d("WHEEL", "Selected value : " + valueDiff[newVal]);
                 selectedNumberPickerIndex = newVal;
             }
         });
@@ -281,16 +324,22 @@ public class InfoActivity extends BaseActivity {
                         if (Util.isNotNullNotEmptyNotWhiteSpaceOnlyByJava(points.getText().toString()) &&
                                 Util.isNotNullNotEmptyNotWhiteSpaceOnlyByJava(value.getText().toString())) {
 
-                            Log.d("ZHAP", "2 new values are "+points.getText().toString()+"->"+value.getText().toString()+"->"+values[selectedNumberPickerIndex]);
+                            Log.d("ZHAP", "2 new values are "+points.getText().toString()+"->"+value.getText().toString()+"->"+valueDiff[selectedNumberPickerIndex]);
                             cost.setPointsEarnPer(Integer.parseInt(points.getText().toString()));
                             cost.setUnitCost(Integer.parseInt(value.getText().toString()));
-                            cost.setUnitType(values[selectedNumberPickerIndex]);
+                            cost.setUnitType(valueDiff[selectedNumberPickerIndex]);
 
                             costList.add(cost);
 
                             Log.d("ZHAP", "size : "+costList.size());
 
-                            costAdapter.notifyDataSetChanged();
+                            costAdapter.clear();
+                            costAdapter.addAll(costList);
+
+                            //remove unit from list for future available values to add.
+                            //Do this by adding to list "unitsThisEarnBurnHave"
+                            unitsThisEarnBurnHave.add(valueDiff[selectedNumberPickerIndex]);
+
                         } else {
                             Toast.makeText(getApplicationContext(), "Please input a value", Toast.LENGTH_SHORT).show();
                         }
@@ -335,7 +384,11 @@ public class InfoActivity extends BaseActivity {
                 switch (index) {
                     case 0:
                         // delete
-                        Toast.makeText(getApplicationContext(), "DELETING @ "+position, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "DELETING @ "+position+" "+costList.remove(position).getUnitType(), Toast.LENGTH_SHORT).show();
+
+                        //remove from list "unitsThisEarnBurnHave"
+                        unitsThisEarnBurnHave.remove(costList.get(position).getUnitType());
+
                         costList.remove(position);
 
                         costAdapter.clear();

@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.util.TypedValue;
 
 import com.emoon.balance.Model.BalanceType;
+import com.emoon.balance.Model.Cost;
 import com.emoon.balance.Model.EarnBurn;
 import com.emoon.balance.Model.UnitType;
 import com.emoon.balance.R;
@@ -126,5 +127,14 @@ public final class Util {
         }
 
         return listString.toArray(new String[0]);
+    }
+
+
+    public static List<String> getListOfUnits1(){
+        List<String> listString = new ArrayList<>();
+        for(UnitType ut : UnitType.values()){
+            listString.add(ut.toString());
+        }
+        return listString;
     }
 }

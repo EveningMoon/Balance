@@ -159,7 +159,6 @@ public class MainFragment extends Fragment {
             }
         });
 
-
         topBurn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -287,6 +286,8 @@ public class MainFragment extends Fragment {
         final String[] values = ssList.toArray(new String[0]);
 
         unitNumberPicker.setMinValue(0);
+
+        //If this earnBurn have been init with values
         if(values.length > 0){
             unitNumberPicker.setMaxValue(values.length - 1);
             unitNumberPicker.setDisplayedValues(values);
