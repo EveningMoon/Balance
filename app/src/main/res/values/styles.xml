@@ -33,4 +33,13 @@
     <style name="AppThemeBlue.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="AppThemeBlue.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <!-- Padding styles for earn and burn panel -->
+    <style name="emptyPaddingStyle">
+        <item name="android:layout_weight">0.2</item>
+    </style>
+
+    <style name="itemPaddingStyle">
+        <item name="android:layout_weight">1</item>
+        <item name="android:tint">@color/white</item>
+    </style>
 </resources>

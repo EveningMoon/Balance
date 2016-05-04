@@ -19,64 +19,43 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:visibility="invisible">
+        android:visibility="invisible"
+        android:padding="10dp">
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.1"/>
-
-        <ImageView
+        <ImageView style="@style/itemPaddingStyle"
             android:id="@+id/topBurn1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:src="@drawable/svg_badminton"
-            android:tint="@color/white"
-            android:layout_weight="1"/>
+            android:src="@drawable/svg_badminton" />
 
-        <View
+        <View style="@style/emptyPaddingStyle"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.1"/>
+            android:layout_height="match_parent" />
 
-        <ImageView
+        <ImageView style="@style/itemPaddingStyle"
             android:id="@+id/topBurn2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:src="@drawable/svg_badminton"
-            android:tint="@color/white"
-            android:layout_weight="1"/>
+            android:src="@drawable/svg_badminton" />
 
-        <View
+        <View style="@style/emptyPaddingStyle"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.1"/>
+            android:layout_height="match_parent" />
 
-        <ImageView
+        <ImageView style="@style/itemPaddingStyle"
             android:id="@+id/topBurn3"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:src="@drawable/svg_badminton"
-            android:tint="@color/white"
-            android:layout_weight="1"/>
+            android:src="@drawable/svg_badminton" />
 
-        <View
+        <View style="@style/emptyPaddingStyle"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.1"/>
+            android:layout_height="match_parent" />
 
-        <ImageView
+        <ImageView style="@style/itemPaddingStyle"
             android:id="@+id/otherBurn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:src="@drawable/svg_badminton"
-            android:tint="@color/white"
-            android:layout_weight="1"/>
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.1"/>
-
+            android:src="@drawable/svg_badminton" />
     </LinearLayout>
 </RelativeLayout>
