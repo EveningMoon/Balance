@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 import com.emoon.balance.Activity.InfoActivity;
@@ -54,8 +55,6 @@ public class MainFragment extends Fragment {
 
     private final int MAX_EARN = 20;
     private final int MAX_BURN = 20;
-
-    private int total = 0;
 
     private RealmResults<EarnBurn> earnRealmResults;
     private RealmResults<EarnBurn> burnRealmResults;
@@ -133,17 +132,15 @@ public class MainFragment extends Fragment {
         motivationTextView.setText(Util.getRandomMotivationalSpeech(getContext()));
 
         addListeners();
-        addUnits();
+        //addUnits();
+
+        getAllTransactions();
     }
 
     private void addListeners(){
         earnBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //total++;
-                headerText.setText(addSign(total));
-                setProgressBar();
-
                 displayEarnItems(true);
             }
         });
@@ -151,10 +148,6 @@ public class MainFragment extends Fragment {
         burnBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //total--;
-                headerText.setText(addSign(total));
-                setProgressBar();
-
                 displayBurnItems(true);
             }
         });
@@ -238,7 +231,7 @@ public class MainFragment extends Fragment {
         unitList.add(UnitType.MILE.toString());
         unitList.add(UnitType.QUANTITY.toString());
 
-        unitAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, unitList);
+        unitAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, unitList);
         unitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     }
 
@@ -293,7 +286,7 @@ public class MainFragment extends Fragment {
             unitNumberPicker.setDisplayedValues(values);
             unitNumberPicker.setWrapSelectorWheel(true);
 
-            new AlertDialog.Builder(getActivity())
+            final AlertDialog ss = new AlertDialog.Builder(getActivity())
                     .setView(promptView)
                     .setCancelable(true)
                     .setOnCancelListener(new DialogInterface.OnCancelListener() {
@@ -317,6 +310,7 @@ public class MainFragment extends Fragment {
 
                                 displayEarnItems(false);
                                 displayBurnItems(false);
+                                getAllTransactions();
                             }
                         }
                     })
@@ -328,8 +322,24 @@ public class MainFragment extends Fragment {
                             displayBurnItems(false);
                         }
                     })
-                    .create()
-                    .show();
+                    .create();
+
+            ss.setOnShowListener(new DialogInterface.OnShowListener() {
+                @Override
+                public void onShow(DialogInterface arg0) {
+                    if(data.getType().equalsIgnoreCase(BalanceType.BURN.toString())){
+                        //BLUE
+                        ss.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(getContext(), R.color.blue));
+                        ss.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(getContext(), R.color.blue));
+                    }else{
+                        //RED
+                        ss.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+                        ss.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+                    }
+                }
+            });
+
+            ss.show();
         }else{
             Intent firstTimeEarnBurn = new Intent(getContext(), InfoActivity.class);
             firstTimeEarnBurn.putExtra(Constants.REQUEST_IS_EDIT_EARNBURN, true);
@@ -338,12 +348,36 @@ public class MainFragment extends Fragment {
         }
     }
 
-    private String addSign(int value){
+    private void getAllTransactions(){
+        final RealmResults<Transaction> transactionRealmResults = myRealm.where(Transaction.class).findAllAsync();
+        transactionRealmResults.addChangeListener(new RealmChangeListener() {
+            @Override
+            public void onChange() {
+                transactionRealmResults.removeChangeListener(this);
+
+                Log.d(TAG, "thjere are "+transactionRealmResults.size()+" tr");
+
+                int currentCount = 0;
+                for(int i = 0; i < transactionRealmResults.size(); i++){
+                    if(transactionRealmResults.get(i).getEarnBurn().getType().equalsIgnoreCase(BalanceType.BURN.toString())){
+                        currentCount -= transactionRealmResults.get(i).getUnitCost();
+                    }else{
+                        currentCount += transactionRealmResults.get(i).getUnitCost();
+                    }
+                }
+
+                addSign(currentCount);
+            }
+        });
+    }
+
+    private void addSign(int value){ Log.d(TAG, "val : "+value);
         if(value > 0){
-            return "+"+value;
-        }else{
-            return ""+value;
+            headerText.setText("+"+value);
+        }else if(value <= 0){
+            headerText.setText(""+value);
         }
+        setProgressBar(value);
     }
 
     private void displayEarnItems(boolean value){
@@ -396,7 +430,7 @@ public class MainFragment extends Fragment {
         }
     }
 
-    private void setProgressBar(){
+    private void setProgressBar(int total){
         if(total > 0){
             earnProgress.setProgress(total);
             burnProgress.setProgress(0);
