@@ -79,7 +79,6 @@ public class InfoActivity extends BaseActivity {
         if(isEditMode) {
             String id = (getIntent().getExtras().getString(Constants.REQUEST_EDIT_EARNBURN));
             editEarnBurn = myRealm.where(EarnBurn.class).equalTo("id", id).findFirst();
-            Log.d(TAG, "found item first : "+editEarnBurn.getId()+", "+editEarnBurn.getName());
             balanceType = editEarnBurn.getType();
 
             //Set name
@@ -89,10 +88,13 @@ public class InfoActivity extends BaseActivity {
             costList = deepCopyCost(editEarnBurn.getCostList());
             costAdapter.clear();
             costAdapter.addAll(costList);
+
+            Log.d(TAG, "in edit mode : "+editEarnBurn.getType()+", there are orig cost size : "+costList.size());
         }else{
             //Get intent's data of which type of earnBurn to show (Activity or Reward)
             balanceType = (getIntent().getExtras().getString(Constants.REQUEST_CREATE_EARNBURN));
-            Log.d(TAG, "balance type :" + balanceType);
+
+            Log.d(TAG, "in add new mode : "+balanceType);
         }
 
         unitsThisEarnBurnHave = new ArrayList<>();
@@ -105,7 +107,9 @@ public class InfoActivity extends BaseActivity {
             //convert cost into string
             for(int i = 0; i < ccList.size(); i++){
                 unitsThisEarnBurnHave.add(ccList.get(i).getUnitType());
+                Log.d(TAG, editEarnBurn.getName()+" has unit type "+ccList.get(i).getUnitType());
             }
+            Log.d(TAG ,"orig unit size :"+unitsThisEarnBurnHave.size());
         }
 
         createToolbar();
@@ -123,8 +127,6 @@ public class InfoActivity extends BaseActivity {
         toolbar.setNavigationIcon(R.drawable.svg_ic_close);
 
         if(getSupportActionBar() != null){
-            Log.d(TAG, "balance type :"+balanceType);
-
             if(balanceType.equalsIgnoreCase(BalanceType.BURN.toString())){
                 if(isEditMode){
                     getSupportActionBar().setTitle("Edit Reward");
@@ -157,14 +159,13 @@ public class InfoActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 showToast("click on "+position);
-                loadCostDialog(position);
+                editCostDialog(position);
             }
         });
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("ZHAP","click fab");
                 if(costList.size() < 5){
                     createNewCostDialog();
                 }
@@ -179,7 +180,7 @@ public class InfoActivity extends BaseActivity {
     private EditText pointsEditText, valueEditText;
     private ExtendedNumberPicker measureNumberPicker;
     private Cost editCost;
-    private void loadCostDialog(final int position){
+    private void editCostDialog(final int position){
         // get cost.xml view
         LayoutInflater layoutInflater = getLayoutInflater();
 
@@ -203,7 +204,7 @@ public class InfoActivity extends BaseActivity {
         measureNumberPicker.setMinValue(0);
         measureNumberPicker.setMaxValue(values.length - 1);
         measureNumberPicker.setDisplayedValues(values);
-        measureNumberPicker.setWrapSelectorWheel(true);
+        measureNumberPicker.setWrapSelectorWheel(false);
 
         for(int i = 0; i < values.length; i++){
             if(values[i].equalsIgnoreCase(editCost.getUnitType())){
@@ -272,17 +273,6 @@ public class InfoActivity extends BaseActivity {
 
         //Gets all list of units
         final List<String> values1 = Util.getListOfUnits1();
-/*
-        //Get what list of units this activity/reward already has.
-        String id = (getIntent().getExtras().getString(Constants.REQUEST_EDIT_EARNBURN));
-        EarnBurn eb = myRealm.where(EarnBurn.class).equalTo("id", id).findFirst();
-        List<Cost> ccList = eb.getCostList();
-
-        //convert cost into string
-        List<String> values2 = new ArrayList<>();
-        for(int i = 0; i < ccList.size(); i++){
-            values2.add(ccList.get(i).getUnitType());
-        }*/
 
         //Display only the difference (to avoid duplicated of units)
         Set<String> ad1 = new HashSet<>(values1); //contains all
@@ -292,14 +282,12 @@ public class InfoActivity extends BaseActivity {
         //Convert set back into array
         final String[] valueDiff = ad1.toArray(new String[ad1.size()]);
 
-
         measureNumberPicker.setMinValue(0);
         measureNumberPicker.setMaxValue(valueDiff.length - 1);
         measureNumberPicker.setDisplayedValues(valueDiff);
-        measureNumberPicker.setWrapSelectorWheel(true);
+        measureNumberPicker.setWrapSelectorWheel(false);
 
-        measureNumberPicker.setValue(3);
-
+        //measureNumberPicker.setValue(3);
         selectedNumberPickerIndex = 0;
 
         measureNumberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
@@ -324,14 +312,13 @@ public class InfoActivity extends BaseActivity {
                         if (Util.isNotNullNotEmptyNotWhiteSpaceOnlyByJava(points.getText().toString()) &&
                                 Util.isNotNullNotEmptyNotWhiteSpaceOnlyByJava(value.getText().toString())) {
 
-                            Log.d("ZHAP", "2 new values are "+points.getText().toString()+"->"+value.getText().toString()+"->"+valueDiff[selectedNumberPickerIndex]);
                             cost.setPointsEarnPer(Integer.parseInt(points.getText().toString()));
                             cost.setUnitCost(Integer.parseInt(value.getText().toString()));
                             cost.setUnitType(valueDiff[selectedNumberPickerIndex]);
 
                             costList.add(cost);
 
-                            Log.d("ZHAP", "size : "+costList.size());
+                            Log.d(TAG, "after adding, new cost size : "+costList.size());
 
                             costAdapter.clear();
                             costAdapter.addAll(costList);
@@ -339,6 +326,8 @@ public class InfoActivity extends BaseActivity {
                             //remove unit from list for future available values to add.
                             //Do this by adding to list "unitsThisEarnBurnHave"
                             unitsThisEarnBurnHave.add(valueDiff[selectedNumberPickerIndex]);
+                            Log.d(TAG, "after adding, new unit size : "+unitsThisEarnBurnHave.size());
+
 
                         } else {
                             Toast.makeText(getApplicationContext(), "Please input a value", Toast.LENGTH_SHORT).show();
@@ -384,12 +373,23 @@ public class InfoActivity extends BaseActivity {
                 switch (index) {
                     case 0:
                         // delete
-                        Toast.makeText(getApplicationContext(), "DELETING @ "+position+" "+costList.remove(position).getUnitType(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "DELETING @ "+position+" "+costList.remove(position).getUnitType(), Toast.LENGTH_SHORT).show();
 
                         //remove from list "unitsThisEarnBurnHave"
-                        unitsThisEarnBurnHave.remove(costList.get(position).getUnitType());
+                        //unitsThisEarnBurnHave.remove(costList.get(position).getUnitType());
 
+                        Log.d(TAG, "removing at "+position);
+
+                        Log.d(TAG, "--> units : "+unitsThisEarnBurnHave.size()+", costLIst : "+costList.size());
+
+
+                        Log.d(TAG ,"1 units :"+unitsThisEarnBurnHave.size());
+                        unitsThisEarnBurnHave.remove(position);
+                        Log.d(TAG ,"2 units :"+unitsThisEarnBurnHave.size());
+
+                        Log.d(TAG ,"1 cost :"+costList.size());
                         costList.remove(position);
+                        Log.d(TAG ,"2 cost :"+costList.size());
 
                         costAdapter.clear();
                         costAdapter.addAll(costList);
