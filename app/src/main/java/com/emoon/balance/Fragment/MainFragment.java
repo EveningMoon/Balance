@@ -360,9 +360,17 @@ public class MainFragment extends Fragment {
                 int currentCount = 0;
                 for(int i = 0; i < transactionRealmResults.size(); i++){
                     if(transactionRealmResults.get(i).getEarnBurn().getType().equalsIgnoreCase(BalanceType.BURN.toString())){
-                        currentCount -= transactionRealmResults.get(i).getUnitCost();
+                        for(int k = 0; k < transactionRealmResults.get(i).getEarnBurn().getCostList().size(); k++){
+                            if(transactionRealmResults.get(i).getEarnBurn().getCostList().get(k).getUnitType().equalsIgnoreCase(transactionRealmResults.get(i).getCostType())){
+                                currentCount -= (transactionRealmResults.get(i).getUnitCost() * transactionRealmResults.get(i).getEarnBurn().getCostList().get(k).getPointsEarnPer());
+                            }
+                        }
                     }else{
-                        currentCount += transactionRealmResults.get(i).getUnitCost();
+                        for(int k = 0; k < transactionRealmResults.get(i).getEarnBurn().getCostList().size(); k++){
+                            if(transactionRealmResults.get(i).getEarnBurn().getCostList().get(k).getUnitType().equalsIgnoreCase(transactionRealmResults.get(i).getCostType())){
+                                currentCount += (transactionRealmResults.get(i).getUnitCost() * transactionRealmResults.get(i).getEarnBurn().getCostList().get(k).getPointsEarnPer());
+                            }
+                        }
                     }
                 }
 
@@ -371,7 +379,7 @@ public class MainFragment extends Fragment {
         });
     }
 
-    private void addSign(int value){ Log.d(TAG, "val : "+value);
+    private void addSign(int value){ 
         if(value > 0){
             headerText.setText("+"+value);
         }else if(value <= 0){
