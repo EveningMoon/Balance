@@ -357,18 +357,41 @@ public class MainFragment extends Fragment {
 
                 Log.d(TAG, "thjere are "+transactionRealmResults.size()+" tr");
 
-                int currentCount = 0;
+                float currentCount = 0;
                 for(int i = 0; i < transactionRealmResults.size(); i++){
                     if(transactionRealmResults.get(i).getEarnBurn().getType().equalsIgnoreCase(BalanceType.BURN.toString())){
                         for(int k = 0; k < transactionRealmResults.get(i).getEarnBurn().getCostList().size(); k++){
                             if(transactionRealmResults.get(i).getEarnBurn().getCostList().get(k).getUnitType().equalsIgnoreCase(transactionRealmResults.get(i).getCostType())){
-                                currentCount -= (transactionRealmResults.get(i).getUnitCost() * transactionRealmResults.get(i).getEarnBurn().getCostList().get(k).getPointsEarnPer());
+                                //currentCount -= (transactionRealmResults.get(i).getUnitCost() * transactionRealmResults.get(i).getEarnBurn().getCostList().get(k).getPointsEarnPer());
+
+
+                                int pointsPer = transactionRealmResults.get(i).getEarnBurn().getCostList().get(k).getPointsEarnPer();
+                                int unit = transactionRealmResults.get(i).getEarnBurn().getCostList().get(k).getUnitCost();
+
+                                int costUserInput = transactionRealmResults.get(i).getUnitCost();
+
+
+                                Log.d(TAG, "BURN Val is ("+pointsPer+" per "+unit+"). User put "+costUserInput);
+
+                                currentCount -= (float)((costUserInput / unit) * pointsPer);
                             }
                         }
                     }else{
                         for(int k = 0; k < transactionRealmResults.get(i).getEarnBurn().getCostList().size(); k++){
                             if(transactionRealmResults.get(i).getEarnBurn().getCostList().get(k).getUnitType().equalsIgnoreCase(transactionRealmResults.get(i).getCostType())){
-                                currentCount += (transactionRealmResults.get(i).getUnitCost() * transactionRealmResults.get(i).getEarnBurn().getCostList().get(k).getPointsEarnPer());
+                                //currentCount += (transactionRealmResults.get(i).getUnitCost() * transactionRealmResults.get(i).getEarnBurn().getCostList().get(k).getPointsEarnPer());
+
+                                int pointsPer = transactionRealmResults.get(i).getEarnBurn().getCostList().get(k).getPointsEarnPer();
+                                int unit = transactionRealmResults.get(i).getEarnBurn().getCostList().get(k).getUnitCost();
+
+                                int costUserInput = transactionRealmResults.get(i).getUnitCost();
+
+
+                                Log.d(TAG, "EARN Val is ("+pointsPer+" per "+unit+"). User put "+costUserInput);
+
+                                currentCount += (float)((costUserInput / unit) * pointsPer);
+
+
                             }
                         }
                     }
@@ -379,7 +402,7 @@ public class MainFragment extends Fragment {
         });
     }
 
-    private void addSign(int value){
+    private void addSign(float value){
         if(value > 0){
             headerText.setText("+"+value);
         }else if(value <= 0){
@@ -438,7 +461,7 @@ public class MainFragment extends Fragment {
         }
     }
 
-    private void setProgressBar(int total){
+    private void setProgressBar(float total){
         if(total > 0){
             earnProgress.setProgress(total);
             burnProgress.setProgress(0);
