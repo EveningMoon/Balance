@@ -25,7 +25,7 @@
             android:name=".Activity.ListActivity"
             android:label="@string/title_activity_list"
             android:parentActivityName=".Activity.MainActivity"
-            android:theme="@style/AppThemeRed.NoActionBar">
+            android:theme="@style/AppThemeDark.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.emoon.balance.Activity.MainActivity" />
@@ -34,7 +34,7 @@
             android:name=".Activity.InfoActivity"
             android:label="@string/title_activity_info"
             android:parentActivityName=".Activity.MainActivity"
-            android:theme="@style/AppThemeBlue.NoActionBar"
+            android:theme="@style/AppThemeDark.NoActionBar"
             android:windowSoftInputMode="adjustPan">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

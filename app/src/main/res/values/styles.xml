@@ -7,31 +7,41 @@
         <item name="colorAccent">@color/colorPrimary</item>
     </style>
 
-    <style name="AppThemeRed" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/red</item>
-        <item name="colorPrimaryDark">@color/dark_red</item>
-        <item name="colorAccent">@color/red</item>
-    </style>
-
-    <style name="AppThemeBlue" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/blue</item>
-        <item name="colorPrimaryDark">@color/dark_blue</item>
-        <item name="colorAccent">@color/blue</item>
-    </style>
-
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
+    <!-- This keeps the text on the toolbar dark color-->
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Light" />
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="AppThemeRed.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-    <style name="AppThemeRed.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <!-- This keeps the background on the menu popup light theme and thus dark text color -->
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="AppThemeBlue.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-    <style name="AppThemeBlue.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
+
+    <style name="AppThemeDark" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/hanada</item>
+        <item name="colorPrimaryDark">@color/hanada</item>
+        <item name="colorAccent">@color/hanada</item>
+    </style>
+
+    <style name="AppThemeDark.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppThemeDark.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppThemeDark.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
+
+
+
+
+
+
 
     <!-- Padding styles for earn and burn panel -->
     <style name="emptyPaddingStyle">

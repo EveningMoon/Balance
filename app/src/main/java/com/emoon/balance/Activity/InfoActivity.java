@@ -2,13 +2,17 @@ package com.emoon.balance.Activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.res.ColorStateList;
+import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -134,7 +138,22 @@ public class InfoActivity extends BaseActivity {
                     getSupportActionBar().setTitle("Add Reward");
                 }
 
-                //toolbar.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.blue));
+                toolbar.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.blue));
+                fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.blue)));
+
+                if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+
+                    Window window = getWindow();
+
+                    // clear FLAG_TRANSLUCENT_STATUS flag:
+                    window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
+                    // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
+                    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+
+                    // finally change the color
+                    window.setStatusBarColor(ContextCompat.getColor(this, R.color.dark_blue));
+                }
             }else{
                 if(isEditMode){
                     getSupportActionBar().setTitle("Edit Activity");
@@ -142,7 +161,22 @@ public class InfoActivity extends BaseActivity {
                     getSupportActionBar().setTitle("Add Activity");
                 }
 
-                //toolbar.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.red));
+                toolbar.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.red));
+                fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.red)));
+
+                if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+
+                    Window window = getWindow();
+
+                    // clear FLAG_TRANSLUCENT_STATUS flag:
+                    window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
+                    // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
+                    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+
+                    // finally change the color
+                    window.setStatusBarColor(ContextCompat.getColor(this, R.color.dark_red));
+                }
             }
         }
     }

@@ -1,15 +1,21 @@
 package com.emoon.balance.Activity;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.emoon.balance.Adapter.ListAdapter;
 import com.emoon.balance.Etc.Constants;
+import com.emoon.balance.Model.BalanceType;
 import com.emoon.balance.Model.EarnBurn;
 import com.emoon.balance.R;
 
@@ -53,22 +59,49 @@ public class ListActivity extends BaseActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        toolbar.setNavigationIcon(R.drawable.svg_ic_back);
-        /*toolbar.setTitleTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
+        //toolbar.setNavigationIcon(R.drawable.svg_ic_back);
+        //toolbar.setTitleTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
 
         if(getSupportActionBar() != null){
             if(balanceType.equalsIgnoreCase(BalanceType.BURN.toString())){
-                getSupportActionBar().setTitle("Burn");
+                getSupportActionBar().setTitle("Rewards");
                 toolbar.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.blue));
-                fab.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.blue));
+                fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.blue)));
 
+                if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+
+                    Window window = getWindow();
+
+                    // clear FLAG_TRANSLUCENT_STATUS flag:
+                    window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
+                    // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
+                    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+
+                    // finally change the color
+                    window.setStatusBarColor(ContextCompat.getColor(this, R.color.dark_blue));
+                }
             }else{
-                getSupportActionBar().setTitle("Earn");
+                getSupportActionBar().setTitle("Activities");
                 toolbar.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.red));
-                fab.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.red));
+                fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.red)));
+
+                if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+
+                    Window window = getWindow();
+
+                    // clear FLAG_TRANSLUCENT_STATUS flag:
+                    window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
+                    // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
+                    window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+
+                    // finally change the color
+                    window.setStatusBarColor(ContextCompat.getColor(this, R.color.dark_red));
+                }
             }
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }*/
+        }
     }
 
     @Override

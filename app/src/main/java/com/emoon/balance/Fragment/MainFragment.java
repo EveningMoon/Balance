@@ -379,7 +379,7 @@ public class MainFragment extends Fragment {
         });
     }
 
-    private void addSign(int value){ 
+    private void addSign(int value){
         if(value > 0){
             headerText.setText("+"+value);
         }else if(value <= 0){
