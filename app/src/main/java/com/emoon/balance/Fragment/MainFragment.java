@@ -223,18 +223,6 @@ public class MainFragment extends Fragment {
         startActivity(intent);
     }
 
-    public void addUnits(){
-        unitList = new ArrayList<>();
-        unitList.add(UnitType.MINUTE.toString());
-        unitList.add(UnitType.HOUR.toString());
-        unitList.add(UnitType.KM.toString());
-        unitList.add(UnitType.MILE.toString());
-        unitList.add(UnitType.QUANTITY.toString());
-
-        unitAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, unitList);
-        unitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-    }
-
     /**
      * Displays prompt for user to add new transaction.
      */

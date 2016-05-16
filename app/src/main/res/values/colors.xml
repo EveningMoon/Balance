@@ -20,6 +20,24 @@
     <color name="lightPurple">#BE90D4</color>
     <color name="cyan">#1ABC9C</color>
 
+
+
+
+
+    <!-- Theme colors -->
+
+    <color name="day">#FFFFFFFF</color>
+    <color name="night">#FF2C2C2C</color>
+
+    <color name="day_highlight">#FFBDBDBD</color>
+    <color name="night_highlight">#FF212121</color>
+
+    <color name="day_text">#FFFFFFFF</color>
+    <color name="night_text">#FF616161</color>
+
+
+
+
     <color name="transparent">#00ffffff</color>
 
     <!-- colors to be used for category -->

@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.emoon.balance.Etc.Constants;
@@ -23,7 +22,7 @@ import java.nio.channels.FileChannel;
 public class SettingFragment extends Fragment {
 
     private View view;
-    private Button backUpBtn;
+    private ViewGroup resetBtn;
 
     public SettingFragment() {
         // Required empty public constructor
@@ -46,14 +45,14 @@ public class SettingFragment extends Fragment {
     }
 
     private void init() {
-        backUpBtn = (Button) view.findViewById(R.id.backupButton);
+        resetBtn = (ViewGroup) view.findViewById(R.id.resetBtn);
     }
 
     private void addListeners(){
-        backUpBtn.setOnClickListener(new View.OnClickListener() {
+        resetBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "backup click", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "reset click", Toast.LENGTH_SHORT).show();
                 exportDB();
             }
         });
