@@ -112,7 +112,10 @@ public class TransactionFragment extends Fragment{
 
                         transactionAdapter.clear();
                         transactionAdapter.addAll(transactionList);
-                        //costAdapter.notifyDataSetChanged();
+
+                        myRealm.beginTransaction();
+                        transactionRealmResults.get(position).deleteFromRealm();
+                        myRealm.commitTransaction();
 
                         break;
                 }
@@ -167,16 +170,16 @@ public class TransactionFragment extends Fragment{
     }
 
     public void resumeRealm(){
-        if(myRealm == null || myRealm.isClosed()){
+        //if(myRealm == null || myRealm.isClosed()){
             myRealm = Realm.getDefaultInstance();
             Log.d(TAG, "resumeRealm");
-        }
+        //}
     }
 
     public void closeRealm(){
-        if(myRealm != null && !myRealm.isClosed()){
+        //if(myRealm != null && !myRealm.isClosed()){
             myRealm.close();
             Log.d(TAG, "closeRealm");
-        }
+        //}
     }
 }

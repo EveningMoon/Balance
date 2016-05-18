@@ -132,7 +132,6 @@ public class MainFragment extends Fragment {
         motivationTextView.setText(Util.getRandomMotivationalSpeech(getContext()));
 
         addListeners();
-        //addUnits();
 
         getAllTransactions();
     }
@@ -350,36 +349,25 @@ public class MainFragment extends Fragment {
                     if(transactionRealmResults.get(i).getEarnBurn().getType().equalsIgnoreCase(BalanceType.BURN.toString())){
                         for(int k = 0; k < transactionRealmResults.get(i).getEarnBurn().getCostList().size(); k++){
                             if(transactionRealmResults.get(i).getEarnBurn().getCostList().get(k).getUnitType().equalsIgnoreCase(transactionRealmResults.get(i).getCostType())){
-                                //currentCount -= (transactionRealmResults.get(i).getUnitCost() * transactionRealmResults.get(i).getEarnBurn().getCostList().get(k).getPointsEarnPer());
-
-
                                 int pointsPer = transactionRealmResults.get(i).getEarnBurn().getCostList().get(k).getPointsEarnPer();
                                 int unit = transactionRealmResults.get(i).getEarnBurn().getCostList().get(k).getUnitCost();
-
                                 int costUserInput = transactionRealmResults.get(i).getUnitCost();
+                                float thisCost = (((float)costUserInput / unit) * pointsPer);
+                                currentCount -= thisCost;
 
-
-                                Log.d(TAG, "BURN Val is ("+pointsPer+" per "+unit+"). User put "+costUserInput);
-
-                                currentCount -= (float)((costUserInput / unit) * pointsPer);
+                                Log.d(TAG, "EARN Val is ("+pointsPer+" per "+unit+"). User put "+costUserInput+" => "+thisCost);
                             }
                         }
                     }else{
                         for(int k = 0; k < transactionRealmResults.get(i).getEarnBurn().getCostList().size(); k++){
                             if(transactionRealmResults.get(i).getEarnBurn().getCostList().get(k).getUnitType().equalsIgnoreCase(transactionRealmResults.get(i).getCostType())){
-                                //currentCount += (transactionRealmResults.get(i).getUnitCost() * transactionRealmResults.get(i).getEarnBurn().getCostList().get(k).getPointsEarnPer());
-
                                 int pointsPer = transactionRealmResults.get(i).getEarnBurn().getCostList().get(k).getPointsEarnPer();
                                 int unit = transactionRealmResults.get(i).getEarnBurn().getCostList().get(k).getUnitCost();
-
                                 int costUserInput = transactionRealmResults.get(i).getUnitCost();
+                                float thisCost = (((float)costUserInput / unit) * pointsPer);
+                                currentCount += thisCost;
 
-
-                                Log.d(TAG, "EARN Val is ("+pointsPer+" per "+unit+"). User put "+costUserInput);
-
-                                currentCount += (float)((costUserInput / unit) * pointsPer);
-
-
+                                Log.d(TAG, "EARN Val is ("+pointsPer+" per "+unit+"). User put "+costUserInput+" => "+thisCost);
                             }
                         }
                     }
@@ -392,10 +380,11 @@ public class MainFragment extends Fragment {
 
     private void addSign(float value){
         if(value > 0){
-            headerText.setText("+"+value);
+            headerText.setText("+"+Math.round(value));
         }else if(value <= 0){
-            headerText.setText(""+value);
+            headerText.setText(""+Math.round(value));
         }
+        Log.d("ZHAN", "actual  value is "+value);
         setProgressBar(value);
     }
 
@@ -477,6 +466,7 @@ public class MainFragment extends Fragment {
         super.onResume();
         Log.d(TAG, "onResume");
         resumeRealm();
+        getAllTransactions();
     }
 
     @Override
@@ -494,16 +484,16 @@ public class MainFragment extends Fragment {
     }
 
     public void resumeRealm(){
-        if(myRealm == null || myRealm.isClosed()){
+        //if(myRealm == null || myRealm.isClosed()){
             myRealm = Realm.getDefaultInstance();
             Log.d(TAG, "resumeRealm");
-        }
+        //}
     }
 
     public void closeRealm(){
-        if(myRealm != null && !myRealm.isClosed()){
+        //if(myRealm != null && !myRealm.isClosed()){
             myRealm.close();
             Log.d(TAG, "closeRealm");
-        }
+        //}
     }
 }
