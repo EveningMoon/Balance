@@ -1,7 +1,5 @@
 package com.emoon.balance.Activity;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -12,21 +10,11 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-import com.emoon.balance.Etc.Constants;
 import com.emoon.balance.Fragment.MainFragment;
 import com.emoon.balance.Fragment.SettingFragment;
 import com.emoon.balance.Fragment.TransactionFragment;
-import com.emoon.balance.Model.EarnBurn;
 import com.emoon.balance.R;
-import com.emoon.balance.Util.BalancePreference;
-import com.emoon.balance.Util.Util;
-
-import java.util.List;
-
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener{
@@ -44,7 +32,6 @@ public class MainActivity extends BaseActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        initRealm();
         super.onCreate(savedInstanceState);
     }
 
@@ -59,8 +46,6 @@ public class MainActivity extends BaseActivity
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        isFirstTime();
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(
@@ -80,34 +65,6 @@ public class MainActivity extends BaseActivity
         mainFragment = new MainFragment();
         settingFragment = new SettingFragment();
         transactionFragment = new TransactionFragment();
-    }
-
-    private void initRealm(){
-        RealmConfiguration config = new RealmConfiguration.Builder(getApplicationContext())
-                .name(Constants.REALM_NAME)
-                .deleteRealmIfMigrationNeeded()
-                .schemaVersion(1)
-                .build();
-        Realm.setDefaultConfiguration(config);
-    }
-
-    private void isFirstTime(){
-        if(BalancePreference.getFirstTime(this)){
-            BalancePreference.setFirstTime(this);
-            createDefaultItems();
-        }
-    }
-
-    private void createDefaultItems(){
-        List<EarnBurn> listOfActivity = Util.getListOfActivities(getApplicationContext());
-        List<EarnBurn> listOfReward = Util.getListOfRewards(getApplicationContext());
-
-        Realm myRealm = Realm.getDefaultInstance();
-        myRealm.beginTransaction();
-        myRealm.copyToRealmOrUpdate(listOfActivity);
-        myRealm.copyToRealmOrUpdate(listOfReward);
-        myRealm.commitTransaction();
-        myRealm.close();
     }
 
     @Override

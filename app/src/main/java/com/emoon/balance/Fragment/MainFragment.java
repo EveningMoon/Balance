@@ -26,6 +26,7 @@ import com.emoon.balance.Model.EarnBurn;
 import com.emoon.balance.Model.Transaction;
 import com.emoon.balance.Model.UnitType;
 import com.emoon.balance.R;
+import com.emoon.balance.Util.BalancePreference;
 import com.emoon.balance.Util.Util;
 import com.emoon.balance.View.ExtendedNumberPicker;
 import com.zhan.library.CircularView;
@@ -36,6 +37,7 @@ import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
+import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 
 public class MainFragment extends Fragment {
@@ -68,10 +70,6 @@ public class MainFragment extends Fragment {
     private ViewGroup burnGroup;
     private ImageView topBurn1, topBurn2, topBurn3, otherBurn;
 
-    //Spinner
-    private List<String> unitList;
-    private ArrayAdapter<String> unitAdapter;
-
     private Realm myRealm;
 
     private TextView motivationTextView;
@@ -90,12 +88,43 @@ public class MainFragment extends Fragment {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState){
+        initRealm();
+
         super.onActivityCreated(savedInstanceState);
-        init();
+
+        resumeRealm();
+        isFirstTime();
+    }
+
+    private void initRealm(){
+        RealmConfiguration config = new RealmConfiguration.Builder(getContext())
+                .name(Constants.REALM_NAME)
+                .deleteRealmIfMigrationNeeded()
+                .schemaVersion(1)
+                .build();
+        Realm.setDefaultConfiguration(config);
+    }
+
+    private void isFirstTime(){
+        if(BalancePreference.getFirstTime(getContext())){
+            BalancePreference.setFirstTime(getContext());
+            createDefaultItems();
+        }else{
+            init();
+        }
+    }
+
+    private void createDefaultItems(){
+        List<EarnBurn> listOfActivity = Util.getListOfActivities(getContext());
+        List<EarnBurn> listOfReward = Util.getListOfRewards(getContext());
+
+        myRealm.beginTransaction();
+        myRealm.copyToRealmOrUpdate(listOfActivity);
+        myRealm.copyToRealmOrUpdate(listOfReward);
+        myRealm.commitTransaction();
     }
 
     private void init(){
-        resumeRealm();
 
         headerText = (TextView) view.findViewById(R.id.topPanelHeader);
         earnBtn = (ViewGroup) view.findViewById(R.id.earnPanel);
