@@ -346,29 +346,20 @@ public class MainFragment extends Fragment {
 
                 float currentCount = 0;
                 for(int i = 0; i < transactionRealmResults.size(); i++){
-                    if(transactionRealmResults.get(i).getEarnBurn().getType().equalsIgnoreCase(BalanceType.BURN.toString())){
-                        for(int k = 0; k < transactionRealmResults.get(i).getEarnBurn().getCostList().size(); k++){
-                            if(transactionRealmResults.get(i).getEarnBurn().getCostList().get(k).getUnitType().equalsIgnoreCase(transactionRealmResults.get(i).getCostType())){
-                                int pointsPer = transactionRealmResults.get(i).getEarnBurn().getCostList().get(k).getPointsEarnPer();
-                                int unit = transactionRealmResults.get(i).getEarnBurn().getCostList().get(k).getUnitCost();
-                                int costUserInput = transactionRealmResults.get(i).getUnitCost();
-                                float thisCost = (((float)costUserInput / unit) * pointsPer);
+                    for(int k = 0; k < transactionRealmResults.get(i).getEarnBurn().getCostList().size(); k++){
+                        if(transactionRealmResults.get(i).getEarnBurn().getCostList().get(k).getUnitType().equalsIgnoreCase(transactionRealmResults.get(i).getCostType())){
+                            int pointsPer = transactionRealmResults.get(i).getEarnBurn().getCostList().get(k).getPointsEarnPer();
+                            int unit = transactionRealmResults.get(i).getEarnBurn().getCostList().get(k).getUnitCost();
+                            int costUserInput = transactionRealmResults.get(i).getUnitCost();
+                            float thisCost = (((float)costUserInput / unit) * pointsPer);
+
+                            if(transactionRealmResults.get(i).getEarnBurn().getType().equalsIgnoreCase(BalanceType.BURN.toString())){
                                 currentCount -= thisCost;
-
-                                Log.d(TAG, "EARN Val is ("+pointsPer+" per "+unit+"). User put "+costUserInput+" => "+thisCost);
-                            }
-                        }
-                    }else{
-                        for(int k = 0; k < transactionRealmResults.get(i).getEarnBurn().getCostList().size(); k++){
-                            if(transactionRealmResults.get(i).getEarnBurn().getCostList().get(k).getUnitType().equalsIgnoreCase(transactionRealmResults.get(i).getCostType())){
-                                int pointsPer = transactionRealmResults.get(i).getEarnBurn().getCostList().get(k).getPointsEarnPer();
-                                int unit = transactionRealmResults.get(i).getEarnBurn().getCostList().get(k).getUnitCost();
-                                int costUserInput = transactionRealmResults.get(i).getUnitCost();
-                                float thisCost = (((float)costUserInput / unit) * pointsPer);
+                            }else{
                                 currentCount += thisCost;
-
-                                Log.d(TAG, "EARN Val is ("+pointsPer+" per "+unit+"). User put "+costUserInput+" => "+thisCost);
                             }
+
+                            Log.d(TAG, transactionRealmResults.get(i).getEarnBurn().getType()+" Val is ("+pointsPer+" per "+unit+"). User put "+costUserInput+" => "+thisCost);
                         }
                     }
                 }
