@@ -15,41 +15,11 @@ import io.realm.Realm;
 public abstract class BaseActivity extends AppCompatActivity {
     private static final String TAG = "BaseActivity";
 
-    protected Realm myRealm;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getActivityLayout());
         init();
-    }
-
-    @Override
-    public void onStart(){
-        super.onStart();
-        Log.d(TAG, "onStart");
-        resumeRealm();
-    }
-
-    @Override
-    public void onResume(){
-        super.onResume();
-        Log.d(TAG, "onResume");
-        resumeRealm();
-    }
-
-    @Override
-    public void onPause(){
-        super.onPause();
-        Log.d(TAG, "onPause");
-        closeRealm();
-    }
-
-    @Override
-    public void onStop(){
-        super.onStop();
-        Log.d(TAG, "onStop");
-        closeRealm();
     }
 
     /**
@@ -65,24 +35,6 @@ public abstract class BaseActivity extends AppCompatActivity {
      * Note: I would put init in the onStart function but it will call multiple times when the user
      * comes back into the activity which is unnecessary.
      */
-    protected void init(){
-        resumeRealm();
-    }
+    protected abstract void init();
 
-    public void resumeRealm(){
-        if(myRealm == null || myRealm.isClosed()){
-            myRealm = Realm.getDefaultInstance();
-            Log.d(TAG, "resumeRealm");
-        }
-    }
-
-    /**
-     * Close Realm if possible
-     */
-    public void closeRealm(){
-        if(myRealm != null && !myRealm.isClosed()){
-            myRealm.close();
-            Log.d(TAG, "closeRealm");
-        }
-    }
 }

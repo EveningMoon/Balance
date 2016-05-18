@@ -20,6 +20,7 @@ import com.emoon.balance.Fragment.SettingFragment;
 import com.emoon.balance.Fragment.TransactionFragment;
 import com.emoon.balance.Model.EarnBurn;
 import com.emoon.balance.R;
+import com.emoon.balance.Util.BalancePreference;
 import com.emoon.balance.Util.Util;
 
 import java.util.List;
@@ -54,8 +55,6 @@ public class MainActivity extends BaseActivity
 
     @Override
     protected void init(){
-        super.init();
-
         createFragments();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -93,17 +92,9 @@ public class MainActivity extends BaseActivity
     }
 
     private void isFirstTime(){
-        SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
-        boolean isFirstTIme = sharedPreferences.getBoolean(Constants.FIRST_TIME, true);
-
-        if(isFirstTIme){
-            Toast.makeText(getApplicationContext(), "first time", Toast.LENGTH_SHORT).show();
+        if(BalancePreference.getFirstTime(this)){
+            BalancePreference.setFirstTime(this);
             createDefaultItems();
-
-            //set Constants.FIRST_TIME shared preferences to false
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putBoolean(Constants.FIRST_TIME, false);
-            editor.apply();
         }
     }
 
@@ -111,10 +102,12 @@ public class MainActivity extends BaseActivity
         List<EarnBurn> listOfActivity = Util.getListOfActivities(getApplicationContext());
         List<EarnBurn> listOfReward = Util.getListOfRewards(getApplicationContext());
 
+        Realm myRealm = Realm.getDefaultInstance();
         myRealm.beginTransaction();
         myRealm.copyToRealmOrUpdate(listOfActivity);
         myRealm.copyToRealmOrUpdate(listOfReward);
         myRealm.commitTransaction();
+        myRealm.close();
     }
 
     @Override

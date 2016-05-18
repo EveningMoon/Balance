@@ -25,7 +25,7 @@ import java.util.List;
 import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 
-public class ListActivity extends BaseActivity {
+public class ListActivity extends BaseRealmActivity {
 
     private static final String TAG = "ListActivity";
 
@@ -106,7 +106,6 @@ public class ListActivity extends BaseActivity {
 
     @Override
     protected void init(){
-        super.init();
         fab = (FloatingActionButton) findViewById(R.id.fab);
         listView = (ListView) findViewById(R.id.listView);
         itemList = new ArrayList<>();

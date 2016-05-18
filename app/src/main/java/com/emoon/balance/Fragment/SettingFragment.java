@@ -1,5 +1,7 @@
 package com.emoon.balance.Fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,15 +11,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.emoon.balance.Etc.Constants;
 import com.emoon.balance.R;
+import com.emoon.balance.Util.BalancePreference;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.channels.FileChannel;
+
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
 public class SettingFragment extends Fragment {
 
@@ -53,7 +60,7 @@ public class SettingFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(), "reset click", Toast.LENGTH_SHORT).show();
-                exportDB();
+                resetData();
             }
         });
     }
@@ -111,5 +118,45 @@ public class SettingFragment extends Fragment {
 
         // start email intent
         startActivity(Intent.createChooser(intent, "YOUR CHOOSER TITLE"));
+    }
+
+    private void resetData(){
+        // get alertdialog_generic_message.xml view
+        LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+
+        //It is ok to put null as the 2nd parameter as this custom layout is being attached to a
+        //AlertDialog, where it not necessary to know what the parent is.
+        View promptView = layoutInflater.inflate(R.layout.alertdialog_generic_message, null);
+
+        TextView message = (TextView) promptView.findViewById(R.id.genericMessage);
+
+        message.setText("Resetting data will remove all data you've entered, are you sure you want to reset?");
+
+        new AlertDialog.Builder(getActivity())
+                .setTitle("Confirm Delete")
+                .setView(promptView)
+                .setCancelable(true)
+                .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Toast.makeText(getContext(), "RESETTING...", Toast.LENGTH_SHORT).show();
+
+                        RealmConfiguration config = new RealmConfiguration.Builder(getContext())
+                                .name(Constants.REALM_NAME)
+                                .deleteRealmIfMigrationNeeded()
+                                .schemaVersion(1)
+                                .build();
+
+                        BalancePreference.resetFirstTime(getContext());
+                        Realm.deleteRealm(config);
+                    }
+                })
+                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .create()
+                .show();
     }
 }

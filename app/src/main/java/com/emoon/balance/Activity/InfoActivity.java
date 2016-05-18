@@ -42,7 +42,7 @@ import java.util.Set;
 import io.realm.RealmList;
 import io.realm.RealmResults;
 
-public class InfoActivity extends BaseActivity {
+public class InfoActivity extends BaseRealmActivity {
 
     private static final String TAG = "InfoActivity";
 
