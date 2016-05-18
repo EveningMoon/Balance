@@ -10,10 +10,12 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.emoon.balance.Fragment.MainFragment;
 import com.emoon.balance.Fragment.SettingFragment;
 import com.emoon.balance.Fragment.TransactionFragment;
+import com.emoon.balance.Model.BalanceType;
 import com.emoon.balance.R;
 
 public class MainActivity extends BaseActivity
@@ -93,6 +95,8 @@ public class MainActivity extends BaseActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Toast.makeText(this, "click settinsg menu", Toast.LENGTH_SHORT).show();
+            mainFragment.getTop3(BalanceType.BURN);
             return true;
         }
 

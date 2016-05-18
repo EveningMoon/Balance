@@ -32,8 +32,17 @@ import com.emoon.balance.View.ExtendedNumberPicker;
 import com.zhan.library.CircularView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
@@ -398,6 +407,56 @@ public class MainFragment extends Fragment {
         });
     }
 
+    public void getTop3(final BalanceType type){
+        final RealmResults<Transaction> transactionRealmResults = myRealm.where(Transaction.class).equalTo("earnBurn.type",type.toString()).findAllAsync();
+        transactionRealmResults.addChangeListener(new RealmChangeListener() {
+            @Override
+            public void onChange() {
+                transactionRealmResults.removeChangeListener(this);
+
+                Log.d(TAG, "there are "+transactionRealmResults.size()+" transactions for type :"+type.toString());
+
+                Map<String,Integer> transactionMap = new HashMap<>();
+
+                for(int i = 0; i < transactionRealmResults.size(); i++){
+                    if (transactionMap.containsKey(transactionRealmResults.get(i).getEarnBurn().getId())) {
+                        int origValue = transactionMap.get(transactionRealmResults.get(i).getEarnBurn().getId());
+                        transactionMap.put(transactionRealmResults.get(i).getEarnBurn().getId(), origValue+1);
+                    } else {
+                        transactionMap.put(transactionRealmResults.get(i).getEarnBurn().getId(), 1);
+                    }
+                }
+
+                //Alternative
+                List<String> sortedList = Util.sortByComparatorList(transactionMap);
+
+                for (int i = 0; i < sortedList.size(); i++) {
+                    Log.d(TAG, i+" : "+sortedList.get(i));
+                }
+
+                //need to handle if the string is empty or null
+
+                top3EarnItems(type.toString(), sortedList.get(0), sortedList.get(1), sortedList.get(2));
+            }
+        });
+    }
+
+    private void top3EarnItems(String type, String first, String second, String third){
+        EarnBurn earnBurn1 = myRealm.where(EarnBurn.class).equalTo("id", first).equalTo("type",type).findFirst();
+        EarnBurn earnBurn2 = myRealm.where(EarnBurn.class).equalTo("id", second).equalTo("type",type).findFirst();
+        EarnBurn earnBurn3 = myRealm.where(EarnBurn.class).equalTo("id", third).equalTo("type",type).findFirst();
+
+        if(type.equalsIgnoreCase(BalanceType.EARN.toString())) {
+            topEarn1.setImageResource(Util.getIconID(getContext(), earnBurn1.getIcon()));
+            topEarn2.setImageResource(Util.getIconID(getContext(), earnBurn2.getIcon()));
+            topEarn3.setImageResource(Util.getIconID(getContext(), earnBurn3.getIcon()));
+        }else{
+            topBurn1.setImageResource(Util.getIconID(getContext(), earnBurn1.getIcon()));
+            topBurn2.setImageResource(Util.getIconID(getContext(), earnBurn2.getIcon()));
+            topBurn3.setImageResource(Util.getIconID(getContext(), earnBurn3.getIcon()));
+        }
+    }
+
     private void addSign(float value){
         if(value > 0){
             headerText.setText("+"+Math.round(value));
@@ -473,6 +532,12 @@ public class MainFragment extends Fragment {
             headerText.setTextColor(ContextCompat.getColor(getContext(), R.color.blue));
         }
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Lifecycle
+    //
+    ////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
     public void onStart(){

@@ -53,6 +53,7 @@ public abstract class BaseRealmActivity extends BaseActivity {
      * Note: I would put init in the onStart function but it will call multiple times when the user
      * comes back into the activity which is unnecessary.
      */
+    @Override
     protected void init(){
         resumeRealm();
     }

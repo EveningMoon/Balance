@@ -106,6 +106,8 @@ public class ListActivity extends BaseRealmActivity {
 
     @Override
     protected void init(){
+        super.init();
+
         fab = (FloatingActionButton) findViewById(R.id.fab);
         listView = (ListView) findViewById(R.id.listView);
         itemList = new ArrayList<>();
