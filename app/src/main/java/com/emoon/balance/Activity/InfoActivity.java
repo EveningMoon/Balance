@@ -67,8 +67,6 @@ public class InfoActivity extends BaseRealmActivity {
 
     @Override
     protected void init(){
-        super.init();
-
         costListView = (SwipeMenuListView) findViewById(R.id.costListView);
         costList = new ArrayList<>();
         costAdapter = new CostAdapter(this, costList);
