@@ -203,12 +203,6 @@ public class ListActivity extends BaseRealmActivity {
                 editItem.setWidth(Util.dp2px(getBaseContext(), 90));
                 editItem.setIcon(R.drawable.svg_ic_edit);
                 menu.addMenuItem(editItem);
-
-                SwipeMenuItem deleteItem = new SwipeMenuItem(getBaseContext());
-                deleteItem.setBackground(R.color.red);
-                deleteItem.setWidth(Util.dp2px(getBaseContext(), 90));
-                deleteItem.setIcon(R.drawable.svg_ic_delete);
-                menu.addMenuItem(deleteItem);
             }
         };
         //set creator
@@ -224,11 +218,6 @@ public class ListActivity extends BaseRealmActivity {
                         Toast.makeText(getBaseContext(), "edit on position"+position, Toast.LENGTH_SHORT).show();
                         editItem(position);
                         break;
-                    case 1:
-                        //delete
-                        deleteItem(position);
-                        Toast.makeText(getBaseContext(), "delete on position"+position, Toast.LENGTH_SHORT).show();
-                        break;
                 }
 
                 //false: close the menu
@@ -243,19 +232,6 @@ public class ListActivity extends BaseRealmActivity {
         intent.putExtra(Constants.REQUEST_IS_EDIT_EARNBURN, true);
         intent.putExtra(Constants.REQUEST_EDIT_EARNBURN, itemList.get(position).getId());
         startActivity(intent);
-    }
-
-    private void deleteItem(int position){
-        //remove from realm
-        myRealm.beginTransaction();
-        realmResults.get(position).deleteFromRealm();
-        myRealm.commitTransaction();
-
-        //remove from temp list
-        Log.d("ZSS", "b4 delete there are "+itemList.size());
-        listAdapter.remove(itemList.get(position));
-        itemList.remove(position);
-        Log.d("ZSS", "after delete there are "+itemList.size());
     }
 
     /**
