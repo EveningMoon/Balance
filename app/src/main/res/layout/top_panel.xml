@@ -7,11 +7,14 @@
     android:paddingRight="@dimen/main_page_padding"
     android:paddingBottom="@dimen/main_page_padding">
 
-    <TextView
+    <com.emoon.balance.View.AutoResizeTextView
         android:id="@+id/topPanelHeader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center|bottom"
         android:text="0"
+        android:maxLines="1"
+        android:ellipsize="none"
         android:textSize="@dimen/text_toobig"
         android:textColor="@color/gray"
         android:layout_centerHorizontal="true"

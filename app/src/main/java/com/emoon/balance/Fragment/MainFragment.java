@@ -67,7 +67,6 @@ public class MainFragment extends Fragment {
     private ImageView topEarn1Icon, topEarn2Icon, topEarn3Icon, otherEarnIcon;
 
     private ViewGroup burnGroup;
-    //private ViewGroup topBurn1, topBurn2, topBurn3, otherBurn;
     private ImageView topBurn1Icon, topBurn2Icon, topBurn3Icon, otherBurnIcon;
 
     private Realm myRealm;
