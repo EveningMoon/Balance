@@ -159,8 +159,10 @@ public class MainFragment extends Fragment {
         motivationTextView = (TextView) view.findViewById(R.id.topPanelIntro);
         motivationTextView.setText(Util.getRandomMotivationalSpeech(getContext()));
 
-        addListeners();
+        //set paddings on topEarn1Icons and its siblings to depend on screen size
 
+
+        addListeners();
         getAllTransactions();
     }
 
