@@ -84,4 +84,12 @@
         <item name="android:layout_marginBottom">5dp</item>
     </style>
 
+    <style name="CircularViewStyle_unselected">
+        <item name="cv_iconTopPadding">12dp</item>
+        <item name="cv_iconBottomPadding">12dp</item>
+        <item name="cv_iconLeftPadding">12dp</item>
+        <item name="cv_iconRightPadding">12dp</item>
+        <item name="cv_bgRadius">25dp</item>
+    </style>
+
 </resources>

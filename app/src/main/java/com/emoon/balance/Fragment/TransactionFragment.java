@@ -181,13 +181,12 @@ public class TransactionFragment extends Fragment{
         //Circular view
         CircularView cv = (CircularView) promptView.findViewById(R.id.genericCircularView);
         cv.setIconResource(Util.getIconID(getContext(), data.getIcon()));
+        cv.setIconColor(R.color.white);
 
         if(data.getType().equalsIgnoreCase(BalanceType.BURN.toString())){
-            cv.setCircleColor(R.color.dark_blue);
-            cv.setIconColor(R.color.icon_blue);
+            cv.setCircleColor(R.color.blue);
         }else{
-            cv.setCircleColor(R.color.dark_red);
-            cv.setIconColor(R.color.icon_red);
+            cv.setCircleColor(R.color.red);
         }
 
         //Edit text

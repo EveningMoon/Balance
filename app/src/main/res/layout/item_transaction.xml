@@ -4,14 +4,15 @@
     android:layout_height="match_parent"
     android:padding="5dp">
 
-    <ImageView
+    <com.zhan.library.CircularView
         android:id="@+id/transactionIcon"
+        style="@style/CircularViewStyle_unselected"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="false"
         android:layout_alignParentBottom="false"
         android:layout_alignParentLeft="false"
-        android:layout_centerVertical="true" />
+        android:layout_centerVertical="true"/>
 
     <LinearLayout
         android:layout_width="wrap_content"

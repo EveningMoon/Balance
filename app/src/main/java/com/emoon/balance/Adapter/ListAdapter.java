@@ -1,18 +1,17 @@
 package com.emoon.balance.Adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.emoon.balance.Model.BalanceType;
 import com.emoon.balance.Model.EarnBurn;
 import com.emoon.balance.R;
 import com.emoon.balance.Util.Util;
+import com.zhan.library.CircularView;
 
 import java.util.List;
 
@@ -27,7 +26,7 @@ public class ListAdapter extends ArrayAdapter<EarnBurn> {
 
     static class ViewHolder {
         public TextView name;
-        public ImageView iconView;
+        public CircularView iconView;
     }
 
     public ListAdapter(Context context, List<EarnBurn> earnBurnList){
@@ -54,7 +53,7 @@ public class ListAdapter extends ArrayAdapter<EarnBurn> {
             convertView = inflater.inflate(R.layout.item_listview_earn_burn, parent, false);
 
             viewHolder.name = (TextView) convertView.findViewById(R.id.earnBurnName);
-            viewHolder.iconView = (ImageView) convertView.findViewById(R.id.genericIcon);
+            viewHolder.iconView = (CircularView) convertView.findViewById(R.id.genericIcon);
 
             // The tag can be any Object, this just happens to be the ViewHolder
             convertView.setTag(viewHolder);
@@ -69,12 +68,13 @@ public class ListAdapter extends ArrayAdapter<EarnBurn> {
         viewHolder.name.setText(earnBurn.getName());
 
         if(earnBurn.getType().equalsIgnoreCase(BalanceType.BURN.toString())){
-            viewHolder.iconView.setColorFilter(Color.parseColor(context.getResources().getString(0 + R.color.icon_blue)));
+            viewHolder.iconView.setCircleColor(R.color.blue);
         }else{
-            viewHolder.iconView.setColorFilter(Color.parseColor(context.getResources().getString(0 + R.color.icon_red)));
+            viewHolder.iconView.setCircleColor(R.color.red);
         }
 
-        viewHolder.iconView.setImageResource(Util.getIconID(context, earnBurn.getIcon()));
+        viewHolder.iconView.setIconColor(R.color.white);
+        viewHolder.iconView.setIconResource(Util.getIconID(context, earnBurn.getIcon()));
 
         return convertView;
     }
