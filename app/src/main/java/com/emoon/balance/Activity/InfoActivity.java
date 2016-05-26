@@ -28,6 +28,7 @@ import com.emoon.balance.Etc.Constants;
 import com.emoon.balance.Model.BalanceType;
 import com.emoon.balance.Model.Cost;
 import com.emoon.balance.Model.EarnBurn;
+import com.emoon.balance.Model.IconType;
 import com.emoon.balance.Model.UnitType;
 import com.emoon.balance.R;
 import com.emoon.balance.Util.Util;
@@ -264,7 +265,6 @@ public class InfoActivity extends BaseRealmActivity {
                     public void onClick(DialogInterface dialog, int id) {
                         Log.d("ZHAP", "click done on dialog "+position);
 
-
                         if (Util.isNotNullNotEmptyNotWhiteSpaceOnlyByJava(pointsEditText.getText().toString()) &&
                                 Util.isNotNullNotEmptyNotWhiteSpaceOnlyByJava(valueEditText.getText().toString())) {
 
@@ -289,8 +289,6 @@ public class InfoActivity extends BaseRealmActivity {
     }
 
     int selectedNumberPickerIndex;
-
-
     private List<String> unitsThisEarnBurnHave;
 
     private void createNewCostDialog(){
@@ -480,7 +478,9 @@ public class InfoActivity extends BaseRealmActivity {
                 earnBurn.setId(Util.generateUUID());
                 earnBurn.setName(nameEditText.getText().toString());
                 earnBurn.setType(balanceType);
-                earnBurn.setIcon("svg_running_stick_figure");
+                earnBurn.setIconType(IconType.NUMBER.toString());
+
+                //earnBurn.setIcon("svg_running_stick_figure");
 
                 Log.d(TAG, "------- SAVING ------");
                 for(int i = 0; i < costList.size(); i++){

@@ -118,6 +118,7 @@ public class MainFragment extends Fragment {
         if(BalancePreference.getFirstTime(getContext())){
             BalancePreference.setFirstTime(getContext());
             createDefaultItems();
+            init();
         }else{
             init();
         }
@@ -134,7 +135,6 @@ public class MainFragment extends Fragment {
     }
 
     private void init(){
-
         headerText = (TextView) view.findViewById(R.id.topPanelHeader);
         earnBtn = (ViewGroup) view.findViewById(R.id.earnPanel);
         burnBtn = (ViewGroup) view.findViewById(R.id.burnPanel);

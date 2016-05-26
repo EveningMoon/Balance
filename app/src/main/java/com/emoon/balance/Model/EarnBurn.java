@@ -2,6 +2,7 @@ package com.emoon.balance.Model;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
+import io.realm.annotations.Ignore;
 import io.realm.annotations.PrimaryKey;
 
 public class EarnBurn extends RealmObject {
@@ -11,6 +12,7 @@ public class EarnBurn extends RealmObject {
     private String type;
     private String icon;
     private RealmList<Cost> costList;
+    private String iconType;
 
     public EarnBurn(){
         
@@ -54,5 +56,13 @@ public class EarnBurn extends RealmObject {
 
     public void setCostList(RealmList<Cost> costList) {
         this.costList = costList;
+    }
+
+    public String getIconType() {
+        return iconType;
+    }
+
+    public void setIconType(String iconType) {
+        this.iconType = iconType;
     }
 }

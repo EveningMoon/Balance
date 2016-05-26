@@ -1,6 +1,7 @@
 package com.emoon.balance.Adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import com.emoon.balance.Model.BalanceType;
 import com.emoon.balance.Model.EarnBurn;
+import com.emoon.balance.Model.IconType;
 import com.emoon.balance.R;
 import com.emoon.balance.Util.Util;
 import com.zhan.library.CircularView;
@@ -74,7 +76,16 @@ public class ListAdapter extends ArrayAdapter<EarnBurn> {
         }
 
         viewHolder.iconView.setIconColor(R.color.white);
-        viewHolder.iconView.setIconResource(Util.getIconID(context, earnBurn.getIcon()));
+
+        Log.d("ZHAPS","earnBurn : "+earnBurn.getName() + " -> "+earnBurn.getIconType() );
+        if(earnBurn.getIconType().equalsIgnoreCase(IconType.ICON.toString())){
+            viewHolder.iconView.setIconResource(Util.getIconID(context, earnBurn.getIcon()));
+        }else{
+            viewHolder.iconView.setIconResource(0);
+            viewHolder.iconView.setText((""+Util.getFirstCharacterFromString(earnBurn.getName())).toUpperCase());
+            viewHolder.iconView.setTextColor(R.color.white);
+            viewHolder.iconView.setTextSizeInDP(30);
+        }
 
         return convertView;
     }

@@ -7,6 +7,7 @@ import android.util.TypedValue;
 import com.emoon.balance.Model.BalanceType;
 import com.emoon.balance.Model.Cost;
 import com.emoon.balance.Model.EarnBurn;
+import com.emoon.balance.Model.IconType;
 import com.emoon.balance.Model.UnitType;
 import com.emoon.balance.R;
 
@@ -48,6 +49,7 @@ public final class Util {
             activity.setName(context.getResources().getString(s1));
             activity.setType(BalanceType.EARN.toString());
             activity.setIcon(context.getResources().getResourceEntryName(s2));
+            activity.setIconType(IconType.ICON.toString());
 
             activityList.add(activity);
         }
@@ -70,6 +72,7 @@ public final class Util {
             activity.setName(context.getResources().getString(s1));
             activity.setType(BalanceType.BURN.toString());
             activity.setIcon(context.getResources().getResourceEntryName(s2));
+            activity.setIconType(IconType.ICON.toString());
 
             activityList.add(activity);
         }
@@ -187,4 +190,7 @@ public final class Util {
         return sortedList;
     }
 
+    public static char getFirstCharacterFromString(String value){
+        return value.toCharArray()[0];
+    }
 }
