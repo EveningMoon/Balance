@@ -23,7 +23,7 @@
             android:background="@color/colorPrimaryDark"/>
 
         <LinearLayout
-            android:id="@+id/maxBtn"
+            android:id="@+id/minMaxBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -34,10 +34,10 @@
             <TextView style="@style/SettingsTextViewButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Set Max"/>
+                android:text="Set Min/Max"/>
 
             <TextView style="@style/SettingsTextViewContentStyle"
-                android:id="@+id/themeContent"
+                android:id="@+id/minMaxContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Current : 20"/>

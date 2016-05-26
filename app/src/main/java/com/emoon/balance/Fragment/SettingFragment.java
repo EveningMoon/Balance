@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,7 +30,9 @@ import io.realm.RealmConfiguration;
 public class SettingFragment extends Fragment {
 
     private View view;
-    private ViewGroup resetBtn;
+    private ViewGroup resetBtn, minMaxBtn;
+    private TextView minMaxContent;
+
 
     public SettingFragment() {
         // Required empty public constructor
@@ -52,9 +55,18 @@ public class SettingFragment extends Fragment {
 
     private void init() {
         resetBtn = (ViewGroup) view.findViewById(R.id.resetBtn);
+        minMaxBtn = (ViewGroup) view.findViewById(R.id.minMaxBtn);
+        minMaxContent = (TextView) view.findViewById(R.id.minMaxContent);
     }
 
     private void addListeners(){
+        minMaxBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createMinMaxPopup();
+            }
+        });
+
         resetBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -158,4 +170,49 @@ public class SettingFragment extends Fragment {
                 .create()
                 .show();
     }
+
+
+    private void createMinMaxPopup(){
+        // get prompts.xml view
+        LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+
+        //It is ok to put null as the 2nd parameter as this custom layout is being attached to a
+        //AlertDialog, where it not necessary to know what the parent is.
+        View promptView = layoutInflater.inflate(R.layout.alertdialog_generic_edittext, null);
+
+        final EditText input = (EditText) promptView.findViewById(R.id.genericEditText);
+        input.setText("");
+        input.setHint("Min/Max");
+
+         /*
+        TextView title = (TextView) promptView.findViewById(R.id.genericTitle);
+        title.setText("Add Account");
+        */
+
+        new AlertDialog.Builder(getActivity())
+                .setView(promptView)
+                .setCancelable(true)
+                .setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        /*myRealm.beginTransaction();
+                        Account newAccount = myRealm.createObject(Account.class);
+                        newAccount.setId(Util.generateUUID());
+                        newAccount.setName(input.getText().toString());
+                        myRealm.commitTransaction();
+
+                        Account acc = myRealm.copyFromRealm(newAccount);
+                        accountList.add(acc);
+                        accountListAdapter.setAccountList(accountList);*/
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .create()
+                .show();
+    }
+
 }
