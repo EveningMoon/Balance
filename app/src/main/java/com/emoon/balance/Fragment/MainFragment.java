@@ -10,12 +10,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 import com.emoon.balance.Activity.InfoActivity;
@@ -24,7 +22,6 @@ import com.emoon.balance.Etc.Constants;
 import com.emoon.balance.Model.BalanceType;
 import com.emoon.balance.Model.EarnBurn;
 import com.emoon.balance.Model.Transaction;
-import com.emoon.balance.Model.UnitType;
 import com.emoon.balance.R;
 import com.emoon.balance.Util.BalancePreference;
 import com.emoon.balance.Util.Util;
@@ -32,17 +29,10 @@ import com.emoon.balance.View.ExtendedNumberPicker;
 import com.zhan.library.CircularView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
@@ -74,10 +64,11 @@ public class MainFragment extends Fragment {
     private List<EarnBurn> burnList;
 
     private ViewGroup earnGroup;
-    private ImageView topEarn1, topEarn2, topEarn3, otherEarn;
+    private ImageView topEarn1Icon, topEarn2Icon, topEarn3Icon, otherEarnIcon;
 
     private ViewGroup burnGroup;
-    private ImageView topBurn1, topBurn2, topBurn3, otherBurn;
+    //private ViewGroup topBurn1, topBurn2, topBurn3, otherBurn;
+    private ImageView topBurn1Icon, topBurn2Icon, topBurn3Icon, otherBurnIcon;
 
     private Realm myRealm;
 
@@ -148,15 +139,15 @@ public class MainFragment extends Fragment {
         earnGroup = (LinearLayout) view.findViewById(R.id.earnGroup);
         burnGroup = (LinearLayout) view.findViewById(R.id.burnGroup);
 
-        topEarn1 = (ImageView) view.findViewById(R.id.topEarn1);
-        topEarn2 = (ImageView) view.findViewById(R.id.topEarn2);
-        topEarn3 = (ImageView) view.findViewById(R.id.topEarn3);
-        otherEarn = (ImageView) view.findViewById(R.id.otherEarn);
+        topEarn1Icon = (ImageView) view.findViewById(R.id.topEarn1);
+        topEarn2Icon = (ImageView) view.findViewById(R.id.topEarn2);
+        topEarn3Icon = (ImageView) view.findViewById(R.id.topEarn3);
+        otherEarnIcon = (ImageView) view.findViewById(R.id.otherEarn);
 
-        topBurn1 = (ImageView) view.findViewById(R.id.topBurn1);
-        topBurn2 = (ImageView) view.findViewById(R.id.topBurn2);
-        topBurn3 = (ImageView) view.findViewById(R.id.topBurn3);
-        otherBurn = (ImageView) view.findViewById(R.id.otherBurn);
+        topBurn1Icon = (ImageView) view.findViewById(R.id.topBurn1);
+        topBurn2Icon = (ImageView) view.findViewById(R.id.topBurn2);
+        topBurn3Icon = (ImageView) view.findViewById(R.id.topBurn3);
+        otherBurnIcon = (ImageView) view.findViewById(R.id.otherBurn);
 
         burnList = new ArrayList<>();
         earnList = new ArrayList<>();
@@ -189,7 +180,7 @@ public class MainFragment extends Fragment {
             }
         });
 
-        topBurn1.setOnClickListener(new View.OnClickListener() {
+        topBurn1Icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("ZHAN", "top 1 burn is " + burnList.get(0).getName());
@@ -197,7 +188,7 @@ public class MainFragment extends Fragment {
             }
         });
 
-        topBurn2.setOnClickListener(new View.OnClickListener() {
+        topBurn2Icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("ZHAN", "top  2 burn is "+burnList.get(1).getName());
@@ -205,7 +196,7 @@ public class MainFragment extends Fragment {
             }
         });
 
-        topBurn3.setOnClickListener(new View.OnClickListener() {
+        topBurn3Icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("ZHAN", "top 3 burn is " + burnList.get(2).getName());
@@ -213,7 +204,7 @@ public class MainFragment extends Fragment {
             }
         });
 
-        otherBurn.setOnClickListener(new View.OnClickListener() {
+        otherBurnIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("ZHAN", "other burn ");
@@ -221,7 +212,7 @@ public class MainFragment extends Fragment {
             }
         });
 
-        topEarn1.setOnClickListener(new View.OnClickListener() {
+        topEarn1Icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("ZHAN", "top 1 earn is " + earnList.get(0).getName());
@@ -229,7 +220,7 @@ public class MainFragment extends Fragment {
             }
         });
 
-        topEarn2.setOnClickListener(new View.OnClickListener() {
+        topEarn2Icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("ZHAN", "top  2 earn is "+earnList.get(1).getName());
@@ -237,7 +228,7 @@ public class MainFragment extends Fragment {
             }
         });
 
-        topEarn3.setOnClickListener(new View.OnClickListener() {
+        topEarn3Icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("ZHAN", "top 3 earn is " + earnList.get(2).getName());
@@ -245,7 +236,7 @@ public class MainFragment extends Fragment {
             }
         });
 
-        otherEarn.setOnClickListener(new View.OnClickListener() {
+        otherEarnIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("ZHAN", "other earn ");
@@ -446,13 +437,13 @@ public class MainFragment extends Fragment {
         EarnBurn earnBurn3 = myRealm.where(EarnBurn.class).equalTo("id", third).equalTo("type",type).findFirst();
 
         if(type.equalsIgnoreCase(BalanceType.EARN.toString())) {
-            topEarn1.setImageResource(Util.getIconID(getContext(), earnBurn1.getIcon()));
-            topEarn2.setImageResource(Util.getIconID(getContext(), earnBurn2.getIcon()));
-            topEarn3.setImageResource(Util.getIconID(getContext(), earnBurn3.getIcon()));
+            topEarn1Icon.setImageResource(Util.getIconID(getContext(), earnBurn1.getIcon()));
+            topEarn2Icon.setImageResource(Util.getIconID(getContext(), earnBurn2.getIcon()));
+            topEarn3Icon.setImageResource(Util.getIconID(getContext(), earnBurn3.getIcon()));
         }else{
-            topBurn1.setImageResource(Util.getIconID(getContext(), earnBurn1.getIcon()));
-            topBurn2.setImageResource(Util.getIconID(getContext(), earnBurn2.getIcon()));
-            topBurn3.setImageResource(Util.getIconID(getContext(), earnBurn3.getIcon()));
+            topBurn1Icon.setImageResource(Util.getIconID(getContext(), earnBurn1.getIcon()));
+            topBurn2Icon.setImageResource(Util.getIconID(getContext(), earnBurn2.getIcon()));
+            topBurn3Icon.setImageResource(Util.getIconID(getContext(), earnBurn3.getIcon()));
         }
     }
 
@@ -477,10 +468,10 @@ public class MainFragment extends Fragment {
                     earnView.setVisibility(View.GONE);
                     earnGroup.setVisibility(View.VISIBLE);
 
-                    topEarn1.setImageResource(Util.getIconID(getContext(), earnList.get(0).getIcon()));
-                    topEarn1.setImageResource(Util.getIconID(getContext(), earnList.get(1).getIcon()));
-                    topEarn1.setImageResource(Util.getIconID(getContext(), earnList.get(2).getIcon()));
-                    otherEarn.setImageResource(R.drawable.svg_other);
+                    topEarn1Icon.setImageResource(Util.getIconID(getContext(), earnList.get(0).getIcon()));
+                    topEarn1Icon.setImageResource(Util.getIconID(getContext(), earnList.get(1).getIcon()));
+                    topEarn1Icon.setImageResource(Util.getIconID(getContext(), earnList.get(2).getIcon()));
+                    otherEarnIcon.setImageResource(R.drawable.svg_other);
 
                     earnRealmResults.removeChangeListener(this);
                 }
@@ -502,10 +493,12 @@ public class MainFragment extends Fragment {
                     burnGroup.setVisibility(View.VISIBLE);
                     burnView.setVisibility(View.GONE);
 
-                    topBurn1.setImageResource(Util.getIconID(getContext(), burnList.get(0).getIcon()));
-                    topBurn2.setImageResource(Util.getIconID(getContext(), burnList.get(1).getIcon()));
-                    topBurn3.setImageResource(Util.getIconID(getContext(), burnList.get(2).getIcon()));
-                    otherBurn.setImageResource(R.drawable.svg_other);
+
+
+                    topBurn1Icon.setImageResource(Util.getIconID(getContext(), burnList.get(0).getIcon()));
+                    topBurn2Icon.setImageResource(Util.getIconID(getContext(), burnList.get(1).getIcon()));
+                    topBurn3Icon.setImageResource(Util.getIconID(getContext(), burnList.get(2).getIcon()));
+                    otherBurnIcon.setImageResource(R.drawable.svg_other);
 
                     burnRealmResults.removeChangeListener(this);
                 }

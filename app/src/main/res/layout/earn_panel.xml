@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/red">
@@ -22,40 +23,88 @@
         android:visibility="invisible"
         android:padding="10dp">
 
-        <ImageView style="@style/itemPaddingStyle"
+       <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/circle"
+            android:tint="@color/dark_red"/>
+
+        <ImageView  style="@style/frontPage_iconStyle"
             android:id="@+id/topEarn1"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/svg_badminton" />
+            android:src="@drawable/svg_alcoholic_drink" />
+        </RelativeLayout>
 
         <View style="@style/emptyPaddingStyle"
             android:layout_width="0dp"
             android:layout_height="match_parent" />
 
-        <ImageView style="@style/itemPaddingStyle"
-            android:id="@+id/topEarn2"
+        <RelativeLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:src="@drawable/svg_badminton" />
+            android:layout_weight="1"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/circle"
+                android:tint="@color/dark_red"/>
+
+            <ImageView  style="@style/frontPage_iconStyle"
+                android:id="@+id/topEarn2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/svg_alcoholic_drink" />
+        </RelativeLayout>
 
         <View style="@style/emptyPaddingStyle"
             android:layout_width="0dp"
             android:layout_height="match_parent" />
 
-        <ImageView style="@style/itemPaddingStyle"
-            android:id="@+id/topEarn3"
+        <RelativeLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:src="@drawable/svg_badminton" />
+            android:layout_weight="1"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/circle"
+                android:tint="@color/dark_red"/>
+
+            <ImageView  style="@style/frontPage_iconStyle"
+                android:id="@+id/topEarn3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/svg_alcoholic_drink" />
+        </RelativeLayout>
 
         <View style="@style/emptyPaddingStyle"
             android:layout_width="0dp"
             android:layout_height="match_parent" />
 
-        <ImageView style="@style/itemPaddingStyle"
-            android:id="@+id/otherEarn"
+        <RelativeLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:src="@drawable/svg_badminton" />
+            android:layout_weight="1"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/circle"
+                android:tint="@color/dark_red"/>
+
+            <ImageView  style="@style/frontPage_iconStyle"
+                android:id="@+id/otherEarn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/svg_alcoholic_drink" />
+        </RelativeLayout>
     </LinearLayout>
 </RelativeLayout>

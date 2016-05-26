@@ -92,4 +92,10 @@
         <item name="cv_bgRadius">25dp</item>
     </style>
 
+    <style name="frontPage_iconStyle">
+        <item name="android:tint">@color/white</item>
+        <item name="android:padding">25dp</item>
+    </style>
+
+
 </resources>
