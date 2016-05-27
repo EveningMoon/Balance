@@ -10,10 +10,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 import com.emoon.balance.Activity.InfoActivity;
@@ -53,9 +55,6 @@ public class MainFragment extends Fragment {
 
     private RoundCornerProgressBar earnProgress;
     private RoundCornerProgressBar burnProgress;
-
-    private final int MAX_EARN = 20;
-    private final int MAX_BURN = 20;
 
     private RealmResults<EarnBurn> earnRealmResults;
     private RealmResults<EarnBurn> burnRealmResults;
@@ -151,16 +150,13 @@ public class MainFragment extends Fragment {
         burnList = new ArrayList<>();
         earnList = new ArrayList<>();
 
-        earnProgress.setMax(MAX_EARN);
-        burnProgress.setMax(MAX_BURN);
+        earnProgress.setMax(BalancePreference.getMinMax(getContext()));
+        burnProgress.setMax(BalancePreference.getMinMax(getContext()));
         earnProgress.setProgress(0);
         burnProgress.setProgress(0);
 
         motivationTextView = (TextView) view.findViewById(R.id.topPanelIntro);
         motivationTextView.setText(Util.getRandomMotivationalSpeech(getContext()));
-
-        //set paddings on topEarn1Icons and its siblings to depend on screen size
-
 
         addListeners();
         getAllTransactions();
@@ -355,7 +351,9 @@ public class MainFragment extends Fragment {
                 }
             });
 
+            ss.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
             ss.show();
+
         }else{
             Intent firstTimeEarnBurn = new Intent(getContext(), InfoActivity.class);
             firstTimeEarnBurn.putExtra(Constants.REQUEST_IS_EDIT_EARNBURN, true);
@@ -526,6 +524,11 @@ public class MainFragment extends Fragment {
         }
     }
 
+    private void updateMinMaxProgressBar(){
+        earnProgress.setMax(BalancePreference.getMinMax(getContext()));
+        burnProgress.setMax(BalancePreference.getMinMax(getContext()));
+    }
+
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //
     // Lifecycle
@@ -545,6 +548,7 @@ public class MainFragment extends Fragment {
         Log.d(TAG, "onResume");
         resumeRealm();
         getAllTransactions();
+        updateMinMaxProgressBar();
     }
 
     @Override

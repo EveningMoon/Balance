@@ -3,6 +3,7 @@ package com.emoon.balance.Util;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 
 import com.emoon.balance.Etc.Constants;
 
@@ -32,6 +33,24 @@ public final class BalancePreference {
 
     public static void setFirstTime(Context context){
         setPreferenceBoolean(context, Constants.FIRST_TIME, false);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Min/Max functions
+    //
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static void resetMinMax(Context context){
+        setPreferenceInt(context, Constants.MIN_MAX, Constants.MIN_MAX_VALUE);
+    }
+
+    public static int getMinMax(Context context){
+        return getPreferenceInt(context, Constants.MIN_MAX, Constants.MIN_MAX_VALUE);
+    }
+
+    public static void setMinMax(Context context, int value){
+        setPreferenceInt(context, Constants.MIN_MAX, value);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////

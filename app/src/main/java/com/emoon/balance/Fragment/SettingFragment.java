@@ -7,10 +7,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +20,7 @@ import android.widget.Toast;
 import com.emoon.balance.Etc.Constants;
 import com.emoon.balance.R;
 import com.emoon.balance.Util.BalancePreference;
+import com.emoon.balance.Util.Util;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -57,6 +60,8 @@ public class SettingFragment extends Fragment {
         resetBtn = (ViewGroup) view.findViewById(R.id.resetBtn);
         minMaxBtn = (ViewGroup) view.findViewById(R.id.minMaxBtn);
         minMaxContent = (TextView) view.findViewById(R.id.minMaxContent);
+
+        minMaxContent.setText("Current : "+BalancePreference.getMinMax(getContext()));
     }
 
     private void addListeners(){
@@ -171,7 +176,6 @@ public class SettingFragment extends Fragment {
                 .show();
     }
 
-
     private void createMinMaxPopup(){
         // get prompts.xml view
         LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
@@ -181,28 +185,32 @@ public class SettingFragment extends Fragment {
         View promptView = layoutInflater.inflate(R.layout.alertdialog_generic_edittext, null);
 
         final EditText input = (EditText) promptView.findViewById(R.id.genericEditText);
-        input.setText("");
+        input.setText(""+BalancePreference.getMinMax(getContext()));
         input.setHint("Min/Max");
 
-         /*
-        TextView title = (TextView) promptView.findViewById(R.id.genericTitle);
-        title.setText("Add Account");
-        */
 
-        new AlertDialog.Builder(getActivity())
+        TextView title = (TextView) promptView.findViewById(R.id.genericTitle);
+        title.setText("Set min/max");
+
+
+        final AlertDialog minMaxDialog = new AlertDialog.Builder(getActivity())
                 .setView(promptView)
                 .setCancelable(true)
-                .setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        /*myRealm.beginTransaction();
-                        Account newAccount = myRealm.createObject(Account.class);
-                        newAccount.setId(Util.generateUUID());
-                        newAccount.setName(input.getText().toString());
-                        myRealm.commitTransaction();
+                        if(Util.isNotNullNotEmptyNotWhiteSpaceOnlyByJava(input.getText().toString())) {
+                            try{
+                                int newVal = Integer.parseInt(input.getText().toString());
+                                BalancePreference.setMinMax(getContext(), newVal);
 
-                        Account acc = myRealm.copyFromRealm(newAccount);
-                        accountList.add(acc);
-                        accountListAdapter.setAccountList(accountList);*/
+                                minMaxContent.setText("Current : "+newVal);
+
+                            }catch(NumberFormatException e){
+                                Toast.makeText(getContext(), "Please enter a number only", Toast.LENGTH_SHORT).show();
+                            }
+                        }else{
+                            Toast.makeText(getContext(), "Cannot process empty string", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -211,8 +219,19 @@ public class SettingFragment extends Fragment {
                         dialog.cancel();
                     }
                 })
-                .create()
-                .show();
+                .create();
+
+        minMaxDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                minMaxDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(getContext(), R.color.black));
+                minMaxDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(getContext(), R.color.black));
+            }
+        });
+
+        minMaxDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        minMaxDialog.show();
+
     }
 
 }

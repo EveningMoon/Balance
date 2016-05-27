@@ -51,6 +51,8 @@ public class TransactionFragment extends Fragment{
     private List<Transaction> transactionList;
     private RealmResults<Transaction> transactionRealmResults;
 
+    private TextView emptyTextView;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -66,6 +68,8 @@ public class TransactionFragment extends Fragment{
 
     private void init() {
         resumeRealm();
+
+        emptyTextView = (TextView)view.findViewById(R.id.emptyTransactionTextView);
 
         transactionListView = (SwipeMenuListView)view.findViewById(R.id.transactionListView);
         transactionList = new ArrayList<>();
@@ -87,9 +91,21 @@ public class TransactionFragment extends Fragment{
                 transactionAdapter.clear();
                 transactionAdapter.addAll(transactionList);
 
+                updateTransactionStatus();
+
                 transactionRealmResults.removeChangeListener(this);
             }
         });
+    }
+
+    private void updateTransactionStatus(){
+        if(transactionList.size() > 0){
+            emptyTextView.setVisibility(View.GONE);
+            transactionListView.setVisibility(View.VISIBLE);
+        }else{
+            emptyTextView.setVisibility(View.VISIBLE);
+            transactionListView.setVisibility(View.GONE);
+        }
     }
 
     /**
@@ -137,6 +153,8 @@ public class TransactionFragment extends Fragment{
                         myRealm.beginTransaction();
                         transactionRealmResults.get(position).deleteFromRealm();
                         myRealm.commitTransaction();
+
+                        updateTransactionStatus();
 
                         break;
                 }
@@ -272,8 +290,6 @@ public class TransactionFragment extends Fragment{
             startActivity(firstTimeEarnBurn);
         }
     }
-
-
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //

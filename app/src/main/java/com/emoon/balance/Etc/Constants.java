@@ -14,7 +14,8 @@ public class Constants {
     //First time
     public static final String FIRST_TIME = "First Time";
 
-
+    public static final  String  MIN_MAX = "MinMax";
+    public static final int MIN_MAX_VALUE = 20;
 
     //Activity request
     public static final String REQUEST_LIST_OTHER_TYPE = "List type";

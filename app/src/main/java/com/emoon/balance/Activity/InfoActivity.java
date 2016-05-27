@@ -336,7 +336,7 @@ public class InfoActivity extends BaseRealmActivity {
         final Cost cost = new Cost();
         cost.setId(Util.generateUUID());
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+        AlertDialog noteDialog = new AlertDialog.Builder(this)
                 .setView(promptView)
                 .setTitle("Add new cost")
                 .setPositiveButton("DONE", new DialogInterface.OnClickListener() {
@@ -370,9 +370,9 @@ public class InfoActivity extends BaseRealmActivity {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
                     }
-                });
+                })
+                .create();
 
-        AlertDialog noteDialog = builder.create();
         noteDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         noteDialog.show();
     }
@@ -474,6 +474,7 @@ public class InfoActivity extends BaseRealmActivity {
 
                 myRealm.copyToRealmOrUpdate(editEarnBurn);
             }else{
+                //User creates a new one
                 EarnBurn earnBurn = myRealm.createObject(EarnBurn.class);
                 earnBurn.setId(Util.generateUUID());
                 earnBurn.setName(nameEditText.getText().toString());
