@@ -94,7 +94,8 @@
 
     <style name="frontPage_iconStyle">
         <item name="android:tint">@color/white</item>
-        <item name="android:padding">25dp</item>
+        <item name="android:paddingTop">25dp</item>
+        <item name="android:paddingBottom">25dp</item>
     </style>
 
 </resources>
