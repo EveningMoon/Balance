@@ -334,8 +334,10 @@ public class MainFragment extends Fragment {
 
         if(data.getType().equalsIgnoreCase(BalanceType.BURN.toString())){
             cv.setCircleColor(R.color.blue);
+            editBtn.setColorFilter(ContextCompat.getColor(getContext(), R.color.blue));
         }else{
             cv.setCircleColor(R.color.red);
+            editBtn.setColorFilter(ContextCompat.getColor(getContext(), R.color.red));
         }
 
         //Edit text
