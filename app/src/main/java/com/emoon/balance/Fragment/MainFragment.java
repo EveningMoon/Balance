@@ -66,6 +66,9 @@ public class MainFragment extends Fragment {
     private EarnBurn burn1Default, burn2Default, burn3Default;
     private EarnBurn earn1Default, earn2Default, earn3Default;
 
+    //Keep track of alertdialogs
+    private Vector<AlertDialog> dialogs = new Vector<>();
+
     public MainFragment() {
         // Required empty public constructor
     }
@@ -292,8 +295,6 @@ public class MainFragment extends Fragment {
         intent.putExtra(Constants.REQUEST_LIST_OTHER_TYPE, type.toString());
         startActivity(intent);
     }
-
-    private Vector<AlertDialog> dialogs = new Vector<AlertDialog>();
 
     /**
      * Displays prompt for user to add new transaction.
