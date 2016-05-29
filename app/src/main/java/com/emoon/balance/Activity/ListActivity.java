@@ -27,6 +27,7 @@ import com.emoon.balance.Adapter.ListAdapter;
 import com.emoon.balance.Etc.Constants;
 import com.emoon.balance.Model.BalanceType;
 import com.emoon.balance.Model.EarnBurn;
+import com.emoon.balance.Model.IconType;
 import com.emoon.balance.Model.Transaction;
 import com.emoon.balance.R;
 import com.emoon.balance.Util.Util;
@@ -187,6 +188,9 @@ public class ListActivity extends BaseRealmActivity {
                 listAdapter.clear();
                 listAdapter.addAll(itemList);
 
+                //Scroll to bottom
+                listView.smoothScrollToPosition(itemList.size() - 1);
+
                 realmResults.removeChangeListener(this);
             }
         });
@@ -251,8 +255,14 @@ public class ListActivity extends BaseRealmActivity {
 
         //Circular view
         CircularView cv = (CircularView) promptView.findViewById(R.id.genericCircularView);
-        cv.setIconResource(Util.getIconID(this, data.getIcon()));
-        cv.setIconColor(R.color.white);
+
+        if(data.getIconType().equalsIgnoreCase(IconType.ICON.toString())){
+            cv.setIconResource(Util.getIconID(this, data.getIcon()));
+            cv.setIconColor(R.color.white);
+        }else if(data.getIconType().equalsIgnoreCase(IconType.NUMBER.toString())){
+            cv.setText(""+Util.getFirstCharacterFromString(data.getName().toUpperCase()));
+            cv.setTextColor(R.color.white);
+        }
 
         if(data.getType().equalsIgnoreCase(BalanceType.BURN.toString())){
             cv.setCircleColor(R.color.blue);

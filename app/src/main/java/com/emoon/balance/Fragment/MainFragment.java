@@ -3,6 +3,7 @@ package com.emoon.balance.Fragment;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -24,6 +25,7 @@ import com.emoon.balance.Activity.ListActivity;
 import com.emoon.balance.Etc.Constants;
 import com.emoon.balance.Model.BalanceType;
 import com.emoon.balance.Model.EarnBurn;
+import com.emoon.balance.Model.IconType;
 import com.emoon.balance.Model.Transaction;
 import com.emoon.balance.R;
 import com.emoon.balance.Util.BalancePreference;
@@ -57,11 +59,13 @@ public class MainFragment extends Fragment {
     private RealmResults<EarnBurn> earnRealmResults, burnRealmResults;
     private List<EarnBurn> earnList, burnList;
 
-    private ViewGroup earnGroup;
+    private ViewGroup earnGroup, topEarn1Panel, topEarn2Panel, topEarn3Panel, otherEarnPanel;
     private ImageView topEarn1Icon, topEarn2Icon, topEarn3Icon, otherEarnIcon;
+    private TextView topEarn1Text, topEarn2Text, topEarn3Text;
 
-    private ViewGroup burnGroup;
+    private ViewGroup burnGroup, topBurn1Panel, topBurn2Panel, topBurn3Panel, otherBurnPanel;
     private ImageView topBurn1Icon, topBurn2Icon, topBurn3Icon, otherBurnIcon;
+    private TextView topBurn1Text, topBurn2Text, topBurn3Text;
 
     private EarnBurn burn1Default, burn2Default, burn3Default;
     private EarnBurn earn1Default, earn2Default, earn3Default;
@@ -131,15 +135,30 @@ public class MainFragment extends Fragment {
         earnGroup = (LinearLayout) view.findViewById(R.id.earnGroup);
         burnGroup = (LinearLayout) view.findViewById(R.id.burnGroup);
 
+        topBurn1Panel = (ViewGroup) view.findViewById(R.id.topBurn1Panel);
+        topBurn2Panel = (ViewGroup) view.findViewById(R.id.topBurn2Panel);
+        topBurn3Panel = (ViewGroup) view.findViewById(R.id.topBurn3Panel);
+        otherBurnPanel = (ViewGroup) view.findViewById(R.id.otherBurnPanel);
+        topEarn1Panel = (ViewGroup) view.findViewById(R.id.topEarn1Panel);
+        topEarn2Panel = (ViewGroup) view.findViewById(R.id.topEarn2Panel);
+        topEarn3Panel = (ViewGroup) view.findViewById(R.id.topEarn3Panel);
+        otherEarnPanel = (ViewGroup) view.findViewById(R.id.otherEarnPanel);
+
         topEarn1Icon = (ImageView) view.findViewById(R.id.topEarn1);
         topEarn2Icon = (ImageView) view.findViewById(R.id.topEarn2);
         topEarn3Icon = (ImageView) view.findViewById(R.id.topEarn3);
         otherEarnIcon = (ImageView) view.findViewById(R.id.otherEarn);
-
         topBurn1Icon = (ImageView) view.findViewById(R.id.topBurn1);
         topBurn2Icon = (ImageView) view.findViewById(R.id.topBurn2);
         topBurn3Icon = (ImageView) view.findViewById(R.id.topBurn3);
         otherBurnIcon = (ImageView) view.findViewById(R.id.otherBurn);
+
+        topEarn1Text = (TextView) view.findViewById(R.id.topEarn1Text);
+        topEarn2Text = (TextView) view.findViewById(R.id.topEarn2Text);
+        topEarn3Text = (TextView) view.findViewById(R.id.topEarn3Text);
+        topBurn1Text = (TextView) view.findViewById(R.id.topBurn1Text);
+        topBurn2Text = (TextView) view.findViewById(R.id.topBurn2Text);
+        topBurn3Text = (TextView) view.findViewById(R.id.topBurn3Text);
 
         burnList = new ArrayList<>();
         earnList = new ArrayList<>();
@@ -173,7 +192,7 @@ public class MainFragment extends Fragment {
             }
         });
 
-        topBurn1Icon.setOnClickListener(new View.OnClickListener() {
+        topBurn1Panel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("ZHAN", "top 1 burn is " + burnList.get(0).getName());
@@ -181,7 +200,7 @@ public class MainFragment extends Fragment {
             }
         });
 
-        topBurn2Icon.setOnClickListener(new View.OnClickListener() {
+        topBurn2Panel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("ZHAN", "top  2 burn is "+burnList.get(1).getName());
@@ -189,7 +208,7 @@ public class MainFragment extends Fragment {
             }
         });
 
-        topBurn3Icon.setOnClickListener(new View.OnClickListener() {
+        topBurn3Panel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("ZHAN", "top 3 burn is " + burnList.get(2).getName());
@@ -197,7 +216,7 @@ public class MainFragment extends Fragment {
             }
         });
 
-        otherBurnIcon.setOnClickListener(new View.OnClickListener() {
+        otherBurnPanel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("ZHAN", "other burn ");
@@ -205,7 +224,7 @@ public class MainFragment extends Fragment {
             }
         });
 
-        topEarn1Icon.setOnClickListener(new View.OnClickListener() {
+        topEarn1Panel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("ZHAN", "top 1 earn is " + earnList.get(0).getName());
@@ -213,7 +232,7 @@ public class MainFragment extends Fragment {
             }
         });
 
-        topEarn2Icon.setOnClickListener(new View.OnClickListener() {
+        topEarn2Panel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("ZHAN", "top  2 earn is "+earnList.get(1).getName());
@@ -221,7 +240,7 @@ public class MainFragment extends Fragment {
             }
         });
 
-        topEarn3Icon.setOnClickListener(new View.OnClickListener() {
+        topEarn3Panel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("ZHAN", "top 3 earn is " + earnList.get(2).getName());
@@ -229,7 +248,7 @@ public class MainFragment extends Fragment {
             }
         });
 
-        otherEarnIcon.setOnClickListener(new View.OnClickListener() {
+        otherEarnPanel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("ZHAN", "other earn ");
@@ -315,8 +334,13 @@ public class MainFragment extends Fragment {
 
         //Circular view
         CircularView cv = (CircularView) promptView.findViewById(R.id.genericCircularView);
-        cv.setIconResource(Util.getIconID(getContext(), data.getIcon()));
-        cv.setIconColor(R.color.white);
+        if(data.getIconType().equalsIgnoreCase(IconType.ICON.toString())){
+            cv.setIconResource(Util.getIconID(getContext(), data.getIcon()));
+            cv.setIconColor(R.color.white);
+        }else if(data.getIconType().equalsIgnoreCase(IconType.NUMBER.toString())){
+            cv.setText(""+Util.getFirstCharacterFromString(data.getName().toUpperCase()));
+            cv.setTextColor(R.color.white);
+        }
 
         //Edit Button
         ImageButton editBtn = (ImageButton) promptView.findViewById(R.id.editBtn);
@@ -327,8 +351,6 @@ public class MainFragment extends Fragment {
                 intent.putExtra(Constants.REQUEST_IS_EDIT_EARNBURN, true);
                 intent.putExtra(Constants.REQUEST_EDIT_EARNBURN, data1.getId());
                 startActivity(intent);
-
-
             }
         });
 
@@ -527,17 +549,69 @@ public class MainFragment extends Fragment {
         EarnBurn earnBurn3 = myRealm.where(EarnBurn.class).equalTo("id", third).equalTo("type",type).findFirst();
 
         if(type.equalsIgnoreCase(BalanceType.EARN.toString())) {
-            topEarn1Icon.setImageResource(Util.getIconID(getContext(), earnBurn1.getIcon()));
-            topEarn2Icon.setImageResource(Util.getIconID(getContext(), earnBurn2.getIcon()));
-            topEarn3Icon.setImageResource(Util.getIconID(getContext(), earnBurn3.getIcon()));
+            if(earnBurn1.getIconType().equalsIgnoreCase(IconType.ICON.toString())){
+                topEarn1Icon.setImageResource(Util.getIconID(getContext(), earnBurn1.getIcon()));
+                topEarn1Icon.setVisibility(View.VISIBLE);
+                topEarn1Text.setVisibility(View.INVISIBLE);
+            }else if(earnBurn1.getIconType().equalsIgnoreCase(IconType.NUMBER.toString())){
+                topEarn1Text.setText(""+Util.getFirstCharacterFromString(earnBurn1.getName().toUpperCase()));
+                topEarn1Icon.setVisibility(View.INVISIBLE);
+                topEarn1Text.setVisibility(View.VISIBLE);
+            }
+
+            if(earnBurn2.getIconType().equalsIgnoreCase(IconType.ICON.toString())){
+                topEarn2Icon.setImageResource(Util.getIconID(getContext(), earnBurn2.getIcon()));
+                topEarn2Icon.setVisibility(View.VISIBLE);
+                topEarn2Text.setVisibility(View.INVISIBLE);
+            }else if(earnBurn2.getIconType().equalsIgnoreCase(IconType.NUMBER.toString())){
+                topEarn2Text.setText(""+Util.getFirstCharacterFromString(earnBurn1.getName().toUpperCase()));
+                topEarn2Icon.setVisibility(View.INVISIBLE);
+                topEarn2Text.setVisibility(View.VISIBLE);
+            }
+
+            if(earnBurn3.getIconType().equalsIgnoreCase(IconType.ICON.toString())){
+                topEarn3Icon.setImageResource(Util.getIconID(getContext(), earnBurn3.getIcon()));
+                topEarn3Icon.setVisibility(View.VISIBLE);
+                topEarn3Text.setVisibility(View.INVISIBLE);
+            }else if(earnBurn3.getIconType().equalsIgnoreCase(IconType.NUMBER.toString())){
+                topEarn3Text.setText(""+Util.getFirstCharacterFromString(earnBurn1.getName().toUpperCase()));
+                topEarn3Icon.setVisibility(View.INVISIBLE);
+                topEarn3Text.setVisibility(View.VISIBLE);
+            }
 
             earnList.set(0, earnBurn1);
             earnList.set(1, earnBurn2);
             earnList.set(2, earnBurn3);
         }else{
-            topBurn1Icon.setImageResource(Util.getIconID(getContext(), earnBurn1.getIcon()));
-            topBurn2Icon.setImageResource(Util.getIconID(getContext(), earnBurn2.getIcon()));
-            topBurn3Icon.setImageResource(Util.getIconID(getContext(), earnBurn3.getIcon()));
+            if(earnBurn1.getIconType().equalsIgnoreCase(IconType.ICON.toString())){
+                topBurn1Icon.setImageResource(Util.getIconID(getContext(), earnBurn1.getIcon()));
+                topBurn1Icon.setVisibility(View.VISIBLE);
+                topBurn1Text.setVisibility(View.INVISIBLE);
+            }else if(earnBurn1.getIconType().equalsIgnoreCase(IconType.NUMBER.toString())){
+                topBurn1Text.setText(""+Util.getFirstCharacterFromString(earnBurn1.getName().toUpperCase()));
+                topBurn1Icon.setVisibility(View.INVISIBLE);
+                topBurn1Text.setVisibility(View.VISIBLE);
+            }
+
+            if(earnBurn2.getIconType().equalsIgnoreCase(IconType.ICON.toString())){
+                topBurn2Icon.setImageResource(Util.getIconID(getContext(), earnBurn2.getIcon()));
+                topBurn2Icon.setVisibility(View.VISIBLE);
+                topBurn2Text.setVisibility(View.INVISIBLE);
+            }else if(earnBurn2.getIconType().equalsIgnoreCase(IconType.NUMBER.toString())){
+                topBurn2Text.setText(""+Util.getFirstCharacterFromString(earnBurn1.getName().toUpperCase()));
+                topBurn2Icon.setVisibility(View.INVISIBLE);
+                topBurn2Text.setVisibility(View.VISIBLE);
+            }
+
+            if(earnBurn3.getIconType().equalsIgnoreCase(IconType.ICON.toString())){
+                topBurn3Icon.setImageResource(Util.getIconID(getContext(), earnBurn3.getIcon()));
+                topBurn3Icon.setVisibility(View.VISIBLE);
+                topBurn3Text.setVisibility(View.INVISIBLE);
+            }else if(earnBurn3.getIconType().equalsIgnoreCase(IconType.NUMBER.toString())){
+                topBurn3Text.setText(""+Util.getFirstCharacterFromString(earnBurn1.getName().toUpperCase()));
+                topBurn3Icon.setVisibility(View.INVISIBLE);
+                topBurn3Text.setVisibility(View.VISIBLE);
+            }
 
             burnList.set(0, earnBurn1);
             burnList.set(1, earnBurn2);
@@ -648,6 +722,8 @@ public class MainFragment extends Fragment {
         resumeRealm();
         calculateTotalActivityAndReward();
         updateMinMaxProgressBar();
+        setBurnItemsVisibility(false);
+        setEarnItemsVisibility(false);
         closeAllAlertDialog();
     }
 
