@@ -12,7 +12,12 @@ public class EarnBurn extends RealmObject {
     private String type;
     private String icon;
     private RealmList<Cost> costList;
+
+    //This value is used to determine if icon or text should be used in circularview
     private String iconType;
+
+    //This value is simply used to determine where it should be in the top 3 section if at all
+    private int priority;
 
     public EarnBurn(){
         
@@ -64,5 +69,13 @@ public class EarnBurn extends RealmObject {
 
     public void setIconType(String iconType) {
         this.iconType = iconType;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
 }

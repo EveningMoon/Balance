@@ -72,6 +72,9 @@ public class MainFragment extends Fragment {
 
     private TextView motivationTextView;
 
+    private EarnBurn burn1Default, burn2Default, burn3Default;
+    private EarnBurn earn1Default, earn2Default, earn3Default;
+
     public MainFragment() {
         // Required empty public constructor
     }
@@ -107,10 +110,8 @@ public class MainFragment extends Fragment {
         if(BalancePreference.getFirstTime(getContext())){
             BalancePreference.setFirstTime(getContext());
             createDefaultItems();
-            init();
-        }else{
-            init();
         }
+        init();
     }
 
     private void createDefaultItems(){
@@ -159,21 +160,73 @@ public class MainFragment extends Fragment {
         motivationTextView.setText(Util.getRandomMotivationalSpeech(getContext()));
 
         addListeners();
-        getAllTransactions();
+        calculateTotalActivityAndReward();
+
+        getDefaultEarnBurn();
+
+        //getTop3(BalanceType.BURN);
+    }
+
+    /**
+     * Get Activity and Rewards that have priority. (1, 2, or 3)
+     */
+    private void getDefaultEarnBurn(){
+        final RealmResults<EarnBurn> res = myRealm.where(EarnBurn.class).findAllAsync();
+        res.addChangeListener(new RealmChangeListener() {
+            @Override
+            public void onChange() {
+                //find default Activity
+                for(int i = 0; i < res.size(); i++){
+                    if(res.get(i).getType().equalsIgnoreCase(BalanceType.EARN.toString())){
+                        if(res.get(i).getPriority() == 1){
+                            earn1Default = res.get(i);
+                        }else if(res.get(i).getPriority() == 2){
+                            earn2Default = res.get(i);
+                        }else if(res.get(i).getPriority() == 3){
+                            earn3Default = res.get(i);
+                        }
+                    }
+                }
+
+                //find default Rewards
+                for(int i = 0; i < res.size(); i++){
+                    if(res.get(i).getType().equalsIgnoreCase(BalanceType.BURN.toString())){
+                        if(res.get(i).getPriority() == 1){
+                            burn1Default = res.get(i);
+                        }else if(res.get(i).getPriority() == 2){
+                            burn2Default = res.get(i);
+                        }else if(res.get(i).getPriority() == 3){
+                            burn3Default = res.get(i);
+                        }
+                    }
+                }
+
+                Log.d("DEFAULT", "-----------------------");
+                Log.d("DEFAULT", "default 1 burn : "+burn1Default);
+                Log.d("DEFAULT", "default 2 burn : "+burn2Default);
+                Log.d("DEFAULT", "default 3 burn : "+burn3Default);
+                Log.d("DEFAULT", "default 1 earn : "+earn1Default);
+                Log.d("DEFAULT", "default 2 earn : "+earn2Default);
+                Log.d("DEFAULT", "default 3 earn : "+earn3Default);
+                Log.d("DEFAULT", "-----------------------");
+
+                res.removeChangeListener(this);
+            }
+        });
     }
 
     private void addListeners(){
         earnBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                displayEarnItems(true);
+                setEarnItemsVisibility(true);
             }
         });
 
         burnBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                displayBurnItems(true);
+                setBurnItemsVisibility(true);
             }
         });
 
@@ -304,8 +357,8 @@ public class MainFragment extends Fragment {
                     .setOnCancelListener(new DialogInterface.OnCancelListener() {
                         @Override
                         public void onCancel(DialogInterface dialog) {
-                            displayEarnItems(false);
-                            displayBurnItems(false);
+                            setEarnItemsVisibility(false);
+                            setBurnItemsVisibility(false);
                         }
                     })
                     .setPositiveButton("Save", new DialogInterface.OnClickListener() {
@@ -320,9 +373,9 @@ public class MainFragment extends Fragment {
                                 transaction.setCostType(values[unitNumberPicker.getValue()]);
                                 myRealm.commitTransaction();
 
-                                displayEarnItems(false);
-                                displayBurnItems(false);
-                                getAllTransactions();
+                                setEarnItemsVisibility(false);
+                                setBurnItemsVisibility(false);
+                                calculateTotalActivityAndReward();
                             }
                         }
                     })
@@ -330,8 +383,8 @@ public class MainFragment extends Fragment {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();
-                            displayEarnItems(false);
-                            displayBurnItems(false);
+                            setEarnItemsVisibility(false);
+                            setBurnItemsVisibility(false);
                         }
                     })
                     .create();
@@ -362,7 +415,10 @@ public class MainFragment extends Fragment {
         }
     }
 
-    private void getAllTransactions(){
+    /**
+     * Gets all transactions and calculate the current value based on Activity and Rewards.
+     */
+    private void calculateTotalActivityAndReward(){
         final RealmResults<Transaction> transactionRealmResults = myRealm.where(Transaction.class).findAllAsync();
         transactionRealmResults.addChangeListener(new RealmChangeListener() {
             @Override
@@ -391,7 +447,7 @@ public class MainFragment extends Fragment {
                     }
                 }
 
-                addSign(currentCount);
+                updateHeaderValue(currentCount);
             }
         });
     }
@@ -423,9 +479,18 @@ public class MainFragment extends Fragment {
                     Log.d(TAG, i+" : "+sortedList.get(i));
                 }
 
-                //need to handle if the string is empty or null
 
-                top3EarnItems(type.toString(), sortedList.get(0), sortedList.get(1), sortedList.get(2));
+                if(sortedList.size() == 1){
+                    top3EarnItems(type.toString(), sortedList.get(0), sortedList.get(1), sortedList.get(2));
+                } else if(sortedList.size() == 2){
+                    top3EarnItems(type.toString(), sortedList.get(0), sortedList.get(1), sortedList.get(2));
+                }else if(sortedList.size() > 2){
+                    top3EarnItems(type.toString(), sortedList.get(0), sortedList.get(1), sortedList.get(2));
+                }
+
+
+                //need to handle if the string is empty or null
+                //top3EarnItems(type.toString(), sortedList.get(0), sortedList.get(1), sortedList.get(2));
             }
         });
     }
@@ -439,6 +504,9 @@ public class MainFragment extends Fragment {
             topEarn1Icon.setImageResource(Util.getIconID(getContext(), earnBurn1.getIcon()));
             topEarn2Icon.setImageResource(Util.getIconID(getContext(), earnBurn2.getIcon()));
             topEarn3Icon.setImageResource(Util.getIconID(getContext(), earnBurn3.getIcon()));
+
+            burnList.set(0, earnBurn1);
+
         }else{
             topBurn1Icon.setImageResource(Util.getIconID(getContext(), earnBurn1.getIcon()));
             topBurn2Icon.setImageResource(Util.getIconID(getContext(), earnBurn2.getIcon()));
@@ -446,17 +514,18 @@ public class MainFragment extends Fragment {
         }
     }
 
-    private void addSign(float value){
+
+    private void updateHeaderValue(float value){
         if(value > 0){
             headerText.setText("+"+Math.round(value));
         }else if(value <= 0){
             headerText.setText(""+Math.round(value));
         }
         Log.d("ZHAN", "actual  value is "+value);
-        setProgressBar(value);
+        updateProgressBar(value);
     }
 
-    private void displayEarnItems(boolean value){
+    private void setEarnItemsVisibility(boolean value){
         if(value) { //display horizontal list view
             earnRealmResults = myRealm.where(EarnBurn.class).equalTo("type", BalanceType.EARN.toString()).findAllAsync();
             earnRealmResults.addChangeListener(new RealmChangeListener() {
@@ -481,7 +550,7 @@ public class MainFragment extends Fragment {
         }
     }
 
-    private void displayBurnItems(boolean value){
+    private void setBurnItemsVisibility(boolean value){
         if(value){ //display horizontal list view
             burnRealmResults = myRealm.where(EarnBurn.class).equalTo("type", BalanceType.BURN.toString()).findAllAsync();
             burnRealmResults.addChangeListener(new RealmChangeListener() {
@@ -508,7 +577,7 @@ public class MainFragment extends Fragment {
         }
     }
 
-    private void setProgressBar(float total){
+    private void updateProgressBar(float total){
         if(total > 0){
             earnProgress.setProgress(total);
             burnProgress.setProgress(0);
@@ -547,7 +616,7 @@ public class MainFragment extends Fragment {
         super.onResume();
         Log.d(TAG, "onResume");
         resumeRealm();
-        getAllTransactions();
+        calculateTotalActivityAndReward();
         updateMinMaxProgressBar();
     }
 

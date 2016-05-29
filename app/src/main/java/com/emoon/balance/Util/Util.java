@@ -51,6 +51,14 @@ public final class Util {
             activity.setIcon(context.getResources().getResourceEntryName(s2));
             activity.setIconType(IconType.ICON.toString());
 
+            if(activity.getName().equalsIgnoreCase("Jogging")){
+                activity.setPriority(1);
+            }else if(activity.getName().equalsIgnoreCase("Walking")){
+                activity.setPriority(2);
+            }else if(activity.getName().equalsIgnoreCase("Biking")){
+                activity.setPriority(3);
+            }
+
             activityList.add(activity);
         }
         name.recycle();
@@ -67,14 +75,22 @@ public final class Util {
             int s1 = name.getResourceId(i, 0);
             int s2 = icon.getResourceId(i, 0);
 
-            EarnBurn activity = new EarnBurn();
-            activity.setId(generateUUID());
-            activity.setName(context.getResources().getString(s1));
-            activity.setType(BalanceType.BURN.toString());
-            activity.setIcon(context.getResources().getResourceEntryName(s2));
-            activity.setIconType(IconType.ICON.toString());
+            EarnBurn reward = new EarnBurn();
+            reward.setId(generateUUID());
+            reward.setName(context.getResources().getString(s1));
+            reward.setType(BalanceType.BURN.toString());
+            reward.setIcon(context.getResources().getResourceEntryName(s2));
+            reward.setIconType(IconType.ICON.toString());
 
-            activityList.add(activity);
+            if(reward.getName().equalsIgnoreCase("Desserts")){
+                reward.setPriority(1);
+            }else if(reward.getName().equalsIgnoreCase("Sweets")){
+                reward.setPriority(2);
+            }else if(reward.getName().equalsIgnoreCase("Tv")){
+                reward.setPriority(3);
+            }
+
+            activityList.add(reward);
         }
         name.recycle();
         return activityList;
