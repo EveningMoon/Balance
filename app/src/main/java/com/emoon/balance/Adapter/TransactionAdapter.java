@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.emoon.balance.Model.BalanceType;
+import com.emoon.balance.Model.IconType;
 import com.emoon.balance.Model.Transaction;
 import com.emoon.balance.R;
 import com.emoon.balance.Util.Util;
@@ -68,14 +69,18 @@ public class TransactionAdapter extends ArrayAdapter<Transaction>{
         Transaction transaction = transactionList.get(position);
 
         if(transaction.getEarnBurn().getType().equalsIgnoreCase(BalanceType.BURN.toString())) {
-            //viewHolder.icon.setColorFilter(Color.parseColor(context.getResources().getString(0 + R.color.blue)));
             viewHolder.icon.setCircleColor(R.color.blue);
         }else {
-            //viewHolder.icon.setColorFilter(Color.parseColor(context.getResources().getString(0 + R.color.red)));
             viewHolder.icon.setCircleColor(R.color.red);
         }
-        viewHolder.icon.setIconResource(Util.getIconID(this.context, transaction.getEarnBurn().getIcon()));
-        viewHolder.icon.setIconColor(R.color.white);
+
+        if(transaction.getEarnBurn().getIconType().equalsIgnoreCase(IconType.ICON.toString())){
+            viewHolder.icon.setIconResource(Util.getIconID(this.context, transaction.getEarnBurn().getIcon()));
+            viewHolder.icon.setIconColor(R.color.white);
+        }else if(transaction.getEarnBurn().getIconType().equalsIgnoreCase(IconType.NUMBER.toString())){
+            viewHolder.icon.setText(""+Util.getFirstCharacterFromString(transaction.getEarnBurn().getName().toUpperCase()));
+            viewHolder.icon.setTextColor(R.color.white);
+        }
 
         viewHolder.name.setText(transaction.getEarnBurn().getName());
         viewHolder.points.setText(String.valueOf(transaction.getUnitCost()));
