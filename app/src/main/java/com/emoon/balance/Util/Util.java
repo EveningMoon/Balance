@@ -2,6 +2,7 @@ package com.emoon.balance.Util;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.util.Log;
 import android.util.TypedValue;
 
 import com.emoon.balance.Model.BalanceType;
@@ -200,6 +201,7 @@ public final class Util {
         List<String> sortedList = new ArrayList<>();
         for (Iterator<Map.Entry<String, Integer>> it = list.iterator(); it.hasNext();) {
             Map.Entry<String, Integer> entry = it.next();
+            //Log.d("as", entry.getKey()+" : "+entry.getValue());
             sortedList.add(entry.getKey());
         }
 

@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import com.emoon.balance.Fragment.MainFragment;
 import com.emoon.balance.Fragment.SettingFragment;
 import com.emoon.balance.Fragment.TransactionFragment;
+import com.emoon.balance.Model.BalanceType;
 import com.emoon.balance.R;
 
 public class MainActivity extends BaseActivity

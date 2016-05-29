@@ -46,21 +46,16 @@ public class MainFragment extends Fragment {
 
     private View view;
 
-    private TextView headerText;
-    private ViewGroup earnBtn;
-    private ViewGroup burnBtn;
+    private TextView headerText, motivationTextView;
+    private ViewGroup earnBtn, burnBtn;
 
-    private ImageView earnView;
-    private ImageView burnView;
+    private ImageView earnView, burnView;
 
-    private RoundCornerProgressBar earnProgress;
-    private RoundCornerProgressBar burnProgress;
+    private RoundCornerProgressBar earnProgress, burnProgress;
 
-    private RealmResults<EarnBurn> earnRealmResults;
-    private RealmResults<EarnBurn> burnRealmResults;
+    private RealmResults<EarnBurn> earnRealmResults, burnRealmResults;
 
-    private List<EarnBurn> earnList;
-    private List<EarnBurn> burnList;
+    private List<EarnBurn> earnList, burnList;
 
     private ViewGroup earnGroup;
     private ImageView topEarn1Icon, topEarn2Icon, topEarn3Icon, otherEarnIcon;
@@ -70,8 +65,6 @@ public class MainFragment extends Fragment {
 
     private Realm myRealm;
 
-    private TextView motivationTextView;
-
     private EarnBurn burn1Default, burn2Default, burn3Default;
     private EarnBurn earn1Default, earn2Default, earn3Default;
 
@@ -80,8 +73,7 @@ public class MainFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_main, container, false);
         return view;
@@ -163,56 +155,6 @@ public class MainFragment extends Fragment {
         calculateTotalActivityAndReward();
 
         getDefaultEarnBurn();
-
-        //getTop3(BalanceType.BURN);
-    }
-
-    /**
-     * Get Activity and Rewards that have priority. (1, 2, or 3)
-     */
-    private void getDefaultEarnBurn(){
-        final RealmResults<EarnBurn> res = myRealm.where(EarnBurn.class).findAllAsync();
-        res.addChangeListener(new RealmChangeListener() {
-            @Override
-            public void onChange() {
-                //find default Activity
-                for(int i = 0; i < res.size(); i++){
-                    if(res.get(i).getType().equalsIgnoreCase(BalanceType.EARN.toString())){
-                        if(res.get(i).getPriority() == 1){
-                            earn1Default = res.get(i);
-                        }else if(res.get(i).getPriority() == 2){
-                            earn2Default = res.get(i);
-                        }else if(res.get(i).getPriority() == 3){
-                            earn3Default = res.get(i);
-                        }
-                    }
-                }
-
-                //find default Rewards
-                for(int i = 0; i < res.size(); i++){
-                    if(res.get(i).getType().equalsIgnoreCase(BalanceType.BURN.toString())){
-                        if(res.get(i).getPriority() == 1){
-                            burn1Default = res.get(i);
-                        }else if(res.get(i).getPriority() == 2){
-                            burn2Default = res.get(i);
-                        }else if(res.get(i).getPriority() == 3){
-                            burn3Default = res.get(i);
-                        }
-                    }
-                }
-
-                Log.d("DEFAULT", "-----------------------");
-                Log.d("DEFAULT", "default 1 burn : "+burn1Default);
-                Log.d("DEFAULT", "default 2 burn : "+burn2Default);
-                Log.d("DEFAULT", "default 3 burn : "+burn3Default);
-                Log.d("DEFAULT", "default 1 earn : "+earn1Default);
-                Log.d("DEFAULT", "default 2 earn : "+earn2Default);
-                Log.d("DEFAULT", "default 3 earn : "+earn3Default);
-                Log.d("DEFAULT", "-----------------------");
-
-                res.removeChangeListener(this);
-            }
-        });
     }
 
     private void addListeners(){
@@ -295,6 +237,58 @@ public class MainFragment extends Fragment {
         });
     }
 
+    /**
+     * Get Activity and Rewards that have priority. (1, 2, or 3)
+     */
+    private void getDefaultEarnBurn(){
+        final RealmResults<EarnBurn> res = myRealm.where(EarnBurn.class).findAllAsync();
+        res.addChangeListener(new RealmChangeListener() {
+            @Override
+            public void onChange() {
+                //find default Activity
+                for(int i = 0; i < res.size(); i++){
+                    if(res.get(i).getType().equalsIgnoreCase(BalanceType.EARN.toString())){
+                        if(res.get(i).getPriority() == 1){
+                            earn1Default = res.get(i);
+                        }else if(res.get(i).getPriority() == 2){
+                            earn2Default = res.get(i);
+                        }else if(res.get(i).getPriority() == 3){
+                            earn3Default = res.get(i);
+                        }
+                    }
+                }
+
+                //find default Rewards
+                for(int i = 0; i < res.size(); i++){
+                    if(res.get(i).getType().equalsIgnoreCase(BalanceType.BURN.toString())){
+                        if(res.get(i).getPriority() == 1){
+                            burn1Default = res.get(i);
+                        }else if(res.get(i).getPriority() == 2){
+                            burn2Default = res.get(i);
+                        }else if(res.get(i).getPriority() == 3){
+                            burn3Default = res.get(i);
+                        }
+                    }
+                }
+
+                Log.d("DEFAULT", "-----------------------");
+                Log.d("DEFAULT", "default 1 burn : "+burn1Default);
+                Log.d("DEFAULT", "default 2 burn : "+burn2Default);
+                Log.d("DEFAULT", "default 3 burn : "+burn3Default);
+                Log.d("DEFAULT", "default 1 earn : "+earn1Default);
+                Log.d("DEFAULT", "default 2 earn : "+earn2Default);
+                Log.d("DEFAULT", "default 3 earn : "+earn3Default);
+                Log.d("DEFAULT", "-----------------------");
+
+                res.removeChangeListener(this);
+            }
+        });
+    }
+
+    /**
+     * View the list of Activities or Rewards in another activity.
+     * @param type
+     */
     private void goToOther(BalanceType type){
         Intent intent = new Intent(getContext(), ListActivity.class);
         intent.putExtra(Constants.REQUEST_LIST_OTHER_TYPE, type.toString());
@@ -416,7 +410,8 @@ public class MainFragment extends Fragment {
     }
 
     /**
-     * Gets all transactions and calculate the current value based on Activity and Rewards.
+     * Gets all transactions and calculate the net value based on Activity and Rewards.
+     * Displays its value to the header value.
      */
     private void calculateTotalActivityAndReward(){
         final RealmResults<Transaction> transactionRealmResults = myRealm.where(Transaction.class).findAllAsync();
@@ -465,37 +460,50 @@ public class MainFragment extends Fragment {
 
                 for(int i = 0; i < transactionRealmResults.size(); i++){
                     if (transactionMap.containsKey(transactionRealmResults.get(i).getEarnBurn().getId())) {
+                    //if (transactionMap.containsKey(transactionRealmResults.get(i).getEarnBurn().getName())) {
                         int origValue = transactionMap.get(transactionRealmResults.get(i).getEarnBurn().getId());
+                        //int origValue = transactionMap.get(transactionRealmResults.get(i).getEarnBurn().getName());
                         transactionMap.put(transactionRealmResults.get(i).getEarnBurn().getId(), origValue+1);
+                        //transactionMap.put(transactionRealmResults.get(i).getEarnBurn().getName(), origValue+1);
                     } else {
                         transactionMap.put(transactionRealmResults.get(i).getEarnBurn().getId(), 1);
+                        //transactionMap.put(transactionRealmResults.get(i).getEarnBurn().getName(), 1);
                     }
                 }
 
-                //Alternative
                 List<String> sortedList = Util.sortByComparatorList(transactionMap);
 
+                Log.d(TAG, "Top 3 are : ");
                 for (int i = 0; i < sortedList.size(); i++) {
                     Log.d(TAG, i+" : "+sortedList.get(i));
                 }
 
-
-                if(sortedList.size() == 1){
-                    top3EarnItems(type.toString(), sortedList.get(0), sortedList.get(1), sortedList.get(2));
-                } else if(sortedList.size() == 2){
-                    top3EarnItems(type.toString(), sortedList.get(0), sortedList.get(1), sortedList.get(2));
-                }else if(sortedList.size() > 2){
-                    top3EarnItems(type.toString(), sortedList.get(0), sortedList.get(1), sortedList.get(2));
+                if(type == BalanceType.BURN) {
+                    if(sortedList.size() == 0){
+                        updateTop3EarnBurn(type.toString(), burn1Default.getId(), burn2Default.getId(), burn3Default.getId());
+                    }else if (sortedList.size() == 1) {
+                        updateTop3EarnBurn(type.toString(), sortedList.get(0), burn1Default.getId(), burn2Default.getId());
+                    } else if (sortedList.size() == 2) {
+                        updateTop3EarnBurn(type.toString(), sortedList.get(0), sortedList.get(1), burn1Default.getId());
+                    } else if (sortedList.size() > 2) {
+                        updateTop3EarnBurn(type.toString(), sortedList.get(0), sortedList.get(1), sortedList.get(2));
+                    }
+                }else if(type == BalanceType.EARN){
+                    if(sortedList.size() == 0){
+                        updateTop3EarnBurn(type.toString(), earn1Default.getId(), earn2Default.getId(), earn3Default.getId());
+                    } else if (sortedList.size() == 1) {
+                        updateTop3EarnBurn(type.toString(), sortedList.get(0), earn1Default.getId(), earn2Default.getId());
+                    } else if (sortedList.size() == 2) {
+                        updateTop3EarnBurn(type.toString(), sortedList.get(0), sortedList.get(1), earn1Default.getId());
+                    } else if (sortedList.size() > 2) {
+                        updateTop3EarnBurn(type.toString(), sortedList.get(0), sortedList.get(1), sortedList.get(2));
+                    }
                 }
-
-
-                //need to handle if the string is empty or null
-                //top3EarnItems(type.toString(), sortedList.get(0), sortedList.get(1), sortedList.get(2));
             }
         });
     }
 
-    private void top3EarnItems(String type, String first, String second, String third){
+    private void updateTop3EarnBurn(String type, String first, String second, String third){
         EarnBurn earnBurn1 = myRealm.where(EarnBurn.class).equalTo("id", first).equalTo("type",type).findFirst();
         EarnBurn earnBurn2 = myRealm.where(EarnBurn.class).equalTo("id", second).equalTo("type",type).findFirst();
         EarnBurn earnBurn3 = myRealm.where(EarnBurn.class).equalTo("id", third).equalTo("type",type).findFirst();
@@ -505,24 +513,18 @@ public class MainFragment extends Fragment {
             topEarn2Icon.setImageResource(Util.getIconID(getContext(), earnBurn2.getIcon()));
             topEarn3Icon.setImageResource(Util.getIconID(getContext(), earnBurn3.getIcon()));
 
-            burnList.set(0, earnBurn1);
-
+            earnList.set(0, earnBurn1);
+            earnList.set(1, earnBurn2);
+            earnList.set(2, earnBurn3);
         }else{
             topBurn1Icon.setImageResource(Util.getIconID(getContext(), earnBurn1.getIcon()));
             topBurn2Icon.setImageResource(Util.getIconID(getContext(), earnBurn2.getIcon()));
             topBurn3Icon.setImageResource(Util.getIconID(getContext(), earnBurn3.getIcon()));
-        }
-    }
 
-
-    private void updateHeaderValue(float value){
-        if(value > 0){
-            headerText.setText("+"+Math.round(value));
-        }else if(value <= 0){
-            headerText.setText(""+Math.round(value));
+            burnList.set(0, earnBurn1);
+            burnList.set(1, earnBurn2);
+            burnList.set(2, earnBurn3);
         }
-        Log.d("ZHAN", "actual  value is "+value);
-        updateProgressBar(value);
     }
 
     private void setEarnItemsVisibility(boolean value){
@@ -536,9 +538,7 @@ public class MainFragment extends Fragment {
                     earnView.setVisibility(View.GONE);
                     earnGroup.setVisibility(View.VISIBLE);
 
-                    topEarn1Icon.setImageResource(Util.getIconID(getContext(), earnList.get(0).getIcon()));
-                    topEarn1Icon.setImageResource(Util.getIconID(getContext(), earnList.get(1).getIcon()));
-                    topEarn1Icon.setImageResource(Util.getIconID(getContext(), earnList.get(2).getIcon()));
+                    getTop3(BalanceType.EARN);
                     otherEarnIcon.setImageResource(R.drawable.svg_other);
 
                     earnRealmResults.removeChangeListener(this);
@@ -561,11 +561,7 @@ public class MainFragment extends Fragment {
                     burnGroup.setVisibility(View.VISIBLE);
                     burnView.setVisibility(View.GONE);
 
-
-
-                    topBurn1Icon.setImageResource(Util.getIconID(getContext(), burnList.get(0).getIcon()));
-                    topBurn2Icon.setImageResource(Util.getIconID(getContext(), burnList.get(1).getIcon()));
-                    topBurn3Icon.setImageResource(Util.getIconID(getContext(), burnList.get(2).getIcon()));
+                    getTop3(BalanceType.BURN);
                     otherBurnIcon.setImageResource(R.drawable.svg_other);
 
                     burnRealmResults.removeChangeListener(this);
@@ -575,6 +571,21 @@ public class MainFragment extends Fragment {
             burnGroup.setVisibility(View.GONE);
             burnView.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void updateMinMaxProgressBar(){
+        earnProgress.setMax(BalancePreference.getMinMax(getContext()));
+        burnProgress.setMax(BalancePreference.getMinMax(getContext()));
+    }
+
+    private void updateHeaderValue(float value){
+        if(value > 0){
+            headerText.setText("+"+Math.round(value));
+        }else if(value <= 0){
+            headerText.setText(""+Math.round(value));
+        }
+        Log.d("ZHAN", "actual  value is "+value);
+        updateProgressBar(value);
     }
 
     private void updateProgressBar(float total){
@@ -591,11 +602,6 @@ public class MainFragment extends Fragment {
             burnProgress.setProgress(Math.abs(total));
             headerText.setTextColor(ContextCompat.getColor(getContext(), R.color.blue));
         }
-    }
-
-    private void updateMinMaxProgressBar(){
-        earnProgress.setMax(BalancePreference.getMinMax(getContext()));
-        burnProgress.setMax(BalancePreference.getMinMax(getContext()));
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
