@@ -176,7 +176,6 @@ public class ListActivity extends BaseRealmActivity {
     @Override
     public void onStart(){
         super.onStart();
-Toast.makeText(getBaseContext(), "onSTARTTT", Toast.LENGTH_SHORT).show();
         realmResults = myRealm.where(EarnBurn.class).equalTo("type", balanceType).findAllAsync();
         realmResults.addChangeListener(new RealmChangeListener() {
             @Override

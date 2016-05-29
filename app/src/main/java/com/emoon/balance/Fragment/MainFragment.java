@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -35,6 +36,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
@@ -45,16 +47,14 @@ public class MainFragment extends Fragment {
     private static final String TAG = "MainFragment";
 
     private View view;
+    private Realm myRealm;
 
     private TextView headerText, motivationTextView;
     private ViewGroup earnBtn, burnBtn;
-
     private ImageView earnView, burnView;
-
     private RoundCornerProgressBar earnProgress, burnProgress;
 
     private RealmResults<EarnBurn> earnRealmResults, burnRealmResults;
-
     private List<EarnBurn> earnList, burnList;
 
     private ViewGroup earnGroup;
@@ -62,8 +62,6 @@ public class MainFragment extends Fragment {
 
     private ViewGroup burnGroup;
     private ImageView topBurn1Icon, topBurn2Icon, topBurn3Icon, otherBurnIcon;
-
-    private Realm myRealm;
 
     private EarnBurn burn1Default, burn2Default, burn3Default;
     private EarnBurn earn1Default, earn2Default, earn3Default;
@@ -295,6 +293,8 @@ public class MainFragment extends Fragment {
         startActivity(intent);
     }
 
+    private Vector<AlertDialog> dialogs = new Vector<AlertDialog>();
+
     /**
      * Displays prompt for user to add new transaction.
      */
@@ -316,6 +316,20 @@ public class MainFragment extends Fragment {
         CircularView cv = (CircularView) promptView.findViewById(R.id.genericCircularView);
         cv.setIconResource(Util.getIconID(getContext(), data.getIcon()));
         cv.setIconColor(R.color.white);
+
+        //Edit Button
+        ImageButton editBtn = (ImageButton) promptView.findViewById(R.id.editBtn);
+        editBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), InfoActivity.class);
+                intent.putExtra(Constants.REQUEST_IS_EDIT_EARNBURN, true);
+                intent.putExtra(Constants.REQUEST_EDIT_EARNBURN, data1.getId());
+                startActivity(intent);
+
+
+            }
+        });
 
         if(data.getType().equalsIgnoreCase(BalanceType.BURN.toString())){
             cv.setCircleColor(R.color.blue);
@@ -401,6 +415,7 @@ public class MainFragment extends Fragment {
             ss.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
             ss.show();
 
+            dialogs.add(ss);
         }else{
             Intent firstTimeEarnBurn = new Intent(getContext(), InfoActivity.class);
             firstTimeEarnBurn.putExtra(Constants.REQUEST_IS_EDIT_EARNBURN, true);
@@ -604,6 +619,12 @@ public class MainFragment extends Fragment {
         }
     }
 
+    private void closeAllAlertDialog(){
+        for (AlertDialog dialog : dialogs) {
+            if (dialog.isShowing()) dialog.dismiss();
+        }
+    }
+
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //
     // Lifecycle
@@ -624,6 +645,7 @@ public class MainFragment extends Fragment {
         resumeRealm();
         calculateTotalActivityAndReward();
         updateMinMaxProgressBar();
+        closeAllAlertDialog();
     }
 
     @Override
