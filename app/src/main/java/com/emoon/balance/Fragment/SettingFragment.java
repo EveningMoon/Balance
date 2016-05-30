@@ -156,14 +156,23 @@ public class SettingFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int id) {
                         Toast.makeText(getContext(), "RESETTING...", Toast.LENGTH_SHORT).show();
 
+                        /*
                         RealmConfiguration config = new RealmConfiguration.Builder(getContext())
                                 .name(Constants.REALM_NAME)
                                 .deleteRealmIfMigrationNeeded()
                                 .schemaVersion(1)
-                                .build();
+                                .build();*/
 
                         BalancePreference.resetFirstTime(getContext());
-                        Realm.deleteRealm(config);
+
+                        //Realm.deleteRealm(config);
+
+                        //Manually delete realm file
+                        Realm myRealm = Realm.getDefaultInstance();
+                        String path = myRealm.getPath();
+                        myRealm.close();
+                        File file = new File(path);
+                        file.delete();
                     }
                 })
                 .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
