@@ -12,34 +12,6 @@ public abstract class BaseRealmActivity extends BaseActivity {
     private static final String TAG = "BaseRealmActivity";
 
     protected Realm myRealm;
-/*
-    @Override
-    public void onStart(){
-        super.onStart();
-        Log.d(TAG, "onStart");
-        resumeRealm();
-    }
-
-    @Override
-    public void onResume(){
-        super.onResume();
-        Log.d(TAG, "onResume");
-        resumeRealm();
-    }
-
-    @Override
-    public void onPause(){
-        super.onPause();
-        Log.d(TAG, "onPause");
-        closeRealm();
-    }
-
-    @Override
-    public void onStop(){
-        super.onStop();
-        Log.d(TAG, "onStop");
-        closeRealm();
-    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

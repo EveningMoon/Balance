@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import io.realm.Realm;
 import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 
@@ -62,6 +63,9 @@ public class MainFragment extends BaseRealmFragment {
 
     //Keep track of alertdialogs
     private Vector<AlertDialog> dialogs = new Vector<>();
+
+    private RealmResults<Transaction> top3RealmResults; //The results for top 3 earn and burn
+    RealmResults<Transaction> totalTransactionRealmResults; //the results for all to calculate headerText
 
     public MainFragment() {
         // Required empty public constructor
@@ -427,10 +431,10 @@ public class MainFragment extends BaseRealmFragment {
      * Displays its value to the header value.
      */
     private void calculateTotalActivityAndReward(){
-        Log.d(TAG, "=======> calculateTotalActivityAndReward");
+        Log.d("ZHAN", "=======> calculateTotalActivityAndReward");
 
-        final RealmResults<Transaction> transactionRealmResults = myRealm.where(Transaction.class).findAllAsync();
-        transactionRealmResults.addChangeListener(new RealmChangeListener<RealmResults<Transaction>>() {
+        totalTransactionRealmResults = myRealm.where(Transaction.class).findAllAsync();
+        totalTransactionRealmResults.addChangeListener(new RealmChangeListener<RealmResults<Transaction>>() {
             @Override
             public void onChange(RealmResults<Transaction> element) {
                 element.removeChangeListener(this);
@@ -463,8 +467,8 @@ public class MainFragment extends BaseRealmFragment {
     }
 
     public void getTop3(final BalanceType type){
-        final RealmResults<Transaction> transactionRealmResults = myRealm.where(Transaction.class).equalTo("earnBurn.type",type.toString()).findAllAsync();
-        transactionRealmResults.addChangeListener(new RealmChangeListener<RealmResults<Transaction>>() {
+        top3RealmResults = myRealm.where(Transaction.class).equalTo("earnBurn.type",type.toString()).findAllAsync();
+        top3RealmResults.addChangeListener(new RealmChangeListener<RealmResults<Transaction>>() {
             @Override
             public void onChange(RealmResults<Transaction> element) {
                 element.removeChangeListener(this);
@@ -475,14 +479,10 @@ public class MainFragment extends BaseRealmFragment {
 
                 for(int i = 0; i < element.size(); i++){
                     if (transactionMap.containsKey(element.get(i).getEarnBurn().getId())) {
-                        //if (transactionMap.containsKey(transactionRealmResults.get(i).getEarnBurn().getName())) {
                         int origValue = transactionMap.get(element.get(i).getEarnBurn().getId());
-                        //int origValue = transactionMap.get(transactionRealmResults.get(i).getEarnBurn().getName());
                         transactionMap.put(element.get(i).getEarnBurn().getId(), origValue+1);
-                        //transactionMap.put(transactionRealmResults.get(i).getEarnBurn().getName(), origValue+1);
                     } else {
                         transactionMap.put(element.get(i).getEarnBurn().getId(), 1);
-                        //transactionMap.put(transactionRealmResults.get(i).getEarnBurn().getName(), 1);
                     }
                 }
 
@@ -690,7 +690,10 @@ public class MainFragment extends BaseRealmFragment {
     public void onResume(){
         super.onResume();
         Log.d(TAG, "onResume");
+
         calculateTotalActivityAndReward();
+
+
         updateMinMaxProgressBar();
         setBurnItemsVisibility(false);
         setEarnItemsVisibility(false);
