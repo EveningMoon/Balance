@@ -100,6 +100,9 @@ public class InfoActivity extends BaseRealmActivity {
             balanceType = (getIntent().getExtras().getString(Constants.REQUEST_CREATE_EARNBURN));
 
             Log.d(TAG, "in add new mode : "+balanceType);
+
+            costAdapter.clear();
+            costAdapter.addAll(costList);
         }
 
         unitsThisEarnBurnHave = new ArrayList<>();
@@ -291,6 +294,8 @@ public class InfoActivity extends BaseRealmActivity {
     int selectedNumberPickerIndex;
     private List<String> unitsThisEarnBurnHave;
 
+    private Cost ccost;
+
     private void createNewCostDialog(){
         // get cost.xml view
         LayoutInflater layoutInflater = getLayoutInflater();
@@ -333,8 +338,8 @@ public class InfoActivity extends BaseRealmActivity {
 
         points.setHint("Points earned per");
 
-        final Cost cost = new Cost();
-        cost.setId(Util.generateUUID());
+        ccost = new Cost();
+        ccost.setId(Util.generateUUID());
 
         AlertDialog noteDialog = new AlertDialog.Builder(this)
                 .setView(promptView)
@@ -344,16 +349,18 @@ public class InfoActivity extends BaseRealmActivity {
                         if (Util.isNotNullNotEmptyNotWhiteSpaceOnlyByJava(points.getText().toString()) &&
                                 Util.isNotNullNotEmptyNotWhiteSpaceOnlyByJava(value.getText().toString())) {
 
-                            cost.setPointsEarnPer(Integer.parseInt(points.getText().toString()));
-                            cost.setUnitCost(Integer.parseInt(value.getText().toString()));
-                            cost.setUnitType(valueDiff[selectedNumberPickerIndex]);
+                            ccost.setPointsEarnPer(Integer.parseInt(points.getText().toString()));
+                            ccost.setUnitCost(Integer.parseInt(value.getText().toString()));
+                            ccost.setUnitType(valueDiff[selectedNumberPickerIndex]);
 
-                            costList.add(cost);
+                            costList.add(ccost);
 
                             Log.d(TAG, "after adding, new cost size : "+costList.size());
 
-                            costAdapter.clear();
-                            costAdapter.addAll(costList);
+                            if(isEditMode){
+                                costAdapter.clear();
+                                costAdapter.add(ccost);
+                            }
 
                             //remove unit from list for future available values to add.
                             //Do this by adding to list "unitsThisEarnBurnHave"
@@ -425,8 +432,6 @@ public class InfoActivity extends BaseRealmActivity {
 
                         costAdapter.clear();
                         costAdapter.addAll(costList);
-                        //costAdapter.notifyDataSetChanged();
-
                         break;
                 }
                 //False: Close the menu

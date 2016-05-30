@@ -188,9 +188,6 @@ public class ListActivity extends BaseRealmActivity {
                 listAdapter.clear();
                 listAdapter.addAll(itemList);
 
-                //Scroll to bottom
-                listView.smoothScrollToPosition(itemList.size() - 1);
-
                 element.removeChangeListener(this);
             }
         });
