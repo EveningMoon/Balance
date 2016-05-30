@@ -21,20 +21,6 @@ public abstract class BaseRealmFragment extends BaseFragment {
         Log.d(TAG, "onStart");
         resumeRealm();
     }
-/*
-    @Override
-    public void onResume(){
-        super.onResume();
-        Log.d(TAG, "onResume");
-        resumeRealm();
-    }
-
-    @Override
-    public void onPause(){
-        super.onPause();
-        Log.d(TAG, "onPause");
-        closeRealm();
-    }*/
 
     @Override
     public void onStop(){
@@ -56,19 +42,15 @@ public abstract class BaseRealmFragment extends BaseFragment {
     }
 
     protected void resumeRealm(){
-        //if(myRealm == null || myRealm.isClosed()){
-            myRealm = Realm.getDefaultInstance();
-            Log.d(TAG, "----- RESUME REALM -----");
-        //}
+        myRealm = Realm.getDefaultInstance();
+        Log.d(TAG, "----- RESUME REALM -----");
     }
 
     /**
      * Close Realm if possible
      */
     protected void closeRealm(){
-        //if(myRealm != null && !myRealm.isClosed()){
-            myRealm.close();
-            Log.d(TAG, "----- CLOSE REALM -----");
-        //}
+        myRealm.close();
+        Log.d(TAG, "----- CLOSE REALM -----");
     }
 }

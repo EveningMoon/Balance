@@ -44,19 +44,15 @@ public abstract class BaseRealmActivity extends BaseActivity {
     }
 
     public void resumeRealm(){
-        //if(myRealm == null || myRealm.isClosed()){
         myRealm = Realm.getDefaultInstance();
         Log.d(TAG, "resumeRealm");
-        //}
     }
 
     /**
      * Close Realm if possible
      */
     public void closeRealm(){
-        //if(myRealm != null && !myRealm.isClosed()){
         myRealm.close();
         Log.d(TAG, "closeRealm");
-        //}
     }
 }
