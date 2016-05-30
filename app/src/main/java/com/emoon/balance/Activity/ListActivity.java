@@ -178,11 +178,11 @@ public class ListActivity extends BaseRealmActivity {
     public void onStart(){
         super.onStart();
         realmResults = myRealm.where(EarnBurn.class).equalTo("type", balanceType).findAllAsync();
-        realmResults.addChangeListener(new RealmChangeListener() {
+        realmResults.addChangeListener(new RealmChangeListener<RealmResults<EarnBurn>>() {
             @Override
-            public void onChange() {
-                Log.d("ZHAN", "There are " + realmResults.size() + " items 1");
-                itemList = myRealm.copyFromRealm(realmResults);
+            public void onChange(RealmResults<EarnBurn> element) {
+                Log.d("ZHAN", "There are " + element.size() + " items 1");
+                itemList = myRealm.copyFromRealm(element);
                 Log.d("ZHAN", "There are " + itemList.size() + " items 2");
 
                 listAdapter.clear();
@@ -191,7 +191,7 @@ public class ListActivity extends BaseRealmActivity {
                 //Scroll to bottom
                 listView.smoothScrollToPosition(itemList.size() - 1);
 
-                realmResults.removeChangeListener(this);
+                element.removeChangeListener(this);
             }
         });
     }

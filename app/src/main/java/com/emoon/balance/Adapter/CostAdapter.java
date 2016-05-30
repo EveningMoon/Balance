@@ -67,4 +67,8 @@ public class CostAdapter extends ArrayAdapter<Cost>{
 
         return convertView;
     }
+
+    public int getSize(){
+        return costList.size();
+    }
 }

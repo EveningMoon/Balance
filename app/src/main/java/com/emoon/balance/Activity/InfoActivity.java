@@ -68,7 +68,7 @@ public class InfoActivity extends BaseRealmActivity {
 
     @Override
     protected void init(){
-        super.init();
+        //super.init();
 
         costListView = (SwipeMenuListView) findViewById(R.id.costListView);
         costList = new ArrayList<>();
@@ -359,7 +359,7 @@ public class InfoActivity extends BaseRealmActivity {
                             //Do this by adding to list "unitsThisEarnBurnHave"
                             unitsThisEarnBurnHave.add(valueDiff[selectedNumberPickerIndex]);
                             Log.d(TAG, "after adding, new unit size : "+unitsThisEarnBurnHave.size());
-
+                            Log.d(TAG, "adapter has "+costAdapter.getSize());
 
                         } else {
                             Toast.makeText(getApplicationContext(), "Please input a value", Toast.LENGTH_SHORT).show();

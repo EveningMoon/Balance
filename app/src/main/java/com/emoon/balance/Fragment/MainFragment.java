@@ -3,9 +3,6 @@ package com.emoon.balance.Fragment;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.Icon;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,11 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 import com.emoon.balance.Activity.InfoActivity;
@@ -40,16 +35,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-import io.realm.Realm;
 import io.realm.RealmChangeListener;
-import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 
-public class MainFragment extends Fragment {
+public class MainFragment extends BaseRealmFragment {
     private static final String TAG = "MainFragment";
-
-    private View view;
-    private Realm myRealm;
 
     private TextView headerText, motivationTextView;
     private ViewGroup earnBtn, burnBtn;
@@ -78,50 +68,16 @@ public class MainFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_main, container, false);
-        return view;
+    protected int getFragmentLayout() {
+        return R.layout.fragment_main;
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState){
-        initRealm();
+    protected void init() {
+        super.init();
 
-        super.onActivityCreated(savedInstanceState);
-
-        resumeRealm();
         isFirstTime();
-    }
 
-    private void initRealm(){
-        RealmConfiguration config = new RealmConfiguration.Builder(getContext())
-                .name(Constants.REALM_NAME)
-                .deleteRealmIfMigrationNeeded()
-                .schemaVersion(1)
-                .build();
-        Realm.setDefaultConfiguration(config);
-    }
-
-    private void isFirstTime(){
-        if(BalancePreference.getFirstTime(getContext())){
-            BalancePreference.setFirstTime(getContext());
-            createDefaultItems();
-        }
-        init();
-    }
-
-    private void createDefaultItems(){
-        List<EarnBurn> listOfActivity = Util.getListOfActivities(getContext());
-        List<EarnBurn> listOfReward = Util.getListOfRewards(getContext());
-
-        myRealm.beginTransaction();
-        myRealm.copyToRealmOrUpdate(listOfActivity);
-        myRealm.copyToRealmOrUpdate(listOfReward);
-        myRealm.commitTransaction();
-    }
-
-    private void init(){
         headerText = (TextView) view.findViewById(R.id.topPanelHeader);
         earnBtn = (ViewGroup) view.findViewById(R.id.earnPanel);
         burnBtn = (ViewGroup) view.findViewById(R.id.burnPanel);
@@ -170,11 +126,27 @@ public class MainFragment extends Fragment {
 
         motivationTextView = (TextView) view.findViewById(R.id.topPanelIntro);
         motivationTextView.setText(Util.getRandomMotivationalSpeech(getContext()));
-
+        Log.d(TAG, "INITS");
         addListeners();
-        calculateTotalActivityAndReward();
-
         getDefaultEarnBurn();
+        calculateTotalActivityAndReward();
+    }
+
+    private void isFirstTime(){
+        if(BalancePreference.getFirstTime(getContext())){
+            BalancePreference.setFirstTime(getContext());
+            createDefaultItems();
+        }
+    }
+
+    private void createDefaultItems(){
+        List<EarnBurn> listOfActivity = Util.getListOfActivities(getContext());
+        List<EarnBurn> listOfReward = Util.getListOfRewards(getContext());
+
+        myRealm.beginTransaction();
+        myRealm.copyToRealmOrUpdate(listOfActivity);
+        myRealm.copyToRealmOrUpdate(listOfReward);
+        myRealm.commitTransaction();
     }
 
     private void addListeners(){
@@ -262,31 +234,31 @@ public class MainFragment extends Fragment {
      */
     private void getDefaultEarnBurn(){
         final RealmResults<EarnBurn> res = myRealm.where(EarnBurn.class).findAllAsync();
-        res.addChangeListener(new RealmChangeListener() {
+        res.addChangeListener(new RealmChangeListener<RealmResults<EarnBurn>>() {
             @Override
-            public void onChange() {
+            public void onChange(RealmResults<EarnBurn> element) {
                 //find default Activity
-                for(int i = 0; i < res.size(); i++){
-                    if(res.get(i).getType().equalsIgnoreCase(BalanceType.EARN.toString())){
-                        if(res.get(i).getPriority() == 1){
-                            earn1Default = res.get(i);
-                        }else if(res.get(i).getPriority() == 2){
-                            earn2Default = res.get(i);
-                        }else if(res.get(i).getPriority() == 3){
-                            earn3Default = res.get(i);
+                for(int i = 0; i < element.size(); i++){
+                    if(element.get(i).getType().equalsIgnoreCase(BalanceType.EARN.toString())){
+                        if(element.get(i).getPriority() == 1){
+                            earn1Default = element.get(i);
+                        }else if(element.get(i).getPriority() == 2){
+                            earn2Default = element.get(i);
+                        }else if(element.get(i).getPriority() == 3){
+                            earn3Default = element.get(i);
                         }
                     }
                 }
 
                 //find default Rewards
-                for(int i = 0; i < res.size(); i++){
-                    if(res.get(i).getType().equalsIgnoreCase(BalanceType.BURN.toString())){
-                        if(res.get(i).getPriority() == 1){
-                            burn1Default = res.get(i);
-                        }else if(res.get(i).getPriority() == 2){
-                            burn2Default = res.get(i);
-                        }else if(res.get(i).getPriority() == 3){
-                            burn3Default = res.get(i);
+                for(int i = 0; i < element.size(); i++){
+                    if(element.get(i).getType().equalsIgnoreCase(BalanceType.BURN.toString())){
+                        if(element.get(i).getPriority() == 1){
+                            burn1Default = element.get(i);
+                        }else if(element.get(i).getPriority() == 2){
+                            burn2Default = element.get(i);
+                        }else if(element.get(i).getPriority() == 3){
+                            burn3Default = element.get(i);
                         }
                     }
                 }
@@ -300,9 +272,10 @@ public class MainFragment extends Fragment {
                 Log.d("DEFAULT", "default 3 earn : "+earn3Default);
                 Log.d("DEFAULT", "-----------------------");
 
-                res.removeChangeListener(this);
+                element.removeChangeListener(this);
             }
         });
+
     }
 
     /**
@@ -343,7 +316,7 @@ public class MainFragment extends Fragment {
         }
 
         //Edit Button
-        ImageButton editBtn = (ImageButton) promptView.findViewById(R.id.editBtn);
+        ImageView editBtn = (ImageView) promptView.findViewById(R.id.editBtn);
         editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -454,30 +427,32 @@ public class MainFragment extends Fragment {
      * Displays its value to the header value.
      */
     private void calculateTotalActivityAndReward(){
-        final RealmResults<Transaction> transactionRealmResults = myRealm.where(Transaction.class).findAllAsync();
-        transactionRealmResults.addChangeListener(new RealmChangeListener() {
-            @Override
-            public void onChange() {
-                transactionRealmResults.removeChangeListener(this);
+        Log.d(TAG, "=======> calculateTotalActivityAndReward");
 
-                Log.d(TAG, "thjere are "+transactionRealmResults.size()+" tr");
+        final RealmResults<Transaction> transactionRealmResults = myRealm.where(Transaction.class).findAllAsync();
+        transactionRealmResults.addChangeListener(new RealmChangeListener<RealmResults<Transaction>>() {
+            @Override
+            public void onChange(RealmResults<Transaction> element) {
+                element.removeChangeListener(this);
+
+                Log.d(TAG, "thjere are "+element.size()+" tr");
 
                 float currentCount = 0;
-                for(int i = 0; i < transactionRealmResults.size(); i++){
-                    for(int k = 0; k < transactionRealmResults.get(i).getEarnBurn().getCostList().size(); k++){
-                        if(transactionRealmResults.get(i).getEarnBurn().getCostList().get(k).getUnitType().equalsIgnoreCase(transactionRealmResults.get(i).getCostType())){
-                            int pointsPer = transactionRealmResults.get(i).getEarnBurn().getCostList().get(k).getPointsEarnPer();
-                            int unit = transactionRealmResults.get(i).getEarnBurn().getCostList().get(k).getUnitCost();
-                            int costUserInput = transactionRealmResults.get(i).getUnitCost();
+                for(int i = 0; i < element.size(); i++){
+                    for(int k = 0; k < element.get(i).getEarnBurn().getCostList().size(); k++){
+                        if(element.get(i).getEarnBurn().getCostList().get(k).getUnitType().equalsIgnoreCase(element.get(i).getCostType())){
+                            int pointsPer = element.get(i).getEarnBurn().getCostList().get(k).getPointsEarnPer();
+                            int unit = element.get(i).getEarnBurn().getCostList().get(k).getUnitCost();
+                            int costUserInput = element.get(i).getUnitCost();
                             float thisCost = (((float)costUserInput / unit) * pointsPer);
 
-                            if(transactionRealmResults.get(i).getEarnBurn().getType().equalsIgnoreCase(BalanceType.BURN.toString())){
+                            if(element.get(i).getEarnBurn().getType().equalsIgnoreCase(BalanceType.BURN.toString())){
                                 currentCount -= thisCost;
                             }else{
                                 currentCount += thisCost;
                             }
 
-                            Log.d(TAG, transactionRealmResults.get(i).getEarnBurn().getType()+" Val is ("+pointsPer+" per "+unit+"). User put "+costUserInput+" => "+thisCost);
+                            Log.d(TAG, element.get(i).getEarnBurn().getType()+" Val is ("+pointsPer+" per "+unit+"). User put "+costUserInput+" => "+thisCost);
                         }
                     }
                 }
@@ -489,24 +464,24 @@ public class MainFragment extends Fragment {
 
     public void getTop3(final BalanceType type){
         final RealmResults<Transaction> transactionRealmResults = myRealm.where(Transaction.class).equalTo("earnBurn.type",type.toString()).findAllAsync();
-        transactionRealmResults.addChangeListener(new RealmChangeListener() {
+        transactionRealmResults.addChangeListener(new RealmChangeListener<RealmResults<Transaction>>() {
             @Override
-            public void onChange() {
-                transactionRealmResults.removeChangeListener(this);
+            public void onChange(RealmResults<Transaction> element) {
+                element.removeChangeListener(this);
 
-                Log.d(TAG, "there are "+transactionRealmResults.size()+" transactions for type :"+type.toString());
+                Log.d(TAG, "there are "+element.size()+" transactions for type :"+type.toString());
 
                 Map<String,Integer> transactionMap = new HashMap<>();
 
-                for(int i = 0; i < transactionRealmResults.size(); i++){
-                    if (transactionMap.containsKey(transactionRealmResults.get(i).getEarnBurn().getId())) {
-                    //if (transactionMap.containsKey(transactionRealmResults.get(i).getEarnBurn().getName())) {
-                        int origValue = transactionMap.get(transactionRealmResults.get(i).getEarnBurn().getId());
+                for(int i = 0; i < element.size(); i++){
+                    if (transactionMap.containsKey(element.get(i).getEarnBurn().getId())) {
+                        //if (transactionMap.containsKey(transactionRealmResults.get(i).getEarnBurn().getName())) {
+                        int origValue = transactionMap.get(element.get(i).getEarnBurn().getId());
                         //int origValue = transactionMap.get(transactionRealmResults.get(i).getEarnBurn().getName());
-                        transactionMap.put(transactionRealmResults.get(i).getEarnBurn().getId(), origValue+1);
+                        transactionMap.put(element.get(i).getEarnBurn().getId(), origValue+1);
                         //transactionMap.put(transactionRealmResults.get(i).getEarnBurn().getName(), origValue+1);
                     } else {
-                        transactionMap.put(transactionRealmResults.get(i).getEarnBurn().getId(), 1);
+                        transactionMap.put(element.get(i).getEarnBurn().getId(), 1);
                         //transactionMap.put(transactionRealmResults.get(i).getEarnBurn().getName(), 1);
                     }
                 }
@@ -622,10 +597,10 @@ public class MainFragment extends Fragment {
     private void setEarnItemsVisibility(boolean value){
         if(value) { //display horizontal list view
             earnRealmResults = myRealm.where(EarnBurn.class).equalTo("type", BalanceType.EARN.toString()).findAllAsync();
-            earnRealmResults.addChangeListener(new RealmChangeListener() {
+            earnRealmResults.addChangeListener(new RealmChangeListener<RealmResults<EarnBurn>>() {
                 @Override
-                public void onChange() {
-                    earnList = myRealm.copyFromRealm(earnRealmResults);
+                public void onChange(RealmResults<EarnBurn> element) {
+                    earnList = myRealm.copyFromRealm(element);
 
                     earnView.setVisibility(View.GONE);
                     earnGroup.setVisibility(View.VISIBLE);
@@ -633,9 +608,10 @@ public class MainFragment extends Fragment {
                     getTop3(BalanceType.EARN);
                     otherEarnIcon.setImageResource(R.drawable.svg_other);
 
-                    earnRealmResults.removeChangeListener(this);
+                    element.removeChangeListener(this);
                 }
             });
+
         }else{ //hide horizontal list view
             earnGroup.setVisibility(View.GONE);
             earnView.setVisibility(View.VISIBLE);
@@ -645,10 +621,10 @@ public class MainFragment extends Fragment {
     private void setBurnItemsVisibility(boolean value){
         if(value){ //display horizontal list view
             burnRealmResults = myRealm.where(EarnBurn.class).equalTo("type", BalanceType.BURN.toString()).findAllAsync();
-            burnRealmResults.addChangeListener(new RealmChangeListener() {
+            burnRealmResults.addChangeListener(new RealmChangeListener<RealmResults<EarnBurn>>() {
                 @Override
-                public void onChange() {
-                    burnList = myRealm.copyFromRealm(burnRealmResults);
+                public void onChange(RealmResults<EarnBurn> element) {
+                    burnList = myRealm.copyFromRealm(element);
 
                     burnGroup.setVisibility(View.VISIBLE);
                     burnView.setVisibility(View.GONE);
@@ -656,7 +632,7 @@ public class MainFragment extends Fragment {
                     getTop3(BalanceType.BURN);
                     otherBurnIcon.setImageResource(R.drawable.svg_other);
 
-                    burnRealmResults.removeChangeListener(this);
+                    element.removeChangeListener(this);
                 }
             });
         }else{ //hide horizontal list view
@@ -708,18 +684,12 @@ public class MainFragment extends Fragment {
     //
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    @Override
-    public void onStart(){
-        super.onStart();
-        Log.d(TAG, "onStart");
-        resumeRealm();
-    }
+
 
     @Override
     public void onResume(){
         super.onResume();
         Log.d(TAG, "onResume");
-        resumeRealm();
         calculateTotalActivityAndReward();
         updateMinMaxProgressBar();
         setBurnItemsVisibility(false);
@@ -727,31 +697,5 @@ public class MainFragment extends Fragment {
         closeAllAlertDialog();
     }
 
-    @Override
-    public void onPause(){
-        super.onPause();
-        Log.d(TAG, "onPause");
-        closeRealm();
-    }
 
-    @Override
-    public void onStop(){
-        super.onStop();
-        Log.d(TAG, "onStop");
-        closeRealm();
-    }
-
-    public void resumeRealm(){
-        //if(myRealm == null || myRealm.isClosed()){
-            myRealm = Realm.getDefaultInstance();
-            Log.d(TAG, "resumeRealm");
-        //}
-    }
-
-    public void closeRealm(){
-        //if(myRealm != null && !myRealm.isClosed()){
-            myRealm.close();
-            Log.d(TAG, "closeRealm");
-        //}
-    }
 }

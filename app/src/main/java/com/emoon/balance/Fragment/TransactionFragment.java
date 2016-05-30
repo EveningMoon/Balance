@@ -40,11 +40,9 @@ import io.realm.RealmResults;
 /**
  * Created by zhanyap on 2016-03-12.
  */
-public class TransactionFragment extends Fragment{
+public class TransactionFragment extends BaseRealmFragment{
 
     private static final String TAG = "TransactionFragment";
-    private View view;
-    private Realm myRealm;
 
     private TransactionAdapter transactionAdapter;
     private SwipeMenuListView transactionListView;
@@ -54,20 +52,13 @@ public class TransactionFragment extends Fragment{
     private TextView emptyTextView;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_transaction, container, false);
-        return view;
+    protected int getFragmentLayout() {
+        return R.layout.fragment_transaction;
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState){
-        super.onActivityCreated(savedInstanceState);
-        init();
-    }
-
-    private void init() {
-        resumeRealm();
+    protected void init() {
+        super.init();
 
         emptyTextView = (TextView)view.findViewById(R.id.emptyTransactionTextView);
 
@@ -83,17 +74,17 @@ public class TransactionFragment extends Fragment{
 
     private void getAllTransactions(){
         transactionRealmResults = myRealm.where(Transaction.class).findAllAsync();
-        transactionRealmResults.addChangeListener(new RealmChangeListener() {
+        transactionRealmResults.addChangeListener(new RealmChangeListener<RealmResults<Transaction>>() {
             @Override
-            public void onChange() {
-                transactionList = myRealm.copyFromRealm(transactionRealmResults);
+            public void onChange(RealmResults<Transaction> element) {
+                transactionList = myRealm.copyFromRealm(element);
 
                 transactionAdapter.clear();
                 transactionAdapter.addAll(transactionList);
 
                 updateTransactionStatus();
 
-                transactionRealmResults.removeChangeListener(this);
+                element.removeChangeListener(this);
             }
         });
     }

@@ -11,11 +11,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.emoon.balance.Etc.Constants;
 import com.emoon.balance.Fragment.MainFragment;
 import com.emoon.balance.Fragment.SettingFragment;
 import com.emoon.balance.Fragment.TransactionFragment;
 import com.emoon.balance.Model.BalanceType;
 import com.emoon.balance.R;
+
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener{
@@ -34,6 +38,7 @@ public class MainActivity extends BaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initRealm();
     }
 
     @Override
@@ -60,6 +65,15 @@ public class MainActivity extends BaseActivity
         //code to load my fragment
         getSupportFragmentManager().beginTransaction().add(R.id.contentFrame, mainFragment).commit();
         navigationView.getMenu().getItem(0).setChecked(true);
+    }
+
+    private void initRealm(){
+        RealmConfiguration config = new RealmConfiguration.Builder(this)
+                .name(Constants.REALM_NAME)
+                .deleteRealmIfMigrationNeeded()
+                .schemaVersion(1)
+                .build();
+        Realm.setDefaultConfiguration(config);
     }
 
     private void createFragments(){

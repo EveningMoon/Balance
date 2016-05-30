@@ -1,5 +1,6 @@
 package com.emoon.balance.Activity;
 
+import android.os.Bundle;
 import android.util.Log;
 
 import io.realm.Realm;
@@ -11,7 +12,7 @@ public abstract class BaseRealmActivity extends BaseActivity {
     private static final String TAG = "BaseRealmActivity";
 
     protected Realm myRealm;
-
+/*
     @Override
     public void onStart(){
         super.onStart();
@@ -38,6 +39,18 @@ public abstract class BaseRealmActivity extends BaseActivity {
         super.onStop();
         Log.d(TAG, "onStop");
         closeRealm();
+    }*/
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        resumeRealm();
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        closeRealm();
     }
 
     /**
@@ -55,7 +68,7 @@ public abstract class BaseRealmActivity extends BaseActivity {
      */
     @Override
     protected void init(){
-        resumeRealm();
+        //resumeRealm();
     }
 
     public void resumeRealm(){
