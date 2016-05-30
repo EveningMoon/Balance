@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 import com.emoon.balance.Activity.InfoActivity;
@@ -31,6 +32,7 @@ import com.zhan.library.CircularView;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -494,22 +496,74 @@ public class MainFragment extends BaseRealmFragment {
                 }
 
                 if(type == BalanceType.BURN) {
+
+                    //temp list used strictly for comparing only
+                    List<EarnBurn> tempBurnList = new ArrayList<>();
+                    tempBurnList.add(burn1Default);
+                    tempBurnList.add(burn2Default);
+                    tempBurnList.add(burn3Default);
+
+                    List<EarnBurn> toRemove = new ArrayList<>();
+
+                    for(EarnBurn data : tempBurnList){
+                        for(int a = 0; a < sortedList.size(); a++){
+                            if(sortedList.get(a).equalsIgnoreCase(data.getId())){
+                                Log.d("JEEZ", sortedList.get(a)+" == "+data);
+                                toRemove.add(data);
+                            }
+                        }
+                    }
+
+                    tempBurnList.removeAll(toRemove);
+
                     if(sortedList.size() == 0){
                         updateTop3EarnBurn(type.toString(), burn1Default.getId(), burn2Default.getId(), burn3Default.getId());
                     }else if (sortedList.size() == 1) {
-                        updateTop3EarnBurn(type.toString(), sortedList.get(0), burn1Default.getId(), burn2Default.getId());
+
+                        //Get the Burn at index 0 and 1 (the next priority)
+                        updateTop3EarnBurn(type.toString(), sortedList.get(0), tempBurnList.get(0).getId(), tempBurnList.get(1).getId());
+
                     } else if (sortedList.size() == 2) {
-                        updateTop3EarnBurn(type.toString(), sortedList.get(0), sortedList.get(1), burn1Default.getId());
+
+                        //Get the Burn at index 0 (the next priority)
+                        updateTop3EarnBurn(type.toString(), sortedList.get(0), sortedList.get(1), tempBurnList.get(0).getId());
+
                     } else if (sortedList.size() > 2) {
                         updateTop3EarnBurn(type.toString(), sortedList.get(0), sortedList.get(1), sortedList.get(2));
                     }
                 }else if(type == BalanceType.EARN){
+
+                    //temp list used strictly for comparing only
+                    List<EarnBurn> tempEarnList = new ArrayList<>();
+                    tempEarnList.add(earn1Default);
+                    tempEarnList.add(earn2Default);
+                    tempEarnList.add(earn3Default);
+
+                    List<EarnBurn> toRemove = new ArrayList<>();
+
+                    for(EarnBurn data : tempEarnList){
+                        for(int a = 0; a < sortedList.size(); a++){
+                            if(sortedList.get(a).equalsIgnoreCase(data.getId())){
+                                Log.d("JEEZ", sortedList.get(a)+" == "+data);
+                                toRemove.add(data);
+                            }
+                        }
+                    }
+
+                    tempEarnList.removeAll(toRemove);
+
                     if(sortedList.size() == 0){
                         updateTop3EarnBurn(type.toString(), earn1Default.getId(), earn2Default.getId(), earn3Default.getId());
                     } else if (sortedList.size() == 1) {
-                        updateTop3EarnBurn(type.toString(), sortedList.get(0), earn1Default.getId(), earn2Default.getId());
+
+                        //Get the Earn at index 0 and 1 (the next priority)
+                        updateTop3EarnBurn(type.toString(), sortedList.get(0), tempEarnList.get(0).getId(), tempEarnList.get(1).getId());
+
                     } else if (sortedList.size() == 2) {
-                        updateTop3EarnBurn(type.toString(), sortedList.get(0), sortedList.get(1), earn1Default.getId());
+
+                        //Get the Earn at index 0 (the next priority)
+                        updateTop3EarnBurn(type.toString(), sortedList.get(0), sortedList.get(1), tempEarnList.get(0).getId());
+
                     } else if (sortedList.size() > 2) {
                         updateTop3EarnBurn(type.toString(), sortedList.get(0), sortedList.get(1), sortedList.get(2));
                     }
