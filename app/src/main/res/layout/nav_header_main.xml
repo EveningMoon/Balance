@@ -5,12 +5,16 @@
     android:background="@drawable/svg_side_nav_bar"
     android:gravity="bottom"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
+    <ImageView
+        android:id="@+id/background"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/background"
+        android:layout_centerVertical="true"
+        android:scaleType="centerCrop"/>
+<!--
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
@@ -30,5 +34,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="android.studio@android.com" />
-
+-->
 </LinearLayout>

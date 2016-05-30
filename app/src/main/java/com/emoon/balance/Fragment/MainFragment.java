@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +21,7 @@ import com.emoon.balance.Activity.InfoActivity;
 import com.emoon.balance.Activity.ListActivity;
 import com.emoon.balance.Etc.Constants;
 import com.emoon.balance.Model.BalanceType;
+import com.emoon.balance.Model.Cost;
 import com.emoon.balance.Model.EarnBurn;
 import com.emoon.balance.Model.IconType;
 import com.emoon.balance.Model.Transaction;
@@ -32,13 +34,14 @@ import com.zhan.library.CircularView;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Vector;
 
-import io.realm.Realm;
 import io.realm.RealmChangeListener;
+import io.realm.RealmList;
 import io.realm.RealmResults;
 
 public class MainFragment extends BaseRealmFragment {
@@ -68,6 +71,9 @@ public class MainFragment extends BaseRealmFragment {
 
     private RealmResults<Transaction> top3RealmResults; //The results for top 3 earn and burn
     RealmResults<Transaction> totalTransactionRealmResults; //the results for all to calculate headerText
+
+    private Cost ccost;
+    private int selectedNumberPickerIndex;
 
     public MainFragment() {
         // Required empty public constructor
@@ -174,7 +180,8 @@ public class MainFragment extends BaseRealmFragment {
             @Override
             public void onClick(View v) {
                 Log.d("ZHAN", "top 1 burn is " + burnList.get(0).getName());
-                addEarnBurnTransaction(burnList.get(0));
+                //addEarnBurnTransaction(burnList.get(0));
+                checkIfEarnBurnHasCost(burnList.get(0));
             }
         });
 
@@ -182,7 +189,8 @@ public class MainFragment extends BaseRealmFragment {
             @Override
             public void onClick(View v) {
                 Log.d("ZHAN", "top  2 burn is "+burnList.get(1).getName());
-                addEarnBurnTransaction(burnList.get(1));
+                //addEarnBurnTransaction(burnList.get(1));
+                checkIfEarnBurnHasCost(burnList.get(1));
             }
         });
 
@@ -190,7 +198,8 @@ public class MainFragment extends BaseRealmFragment {
             @Override
             public void onClick(View v) {
                 Log.d("ZHAN", "top 3 burn is " + burnList.get(2).getName());
-                addEarnBurnTransaction(burnList.get(2));
+                //addEarnBurnTransaction(burnList.get(2));
+                checkIfEarnBurnHasCost(burnList.get(2));
             }
         });
 
@@ -206,7 +215,8 @@ public class MainFragment extends BaseRealmFragment {
             @Override
             public void onClick(View v) {
                 Log.d("ZHAN", "top 1 earn is " + earnList.get(0).getName());
-                addEarnBurnTransaction(earnList.get(0));
+                //addEarnBurnTransaction(earnList.get(0));
+                checkIfEarnBurnHasCost(earnList.get(0));
             }
         });
 
@@ -214,7 +224,8 @@ public class MainFragment extends BaseRealmFragment {
             @Override
             public void onClick(View v) {
                 Log.d("ZHAN", "top  2 earn is "+earnList.get(1).getName());
-                addEarnBurnTransaction(earnList.get(1));
+                //addEarnBurnTransaction(earnList.get(1));
+                checkIfEarnBurnHasCost(earnList.get(1));
             }
         });
 
@@ -222,7 +233,8 @@ public class MainFragment extends BaseRealmFragment {
             @Override
             public void onClick(View v) {
                 Log.d("ZHAN", "top 3 earn is " + earnList.get(2).getName());
-                addEarnBurnTransaction(earnList.get(2));
+                //addEarnBurnTransaction(earnList.get(2));
+                checkIfEarnBurnHasCost(earnList.get(2));
             }
         });
 
@@ -294,6 +306,14 @@ public class MainFragment extends BaseRealmFragment {
         startActivity(intent);
     }
 
+    private void checkIfEarnBurnHasCost(final EarnBurn data){
+        if(data.getCostList().size() > 0){
+            addEarnBurnTransaction(data);
+        }else{
+            createNewCostDialog(data);
+        }
+    }
+
     /**
      * Displays prompt for user to add new transaction.
      */
@@ -357,75 +377,160 @@ public class MainFragment extends BaseRealmFragment {
 
         unitNumberPicker.setMinValue(0);
 
-        //If this earnBurn have been init with values
-        if(values.length > 0){
-            unitNumberPicker.setMaxValue(values.length - 1);
-            unitNumberPicker.setDisplayedValues(values);
-            unitNumberPicker.setWrapSelectorWheel(true);
+        unitNumberPicker.setMaxValue(values.length - 1);
+        unitNumberPicker.setDisplayedValues(values);
+        unitNumberPicker.setWrapSelectorWheel(true);
 
-            final AlertDialog ss = new AlertDialog.Builder(getActivity())
-                    .setView(promptView)
-                    .setCancelable(true)
-                    .setOnCancelListener(new DialogInterface.OnCancelListener() {
-                        @Override
-                        public void onCancel(DialogInterface dialog) {
-                            setEarnItemsVisibility(false);
-                            setBurnItemsVisibility(false);
-                        }
-                    })
-                    .setPositiveButton("Save", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            if (!input.getText().toString().isEmpty()) {
-                                myRealm.beginTransaction();
-                                Transaction transaction = myRealm.createObject(Transaction.class);
-                                transaction.setId(Util.generateUUID());
-                                transaction.setDate(new Date());
-                                transaction.setEarnBurn(data);
-                                transaction.setUnitCost(Integer.parseInt(input.getText().toString()));
-                                transaction.setCostType(values[unitNumberPicker.getValue()]);
-                                myRealm.commitTransaction();
-
-                                setEarnItemsVisibility(false);
-                                setBurnItemsVisibility(false);
-                                calculateTotalActivityAndReward();
-                            }
-                        }
-                    })
-                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                            setEarnItemsVisibility(false);
-                            setBurnItemsVisibility(false);
-                        }
-                    })
-                    .create();
-
-            ss.setOnShowListener(new DialogInterface.OnShowListener() {
-                @Override
-                public void onShow(DialogInterface arg0) {
-                    if(data.getType().equalsIgnoreCase(BalanceType.BURN.toString())){
-                        //BLUE
-                        ss.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(getContext(), R.color.blue));
-                        ss.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(getContext(), R.color.blue));
-                    }else{
-                        //RED
-                        ss.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(getContext(), R.color.red));
-                        ss.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+        final AlertDialog ss = new AlertDialog.Builder(getActivity())
+                .setView(promptView)
+                .setCancelable(true)
+                .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        setEarnItemsVisibility(false);
+                        setBurnItemsVisibility(false);
                     }
+                })
+                .setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        if (!input.getText().toString().isEmpty()) {
+                            myRealm.beginTransaction();
+                            Transaction transaction = myRealm.createObject(Transaction.class);
+                            transaction.setId(Util.generateUUID());
+                            transaction.setDate(new Date());
+                            transaction.setEarnBurn(data);
+                            transaction.setUnitCost(Integer.parseInt(input.getText().toString()));
+                            transaction.setCostType(values[unitNumberPicker.getValue()]);
+                            myRealm.commitTransaction();
+
+                            setEarnItemsVisibility(false);
+                            setBurnItemsVisibility(false);
+                            calculateTotalActivityAndReward();
+                        }
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        setEarnItemsVisibility(false);
+                        setBurnItemsVisibility(false);
+                    }
+                })
+                .create();
+
+        ss.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface arg0) {
+                if(data.getType().equalsIgnoreCase(BalanceType.BURN.toString())){
+                    //BLUE
+                    ss.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(getContext(), R.color.blue));
+                    ss.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(getContext(), R.color.blue));
+                }else{
+                    //RED
+                    ss.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+                    ss.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(getContext(), R.color.red));
                 }
-            });
+            }
+        });
 
-            ss.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-            ss.show();
+        ss.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        ss.show();
 
-            dialogs.add(ss);
-        }else{
-            Intent firstTimeEarnBurn = new Intent(getContext(), InfoActivity.class);
-            firstTimeEarnBurn.putExtra(Constants.REQUEST_IS_EDIT_EARNBURN, true);
-            firstTimeEarnBurn.putExtra(Constants.REQUEST_EDIT_EARNBURN, data.getId());
-            startActivity(firstTimeEarnBurn);
-        }
+        dialogs.add(ss);
+    }
+
+    /**
+     * Displays prompt for user to add new cost for this earnBurn.
+     */
+    private void createNewCostDialog(final EarnBurn data){
+        // get cost.xml view
+        LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+
+        //It is ok to put null as the 2nd parameter as this custom layout is being attached to a
+        //AlertDialog, where it not necessary to know what the parent is.
+        View promptView = layoutInflater.inflate(R.layout.alertdialog_cost, null);
+
+        final EditText points = (EditText) promptView.findViewById(R.id.pointsEditText);
+        final EditText value = (EditText) promptView.findViewById(R.id.valueEditText);
+        final ExtendedNumberPicker measureNumberPicker = (ExtendedNumberPicker) promptView.findViewById(R.id.measureNumberPicker);
+
+        //Gets all list of units
+        final List<String> values1 = Util.getListOfUnits1();
+
+        Set<String> ad1 = new HashSet<>(values1); //contains all
+
+        //Convert set back into array
+        final String[] valueDiff = ad1.toArray(new String[ad1.size()]);
+
+        measureNumberPicker.setMinValue(0);
+        measureNumberPicker.setMaxValue(valueDiff.length - 1);
+        measureNumberPicker.setDisplayedValues(valueDiff);
+        measureNumberPicker.setWrapSelectorWheel(false);
+
+        selectedNumberPickerIndex = 0;
+
+        measureNumberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                //Display the newly selected value from picker
+                Log.d("WHEEL", "Selected value : " + valueDiff[newVal]);
+                selectedNumberPickerIndex = newVal;
+            }
+        });
+
+        points.setHint("Points earned per");
+
+        ccost = new Cost();
+        ccost.setId(Util.generateUUID());
+
+        final AlertDialog noteDialog = new AlertDialog.Builder(getContext())
+                .setView(promptView)
+                .setTitle("Add new cost")
+                .setPositiveButton("DONE", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        if (Util.isNotNullNotEmptyNotWhiteSpaceOnlyByJava(points.getText().toString()) &&
+                                Util.isNotNullNotEmptyNotWhiteSpaceOnlyByJava(value.getText().toString())) {
+
+                            ccost.setPointsEarnPer(Integer.parseInt(points.getText().toString()));
+                            ccost.setUnitCost(Integer.parseInt(value.getText().toString()));
+                            ccost.setUnitType(valueDiff[selectedNumberPickerIndex]);
+
+                            myRealm.beginTransaction();
+                            data.getCostList().add(ccost);
+                            myRealm.copyToRealmOrUpdate(data);
+                            myRealm.commitTransaction();
+
+                            addEarnBurnTransaction(data);
+                        } else {
+                            Toast.makeText(getContext(), "Please input a value", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                })
+                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                })
+                .create();
+
+        noteDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface arg0) {
+                if(data.getType().equalsIgnoreCase(BalanceType.BURN.toString())){
+                    //BLUE
+                    noteDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(getContext(), R.color.blue));
+                    noteDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(getContext(), R.color.blue));
+                }else{
+                    //RED
+                    noteDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+                    noteDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+                }
+            }
+        });
+
+        noteDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        noteDialog.show();
     }
 
     /**
