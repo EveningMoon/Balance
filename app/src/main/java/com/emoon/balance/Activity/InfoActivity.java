@@ -358,7 +358,6 @@ public class InfoActivity extends BaseRealmActivity {
                             Log.d(TAG, "after adding, new cost size : "+costList.size());
 
                             if(isEditMode){
-                                costAdapter.clear();
                                 costAdapter.add(ccost);
                             }
 
