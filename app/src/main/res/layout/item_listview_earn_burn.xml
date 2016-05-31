@@ -18,7 +18,6 @@
         android:layout_alignParentRight="true"
         android:textSize="20sp"
         android:textColor="@color/harbor_rat"
-        android:textStyle="bold"
         android:text="earn burn"
         android:layout_toRightOf="@+id/genericIcon"
         android:layout_marginLeft="20dp"

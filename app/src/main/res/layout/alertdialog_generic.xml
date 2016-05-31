@@ -53,6 +53,7 @@
             android:layout_height="wrap_content"
             android:hint="10"
             android:inputType="number"
+            android:textSize="20sp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true" />
         <requestFocus />
@@ -62,6 +63,6 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignParentRight="true" />
     </RelativeLayout>
 </LinearLayout>
