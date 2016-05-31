@@ -16,6 +16,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +27,7 @@ import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.emoon.balance.Adapter.ListAdapter;
 import com.emoon.balance.Etc.Constants;
 import com.emoon.balance.Model.BalanceType;
+import com.emoon.balance.Model.Cost;
 import com.emoon.balance.Model.EarnBurn;
 import com.emoon.balance.Model.IconType;
 import com.emoon.balance.Model.Transaction;
@@ -36,7 +38,9 @@ import com.zhan.library.CircularView;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
@@ -53,6 +57,9 @@ public class ListActivity extends BaseRealmActivity {
     private List<EarnBurn> itemList;
     private ListAdapter listAdapter;
     private RealmResults<EarnBurn> realmResults;
+
+    private int selectedNumberPickerIndex;
+    private Cost ccost;
 
     @Override
     protected int getActivityLayout() {
@@ -169,7 +176,8 @@ public class ListActivity extends BaseRealmActivity {
                 startActivity(intent);
                 */
 
-                addEarnBurnTransaction(itemList.get(position));
+                //addEarnBurnTransaction(itemList.get(position));
+                checkIfEarnBurnHasCost(itemList.get(position));
             }
         });
     }
@@ -231,6 +239,14 @@ public class ListActivity extends BaseRealmActivity {
         intent.putExtra(Constants.REQUEST_IS_EDIT_EARNBURN, true);
         intent.putExtra(Constants.REQUEST_EDIT_EARNBURN, itemList.get(position).getId());
         startActivity(intent);
+    }
+
+    private void checkIfEarnBurnHasCost(final EarnBurn data){
+        if(data.getCostList().size() > 0){
+            addEarnBurnTransaction(data);
+        }else{
+            createNewCostDialog(data);
+        }
     }
 
     /**
@@ -339,6 +355,100 @@ public class ListActivity extends BaseRealmActivity {
             firstTimeEarnBurn.putExtra(Constants.REQUEST_EDIT_EARNBURN, data.getId());
             startActivity(firstTimeEarnBurn);
         }
+    }
+
+
+    /**
+     * Displays prompt for user to add new cost for this earnBurn.
+     */
+    private void createNewCostDialog(final EarnBurn data){
+        // get cost.xml view
+        LayoutInflater layoutInflater = LayoutInflater.from(this);
+
+        //It is ok to put null as the 2nd parameter as this custom layout is being attached to a
+        //AlertDialog, where it not necessary to know what the parent is.
+        View promptView = layoutInflater.inflate(R.layout.alertdialog_cost, null);
+
+        final EditText points = (EditText) promptView.findViewById(R.id.pointsEditText);
+        final EditText value = (EditText) promptView.findViewById(R.id.valueEditText);
+        final ExtendedNumberPicker measureNumberPicker = (ExtendedNumberPicker) promptView.findViewById(R.id.measureNumberPicker);
+
+        //Gets all list of units
+        final List<String> values1 = Util.getListOfUnits1();
+
+        Set<String> ad1 = new HashSet<>(values1); //contains all
+
+        //Convert set back into array
+        final String[] valueDiff = ad1.toArray(new String[ad1.size()]);
+
+        measureNumberPicker.setMinValue(0);
+        measureNumberPicker.setMaxValue(valueDiff.length - 1);
+        measureNumberPicker.setDisplayedValues(valueDiff);
+        measureNumberPicker.setWrapSelectorWheel(false);
+
+        selectedNumberPickerIndex = 0;
+
+        measureNumberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                //Display the newly selected value from picker
+                Log.d("WHEEL", "Selected value : " + valueDiff[newVal]);
+                selectedNumberPickerIndex = newVal;
+            }
+        });
+
+        points.setHint("Points earned per");
+
+        ccost = new Cost();
+        ccost.setId(Util.generateUUID());
+
+        final AlertDialog noteDialog = new AlertDialog.Builder(this)
+                .setView(promptView)
+                .setTitle("Add new cost")
+                .setPositiveButton("DONE", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        if (Util.isNotNullNotEmptyNotWhiteSpaceOnlyByJava(points.getText().toString()) &&
+                                Util.isNotNullNotEmptyNotWhiteSpaceOnlyByJava(value.getText().toString())) {
+
+                            ccost.setPointsEarnPer(Integer.parseInt(points.getText().toString()));
+                            ccost.setUnitCost(Integer.parseInt(value.getText().toString()));
+                            ccost.setUnitType(valueDiff[selectedNumberPickerIndex]);
+
+                            myRealm.beginTransaction();
+                            data.getCostList().add(ccost);
+                            myRealm.copyToRealmOrUpdate(data);
+                            myRealm.commitTransaction();
+
+                            addEarnBurnTransaction(data);
+                        } else {
+                            Toast.makeText(getBaseContext(), "Please input a value", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                })
+                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                })
+                .create();
+
+        noteDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface arg0) {
+                if(data.getType().equalsIgnoreCase(BalanceType.BURN.toString())){
+                    //BLUE
+                    noteDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(getBaseContext(), R.color.blue));
+                    noteDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(getBaseContext(), R.color.blue));
+                }else{
+                    //RED
+                    noteDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(getBaseContext(), R.color.red));
+                    noteDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(getBaseContext(), R.color.red));
+                }
+            }
+        });
+
+        noteDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        noteDialog.show();
     }
 
 }
