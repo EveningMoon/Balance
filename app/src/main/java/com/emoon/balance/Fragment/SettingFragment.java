@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.emoon.balance.Etc.Constants;
+import com.emoon.balance.Model.BalanceType;
 import com.emoon.balance.R;
 import com.emoon.balance.Util.BalancePreference;
 import com.emoon.balance.Util.Util;
@@ -148,24 +149,24 @@ public class SettingFragment extends Fragment {
 
         message.setText("Resetting data will remove all data you've entered, are you sure you want to reset?");
 
-        new AlertDialog.Builder(getActivity())
+        final AlertDialog resetDialog = new AlertDialog.Builder(getActivity())
                 .setTitle("Confirm Delete")
                 .setView(promptView)
                 .setCancelable(true)
                 .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         Toast.makeText(getContext(), "RESETTING...", Toast.LENGTH_SHORT).show();
-
                         /*
                         RealmConfiguration config = new RealmConfiguration.Builder(getContext())
                                 .name(Constants.REALM_NAME)
                                 .deleteRealmIfMigrationNeeded()
                                 .schemaVersion(1)
-                                .build();*/
-
+                                .build();
+                        */
                         BalancePreference.resetFirstTime(getContext());
 
                         //Realm.deleteRealm(config);
+
 
                         //Manually delete realm file
                         Realm myRealm = Realm.getDefaultInstance();
@@ -173,6 +174,11 @@ public class SettingFragment extends Fragment {
                         myRealm.close();
                         File file = new File(path);
                         file.delete();
+
+                        //Restarts the activity
+                        getActivity().finish();
+                        getActivity().startActivity(new Intent(getActivity(), getActivity().getClass()));
+                        getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     }
                 })
                 .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
@@ -181,8 +187,17 @@ public class SettingFragment extends Fragment {
                         dialog.cancel();
                     }
                 })
-                .create()
-                .show();
+                .create();
+
+        resetDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface arg0) {
+                resetDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(getContext(), R.color.black));
+                resetDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(getContext(), R.color.black));
+            }
+        });
+
+        resetDialog.show();
     }
 
     private void createMinMaxPopup(){
