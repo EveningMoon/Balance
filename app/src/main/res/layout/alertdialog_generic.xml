@@ -51,7 +51,6 @@
             android:id="@+id/genericEditText"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:hint="10"
             android:inputType="number"
             android:textSize="20sp"
             android:layout_alignParentLeft="true"
