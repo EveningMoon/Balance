@@ -479,14 +479,19 @@ public class MainFragment extends BaseRealmFragment {
             }
         });
 
-        points.setHint("Points earned per");
+        points.setHint("Points earned");
 
         ccost = new Cost();
         ccost.setId(Util.generateUUID());
 
+        String title = "Add new -";
+        if(data.getType().equalsIgnoreCase(BalanceType.EARN.toString())){
+            title = "Add new +";
+        }
+
         final AlertDialog noteDialog = new AlertDialog.Builder(getContext())
                 .setView(promptView)
-                .setTitle("Add new cost")
+                .setTitle(title)
                 .setPositiveButton("DONE", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         if (Util.isNotNullNotEmptyNotWhiteSpaceOnlyByJava(points.getText().toString()) &&

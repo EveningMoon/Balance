@@ -336,14 +336,19 @@ public class InfoActivity extends BaseRealmActivity {
             }
         });
 
-        points.setHint("Points earned per");
+        points.setHint("Points earned");
 
         ccost = new Cost();
         ccost.setId(Util.generateUUID());
 
+        String title = "Add new -";
+        if(editEarnBurn.getType().equalsIgnoreCase(BalanceType.EARN.toString())){
+            title = "Add new +";
+        }
+
         AlertDialog noteDialog = new AlertDialog.Builder(this)
                 .setView(promptView)
-                .setTitle("Add new cost")
+                .setTitle(title)
                 .setPositiveButton("DONE", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         if (Util.isNotNullNotEmptyNotWhiteSpaceOnlyByJava(points.getText().toString()) &&
