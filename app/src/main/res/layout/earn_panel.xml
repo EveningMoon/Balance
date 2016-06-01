@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/svg_ic_add"
-        android:tint="@color/white"
         android:paddingLeft="@dimen/main_page_padding"
         android:paddingRight="@dimen/main_page_padding"
         android:visibility="visible"/>
@@ -21,7 +20,7 @@
         android:layout_height="match_parent"
         android:orientation="horizontal"
         android:visibility="invisible"
-        android:padding="10dp">
+        android:padding="15dp">
 
        <RelativeLayout
             android:id="@+id/topEarn1Panel"
@@ -35,7 +34,7 @@
                 android:src="@drawable/circle"
                 android:tint="@color/dark_red"/>
 
-            <ImageView  style="@style/frontPage_iconStyle"
+            <ImageView  style="@style/frontPage_iconStylePlus"
                 android:id="@+id/topEarn1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
@@ -43,7 +42,8 @@
            <TextView style="@style/frontPage_textStyle"
                android:id="@+id/topEarn1Text"
                android:layout_width="match_parent"
-               android:layout_height="match_parent" />
+               android:layout_height="match_parent"
+               android:visibility="visible" />
         </RelativeLayout>
 
         <View style="@style/emptyPaddingStyle"
@@ -62,7 +62,7 @@
                 android:src="@drawable/circle"
                 android:tint="@color/dark_red"/>
 
-            <ImageView  style="@style/frontPage_iconStyle"
+            <ImageView  style="@style/frontPage_iconStylePlus"
                 android:id="@+id/topEarn2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
@@ -89,7 +89,7 @@
                 android:src="@drawable/circle"
                 android:tint="@color/dark_red"/>
 
-            <ImageView  style="@style/frontPage_iconStyle"
+            <ImageView  style="@style/frontPage_iconStylePlus"
                 android:id="@+id/topEarn3"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
@@ -116,7 +116,7 @@
                 android:src="@drawable/circle"
                 android:tint="@color/dark_red"/>
 
-            <ImageView  style="@style/frontPage_iconStyle"
+            <ImageView  style="@style/frontPage_iconStylePlus"
                 android:id="@+id/otherEarn"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
