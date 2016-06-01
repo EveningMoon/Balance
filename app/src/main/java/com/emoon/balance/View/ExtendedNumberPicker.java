@@ -68,7 +68,7 @@ public class ExtendedNumberPicker extends NumberPicker {
 
     private void updateView(View view) {
         if(view instanceof EditText){
-            ((EditText) view).setTextSize(20);
+            ((EditText) view).setTextSize(15);
             ((EditText) view).setTextColor(Color.parseColor("#333333"));
         }
     }
