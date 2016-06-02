@@ -53,12 +53,12 @@
 
     <!-- Padding styles for earn and burn panel -->
     <style name="emptyPaddingStyle">
-        <item name="android:layout_weight">0.2</item>
+        <item name="android:layout_weight">0.5</item>
     </style>
 
     <style name="itemPaddingStyle">
         <item name="android:layout_weight">1</item>
-        <item name="android:tint">@color/white</item>
+        <item name="android:tint">@color/darkRed</item>
     </style>
 
 
@@ -92,10 +92,16 @@
         <item name="cv_bgRadius">25dp</item>
     </style>
 
-    <style name="frontPage_iconStyle">
-        <item name="android:tint">@color/white</item>
-        <item name="android:paddingTop">25dp</item>
-        <item name="android:paddingBottom">25dp</item>
+    <style name="frontPage_iconStylePlus">
+        <item name="android:tint">@color/iconRed</item>
+        <item name="android:paddingTop">32dp</item>
+        <item name="android:paddingBottom">32dp</item>
+    </style>
+
+    <style name="frontPage_iconStyleMinus">
+        <item name="android:tint">@color/iconBlue</item>
+        <item name="android:paddingTop">32dp</item>
+        <item name="android:paddingBottom">32dp</item>
     </style>
 
     <style name="frontPage_textStyle">
@@ -104,6 +110,7 @@
         <item name="android:gravity">center_vertical|center_horizontal</item>
         <item name="android:paddingTop">25dp</item>
         <item name="android:paddingBottom">25dp</item>
+        <item name="android:colorFocusedHighlight">@color/red</item>
     </style>
 
 

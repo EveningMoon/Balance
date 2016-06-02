@@ -5,20 +5,25 @@
     android:background="@color/colorPrimary"
     android:paddingLeft="@dimen/main_page_padding"
     android:paddingRight="@dimen/main_page_padding"
-    android:paddingBottom="@dimen/main_page_padding">
+    android:paddingBottom="@dimen/main_page_padding"
+    android:gravity="center|center_horizontal">
 
     <com.emoon.balance.View.AutoResizeTextView
         android:id="@+id/topPanelHeader"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center|bottom"
+        android:gravity="center_vertical|center_horizontal"
         android:text="0"
         android:maxLines="1"
         android:ellipsize="none"
         android:textSize="@dimen/text_toobig"
         android:textColor="@color/gray"
-        android:layout_centerHorizontal="true"
-        android:layout_above="@+id/progressBar" />
+        android:minHeight="150sp"
+        android:layout_above="@+id/progressBar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="false"
+        android:layout_marginBottom="0dp"
+        android:layout_alignParentEnd="false" />
 
     <include layout="@layout/top_panel_progress"
         android:id="@+id/progressBar"
@@ -34,6 +39,7 @@
         android:textSize="@dimen/text_xsmall"
         android:layout_centerHorizontal="true"
         android:textAlignment="center"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+        android:gravity="center_vertical|center_horizontal" />
 
 </RelativeLayout>

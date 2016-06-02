@@ -5,7 +5,11 @@
     <color name="colorAccent">#a10003</color>
 
     <color name="blue">#3498db</color>
+    <color name="darkBlue">#368fcc</color>
+    <color name="iconBlue">#346d9c</color>
     <color name="red">#e74c3c</color>
+    <color name="darkRed">#d64b3d</color>
+    <color name="iconRed">#bf362b</color>
 
     <color name="green">#28b463</color>
     <color name="purple">#551A8B</color>
