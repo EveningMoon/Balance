@@ -49,8 +49,9 @@
                 android:id="@+id/topBurn1Name"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:gravity="center_horizontal|bottom"
                 android:textColor="@color/white"
-                android:gravity="center_horizontal|bottom" />
+                android:textSize="@dimen/text_xxxsmall" />
         </RelativeLayout>
 
         <View style="@style/emptyPaddingStyle"
@@ -83,8 +84,9 @@
                 android:id="@+id/topBurn2Name"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:gravity="center_horizontal|bottom"
                 android:textColor="@color/white"
-                android:gravity="center_horizontal|bottom" />
+                android:textSize="@dimen/text_xxxsmall" />
         </RelativeLayout>
 
         <View style="@style/emptyPaddingStyle"
@@ -117,8 +119,9 @@
                 android:id="@+id/topBurn3Name"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:gravity="center_horizontal|bottom"
                 android:textColor="@color/white"
-                android:gravity="center_horizontal|bottom" />
+                android:textSize="@dimen/text_xxxsmall" />
         </RelativeLayout>
 
         <View style="@style/emptyPaddingStyle"
@@ -148,8 +151,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="Other"
+                android:gravity="center_horizontal|bottom"
                 android:textColor="@color/white"
-                android:gravity="center_horizontal|bottom" />
+                android:textSize="@dimen/text_xxxsmall" />
         </RelativeLayout>
     </LinearLayout>
 </RelativeLayout>
