@@ -3,7 +3,9 @@ package com.emoon.balance.Fragment;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.ColorUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +31,7 @@ import com.emoon.balance.R;
 import com.emoon.balance.Util.BalancePreference;
 import com.emoon.balance.Util.Util;
 import com.emoon.balance.View.ExtendedNumberPicker;
+import com.rengwuxian.materialedittext.MaterialEditText;
 import com.zhan.library.CircularView;
 
 import java.util.ArrayList;
@@ -314,6 +317,9 @@ public class MainFragment extends BaseRealmFragment {
         }
     }
 
+
+    MaterialEditText input;
+
     /**
      * Displays prompt for user to add new transaction.
      */
@@ -353,17 +359,24 @@ public class MainFragment extends BaseRealmFragment {
             }
         });
 
+        //Edit text
+        input = (MaterialEditText) promptView.findViewById(R.id.genericEditText);
+        input.setHint(data.getType());
+        input.setFloatingLabelText(data.getType());
+
         if(data.getType().equalsIgnoreCase(BalanceType.BURN.toString())){
             cv.setCircleColor(R.color.blue);
             editBtn.setColorFilter(ContextCompat.getColor(getContext(), R.color.blue));
+            input.setBaseColor(ContextCompat.getColor(getContext(), R.color.blue));
+            input.setPrimaryColor(ContextCompat.getColor(getContext(), R.color.blue));
+            input.setMetHintTextColor(ContextCompat.getColor(getContext(), R.color.blue));
         }else{
             cv.setCircleColor(R.color.red);
             editBtn.setColorFilter(ContextCompat.getColor(getContext(), R.color.red));
+            input.setBaseColor(ContextCompat.getColor(getContext(), R.color.red));
+            input.setPrimaryColor(ContextCompat.getColor(getContext(), R.color.red));
+            input.setMetHintTextColor(ContextCompat.getColor(getContext(), R.color.red));
         }
-
-        //Edit text
-        final EditText input = (EditText) promptView.findViewById(R.id.genericEditText);
-        input.setHint(data.getType());
 
         //NumberPicker
         final ExtendedNumberPicker unitNumberPicker = (ExtendedNumberPicker) promptView.findViewById(R.id.genericNumberPicker);

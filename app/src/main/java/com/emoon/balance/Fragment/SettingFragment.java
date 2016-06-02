@@ -177,8 +177,8 @@ public class SettingFragment extends Fragment {
 
                         //Restarts the activity
                         getActivity().finish();
-                        getActivity().startActivity(new Intent(getActivity(), getActivity().getClass()));
-                        getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                        //getActivity().startActivity(new Intent(getActivity(), getActivity().getClass()));
+                        //getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     }
                 })
                 .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {

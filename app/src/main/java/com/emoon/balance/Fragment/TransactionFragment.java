@@ -27,6 +27,7 @@ import com.emoon.balance.Model.Transaction;
 import com.emoon.balance.R;
 import com.emoon.balance.Util.Util;
 import com.emoon.balance.View.ExtendedNumberPicker;
+import com.rengwuxian.materialedittext.MaterialEditText;
 import com.zhan.library.CircularView;
 
 import java.util.ArrayList;
@@ -170,6 +171,9 @@ public class TransactionFragment extends BaseRealmFragment{
         });
     }
 
+
+    MaterialEditText input;
+
     /**
      * Displays prompt for user to edit transaction.
      */
@@ -192,16 +196,23 @@ public class TransactionFragment extends BaseRealmFragment{
         cv.setIconResource(Util.getIconID(getContext(), data.getIcon()));
         cv.setIconColor(R.color.white);
 
+        //Edit text
+        input = (MaterialEditText) promptView.findViewById(R.id.genericEditText);
+        input.setHint(data.getType());
+        input.setFloatingLabelText(data.getType());
+        input.setText(""+tt.getUnitCost());
+
         if(data.getType().equalsIgnoreCase(BalanceType.BURN.toString())){
             cv.setCircleColor(R.color.blue);
+            input.setBaseColor(ContextCompat.getColor(getContext(), R.color.blue));
+            input.setPrimaryColor(ContextCompat.getColor(getContext(), R.color.blue));
+            input.setMetHintTextColor(ContextCompat.getColor(getContext(), R.color.blue));
         }else{
             cv.setCircleColor(R.color.red);
+            input.setBaseColor(ContextCompat.getColor(getContext(), R.color.red));
+            input.setPrimaryColor(ContextCompat.getColor(getContext(), R.color.red));
+            input.setMetHintTextColor(ContextCompat.getColor(getContext(), R.color.red));
         }
-
-        //Edit text
-        final EditText input = (EditText) promptView.findViewById(R.id.genericEditText);
-        input.setHint(data.getType());
-        input.setText(""+tt.getUnitCost());
 
         //NumberPicker
         final ExtendedNumberPicker unitNumberPicker = (ExtendedNumberPicker) promptView.findViewById(R.id.genericNumberPicker);
