@@ -104,14 +104,20 @@
         <item name="android:paddingBottom">32dp</item>
     </style>
 
-    <style name="frontPage_textStyle">
-        <item name="android:textColor">@color/white</item>
+    <style name="frontPage_textStyleMinus">
+        <item name="android:textColor">@color/iconBlue</item>
         <item name="android:textSize">25sp</item>
         <item name="android:gravity">center_vertical|center_horizontal</item>
         <item name="android:paddingTop">25dp</item>
         <item name="android:paddingBottom">25dp</item>
-        <item name="android:colorFocusedHighlight">@color/red</item>
     </style>
 
+    <style name="frontPage_textStyleAdd">
+        <item name="android:textColor">@color/iconRed</item>
+        <item name="android:textSize">25sp</item>
+        <item name="android:gravity">center_vertical|center_horizontal</item>
+        <item name="android:paddingTop">25dp</item>
+        <item name="android:paddingBottom">25dp</item>
+    </style>
 
 </resources>
