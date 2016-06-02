@@ -44,6 +44,12 @@
                android:layout_width="match_parent"
                android:layout_height="match_parent"
                android:visibility="visible" />
+
+           <TextView
+               android:id="@+id/topEarn1Name"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:gravity="center_horizontal|bottom" />
         </RelativeLayout>
 
         <View style="@style/emptyPaddingStyle"
@@ -71,6 +77,12 @@
                 android:id="@+id/topEarn2Text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
+
+            <TextView
+                android:id="@+id/topEarn2Name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal|bottom" />
         </RelativeLayout>
 
         <View style="@style/emptyPaddingStyle"
@@ -98,6 +110,12 @@
                 android:id="@+id/topEarn3Text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
+
+            <TextView
+                android:id="@+id/topEarn3Name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal|bottom" />
         </RelativeLayout>
 
         <View style="@style/emptyPaddingStyle"
@@ -121,6 +139,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/svg_other"/>
+
+            <TextView
+                android:id="@+id/otherEarnName"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Other"
+                android:gravity="center_horizontal|bottom" />
         </RelativeLayout>
     </LinearLayout>
 </RelativeLayout>

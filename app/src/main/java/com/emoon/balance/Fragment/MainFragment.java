@@ -61,10 +61,12 @@ public class MainFragment extends BaseRealmFragment {
     private ViewGroup earnGroup, topEarn1Panel, topEarn2Panel, topEarn3Panel, otherEarnPanel;
     private ImageView topEarn1Icon, topEarn2Icon, topEarn3Icon, otherEarnIcon;
     private TextView topEarn1Text, topEarn2Text, topEarn3Text;
+    private TextView topEarn1Name, topEarn2Name, topEarn3Name;
 
     private ViewGroup burnGroup, topBurn1Panel, topBurn2Panel, topBurn3Panel, otherBurnPanel;
     private ImageView topBurn1Icon, topBurn2Icon, topBurn3Icon, otherBurnIcon;
     private TextView topBurn1Text, topBurn2Text, topBurn3Text;
+    private TextView topBurn1Name, topBurn2Name, topBurn3Name;
 
     private EarnBurn burn1Default, burn2Default, burn3Default;
     private EarnBurn earn1Default, earn2Default, earn3Default;
@@ -130,6 +132,13 @@ public class MainFragment extends BaseRealmFragment {
         topBurn1Text = (TextView) view.findViewById(R.id.topBurn1Text);
         topBurn2Text = (TextView) view.findViewById(R.id.topBurn2Text);
         topBurn3Text = (TextView) view.findViewById(R.id.topBurn3Text);
+
+        topEarn1Name = (TextView) view.findViewById(R.id.topEarn1Name);
+        topEarn2Name = (TextView) view.findViewById(R.id.topEarn2Name);
+        topEarn3Name = (TextView) view.findViewById(R.id.topEarn3Name);
+        topBurn1Name = (TextView) view.findViewById(R.id.topBurn1Name);
+        topBurn2Name = (TextView) view.findViewById(R.id.topBurn2Name);
+        topBurn3Name = (TextView) view.findViewById(R.id.topBurn3Name);
 
         burnList = new ArrayList<>();
         earnList = new ArrayList<>();
@@ -734,6 +743,10 @@ public class MainFragment extends BaseRealmFragment {
             earnList.set(0, earnBurn1);
             earnList.set(1, earnBurn2);
             earnList.set(2, earnBurn3);
+
+            topEarn1Name.setText(earnBurn1.getName());
+            topEarn2Name.setText(earnBurn2.getName());
+            topEarn3Name.setText(earnBurn3.getName());
         }else{
             if(earnBurn1.getIconType().equalsIgnoreCase(IconType.ICON.toString())){
                 topBurn1Icon.setImageResource(Util.getIconID(getContext(), earnBurn1.getIcon()));
@@ -768,6 +781,10 @@ public class MainFragment extends BaseRealmFragment {
             burnList.set(0, earnBurn1);
             burnList.set(1, earnBurn2);
             burnList.set(2, earnBurn3);
+
+            topBurn1Name.setText(earnBurn1.getName());
+            topBurn2Name.setText(earnBurn2.getName());
+            topBurn3Name.setText(earnBurn3.getName());
         }
     }
 

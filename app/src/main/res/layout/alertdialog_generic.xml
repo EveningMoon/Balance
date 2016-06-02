@@ -45,18 +45,6 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp">
-        <!--
-                <EditText
-                    android:id="@+id/genericEditText"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:textSize="20sp"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true" />
-                <requestFocus />
-                -->
-
 
         <com.rengwuxian.materialedittext.MaterialEditText
             xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -69,9 +57,8 @@
             android:layout_centerVertical="true"
             android:focusable="true"
             android:layout_marginTop="0dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:focusableInTouchMode="true"
             app:met_floatingLabel="highlight"
             app:met_floatingLabelText=""
