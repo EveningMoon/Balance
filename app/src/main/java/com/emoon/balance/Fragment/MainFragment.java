@@ -877,15 +877,15 @@ public class MainFragment extends BaseRealmFragment {
     }
 
     private void updateProgressBar(float total){
-        if(total > 0){
-            earnProgress.setProgress(total);
+        if(Math.round(total) > 0){
+            earnProgress.setProgress(Math.round(total));
             burnProgress.setProgress(0);
-        }else if(total == 0){
+        }else if(Math.round(total) == 0){
             earnProgress.setProgress(0);
             burnProgress.setProgress(0);
         }else{
             earnProgress.setProgress(0);
-            burnProgress.setProgress(Math.abs(total));
+            burnProgress.setProgress(Math.abs(Math.round(total)));
         }
     }
 
