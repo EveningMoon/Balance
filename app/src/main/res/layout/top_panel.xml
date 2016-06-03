@@ -18,7 +18,7 @@
         android:ellipsize="none"
         android:textSize="@dimen/text_toobig"
         android:textColor="@color/gray"
-        android:minHeight="150sp"
+        android:minHeight="140sp"
         android:layout_above="@+id/progressBar"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="false"

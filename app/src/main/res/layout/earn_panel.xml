@@ -32,12 +32,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/circle"
-                android:tint="@color/dark_red"/>
+                android:tint="@color/dark_red"
+                android:layout_margin="5dp"/>
 
             <ImageView  style="@style/frontPage_iconStylePlus"
                 android:id="@+id/topEarn1"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"/>
 
            <TextView style="@style/frontPage_textStyleAdd"
                android:id="@+id/topEarn1Text"
@@ -68,12 +70,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/circle"
-                android:tint="@color/dark_red"/>
+                android:tint="@color/dark_red"
+                android:layout_margin="5dp"/>
 
             <ImageView  style="@style/frontPage_iconStylePlus"
                 android:id="@+id/topEarn2"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:padding="5dp"/>
 
             <TextView style="@style/frontPage_textStyleAdd"
                 android:id="@+id/topEarn2Text"
@@ -103,12 +107,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/circle"
-                android:tint="@color/dark_red"/>
+                android:tint="@color/dark_red"
+                android:padding="5dp"/>
 
             <ImageView  style="@style/frontPage_iconStylePlus"
                 android:id="@+id/topEarn3"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"/>
 
             <TextView style="@style/frontPage_textStyleAdd"
                 android:id="@+id/topEarn3Text"
@@ -138,13 +144,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/circle"
-                android:tint="@color/dark_red"/>
+                android:tint="@color/dark_red"
+                android:padding="5dp"/>
 
             <ImageView  style="@style/frontPage_iconStylePlus"
                 android:id="@+id/otherEarn"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/svg_other"/>
+                android:src="@drawable/svg_other"
+                android:layout_margin="5dp"/>
 
             <TextView
                 android:id="@+id/otherEarnName"

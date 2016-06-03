@@ -14,13 +14,13 @@
     <include layout="@layout/earn_panel"
         android:id="@+id/earnPanel"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="130dp"
         android:layout_above="@+id/burnPanel" />
 
     <include layout="@layout/burn_panel"
         android:id="@+id/burnPanel"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="130dp"
         android:layout_alignParentBottom="true" />
 
 </RelativeLayout>
