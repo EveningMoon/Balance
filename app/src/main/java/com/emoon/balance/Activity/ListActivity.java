@@ -14,8 +14,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -283,8 +281,8 @@ public class ListActivity extends BaseRealmActivity {
 
         //Edit text
         input = (MaterialEditText) promptView.findViewById(R.id.genericEditText);
-        input.setHint(data.getType());
-        input.setFloatingLabelText(data.getType());
+        input.setHint(Util.capitalizeFirstChar(data.getType()));
+        input.setFloatingLabelText(Util.capitalizeFirstChar(data.getType()));
 
         if(data.getType().equalsIgnoreCase(BalanceType.BURN.toString())){
             cv.setCircleColor(R.color.blue);
@@ -385,7 +383,7 @@ public class ListActivity extends BaseRealmActivity {
         final ExtendedNumberPicker measureNumberPicker = (ExtendedNumberPicker) promptView.findViewById(R.id.measureNumberPicker);
 
         points.setFloatingLabelText("Points earned");
-        value.setFloatingLabelText("eg: 1");
+        value.setFloatingLabelText("Unit");
 
         //Gets all list of units
         final List<String> values1 = Util.getListOfUnits1();

@@ -367,8 +367,8 @@ public class MainFragment extends BaseRealmFragment {
 
         //Edit text
         input = (MaterialEditText) promptView.findViewById(R.id.genericEditText);
-        input.setHint(data.getType());
-        input.setFloatingLabelText(data.getType());
+        input.setHint(Util.capitalizeFirstChar(data.getType()));
+        input.setFloatingLabelText(Util.capitalizeFirstChar(data.getType()));
 
         if(data.getType().equalsIgnoreCase(BalanceType.BURN.toString())){
             cv.setCircleColor(R.color.blue);
@@ -475,7 +475,7 @@ public class MainFragment extends BaseRealmFragment {
         final ExtendedNumberPicker measureNumberPicker = (ExtendedNumberPicker) promptView.findViewById(R.id.measureNumberPicker);
 
         points.setFloatingLabelText("Points earned");
-        value.setFloatingLabelText("eg: 1");
+        value.setFloatingLabelText("Unit");
 
         //Gets all list of units
         final List<String> values1 = Util.getListOfUnits1();

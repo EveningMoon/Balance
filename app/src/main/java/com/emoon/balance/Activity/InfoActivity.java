@@ -232,7 +232,7 @@ public class InfoActivity extends BaseRealmActivity {
 
         pointsEditText.setHint("Points earned per");
         pointsEditText.setFloatingLabelText("Points earned");
-        valueEditText.setFloatingLabelText("eg: 1");
+        valueEditText.setFloatingLabelText("Unit");
 
         pointsEditText.setText(String.valueOf(editCost.getPointsEarnPer()));
         valueEditText.setText(String.valueOf(editCost.getUnitCost()));
@@ -330,7 +330,7 @@ public class InfoActivity extends BaseRealmActivity {
         final ExtendedNumberPicker measureNumberPicker = (ExtendedNumberPicker) promptView.findViewById(R.id.measureNumberPicker);
 
         points.setFloatingLabelText("Points earned");
-        value.setFloatingLabelText("eg: 1");
+        value.setFloatingLabelText("Unit");
 
         //Gets all list of units
         final List<String> values1 = Util.getListOfUnits1();

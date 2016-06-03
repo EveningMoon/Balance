@@ -204,8 +204,8 @@ public class TransactionFragment extends BaseRealmFragment{
 
         //Edit text
         input = (MaterialEditText) promptView.findViewById(R.id.genericEditText);
-        input.setHint(data.getType());
-        input.setFloatingLabelText(data.getType());
+        input.setHint(Util.capitalizeFirstChar(data.getType()));
+        input.setFloatingLabelText(Util.capitalizeFirstChar(data.getType()));
         input.setText(""+tt.getUnitCost());
 
         if(data.getType().equalsIgnoreCase(BalanceType.BURN.toString())){

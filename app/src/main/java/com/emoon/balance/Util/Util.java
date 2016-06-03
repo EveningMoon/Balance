@@ -211,4 +211,13 @@ public final class Util {
     public static char getFirstCharacterFromString(String value){
         return value.toCharArray()[0];
     }
+
+    public static String capitalizeFirstChar(String value){
+        try{
+            return value.substring(0, 1).toUpperCase() + value.substring(1).toLowerCase();
+        }catch(Exception e){
+            Log.e("ERROR", "There needs to have at least 1 character in the parameter");
+        }
+        return "";
+    }
 }
