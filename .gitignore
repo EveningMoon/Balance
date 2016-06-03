@@ -34,3 +34,6 @@ captures/
 
 # Workspace .xml
 .idea/workspace.xml
+
+#Mac DS_Store
+*.DS_Store
