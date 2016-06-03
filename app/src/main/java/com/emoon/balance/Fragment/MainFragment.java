@@ -862,6 +862,16 @@ public class MainFragment extends BaseRealmFragment {
         }else if(value <= 0){
             headerText.setText(""+Math.round(value));
         }
+
+        //makes sure the header text changes color based on Math.round(value) not the value
+        if(Math.round(value) == 0){
+            headerText.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
+        }else if(Math.round(value) > 0){
+            headerText.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+        }else{
+            headerText.setTextColor(ContextCompat.getColor(getContext(), R.color.blue));
+        }
+
         Log.d("ZHAN", "actual  value is "+value);
         updateProgressBar(value);
     }
@@ -870,15 +880,12 @@ public class MainFragment extends BaseRealmFragment {
         if(total > 0){
             earnProgress.setProgress(total);
             burnProgress.setProgress(0);
-            headerText.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
         }else if(total == 0){
             earnProgress.setProgress(0);
             burnProgress.setProgress(0);
-            headerText.setTextColor(ContextCompat.getColor(getContext(), R.color.gray));
         }else{
             earnProgress.setProgress(0);
             burnProgress.setProgress(Math.abs(total));
-            headerText.setTextColor(ContextCompat.getColor(getContext(), R.color.blue));
         }
     }
 
