@@ -4,57 +4,70 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:padding="20dp">
+    android:paddingTop="20dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp">
 
     <RelativeLayout
         android:id="@+id/genericTopContainer"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:focusable="true"
-        android:focusableInTouchMode="true">
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/genericTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Title"
-            android:textSize="25sp"
+            android:textSize="@dimen/text_small"
             android:paddingBottom="10dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true" />
 
-        <com.zhan.library.CircularView
-            xmlns:custom="http://schemas.android.com/apk/res-auto"
+        <ImageView
+            android:id="@+id/editBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/svg_ic_edit"
+            android:layout_toRightOf="@+id/genericTitle"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="6dp" />
+
+        <com.zhan.library.CircularView style="@style/CircularViewStyle_unselected"
             android:id="@+id/genericCircularView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            custom:cv_bgRadius="30dp" />
+            android:layout_alignParentRight="true" />
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/genericNameContainer"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
         android:layout_marginTop="20dp">
 
-        <EditText
+        <com.rengwuxian.materialedittext.MaterialEditText
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/genericEditText"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:hint="10"
             android:inputType="number"
+            android:textSize="15sp"
             android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true" />
+            android:layout_centerVertical="true"
+            android:focusable="true"
+            android:layout_marginTop="0dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:focusableInTouchMode="true"
+            app:met_floatingLabel="highlight"
+            app:met_floatingLabelText="" />
         <requestFocus />
 
-        <Spinner
-            android:id="@+id/genericSpinner"
+        <com.emoon.balance.View.ExtendedNumberPicker
+            android:id="@+id/genericNumberPicker"
             android:layout_width="150dp"
-            android:layout_height="wrap_content"
+            android:layout_height="125dp"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true" />
     </RelativeLayout>

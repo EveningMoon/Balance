@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/red">
@@ -9,13 +10,158 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/svg_ic_add"
-        android:tint="@color/white"
         android:paddingLeft="@dimen/main_page_padding"
-        android:paddingRight="@dimen/main_page_padding"/>
+        android:paddingRight="@dimen/main_page_padding"
+        android:visibility="visible"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/earnRecyclerView"
+    <LinearLayout
+        android:id="@+id/earnGroup"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="invisible"/>
+        android:orientation="horizontal"
+        android:visibility="invisible"
+        android:padding="10dp">
+
+       <RelativeLayout
+            android:id="@+id/topEarn1Panel"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/circle"
+                android:tint="@color/dark_red"
+                android:layout_margin="5dp"/>
+
+            <ImageView  style="@style/frontPage_iconStylePlus"
+                android:id="@+id/topEarn1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"/>
+
+           <TextView style="@style/frontPage_textStyleAdd"
+               android:id="@+id/topEarn1Text"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:visibility="visible"/>
+
+           <TextView
+               android:id="@+id/topEarn1Name"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:gravity="center_horizontal|bottom"
+               android:textColor="@color/white"
+               android:textSize="@dimen/text_xxxsmall" />
+        </RelativeLayout>
+
+        <View style="@style/emptyPaddingStyle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+
+        <RelativeLayout
+            android:id="@+id/topEarn2Panel"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/circle"
+                android:tint="@color/dark_red"
+                android:padding="5dp"/>
+
+            <ImageView  style="@style/frontPage_iconStylePlus"
+                android:id="@+id/topEarn2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"/>
+
+            <TextView style="@style/frontPage_textStyleAdd"
+                android:id="@+id/topEarn2Text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:id="@+id/topEarn2Name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal|bottom"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_xxxsmall" />
+        </RelativeLayout>
+
+        <View style="@style/emptyPaddingStyle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+
+        <RelativeLayout
+            android:id="@+id/topEarn3Panel"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/circle"
+                android:tint="@color/dark_red"
+                android:padding="5dp"/>
+
+            <ImageView  style="@style/frontPage_iconStylePlus"
+                android:id="@+id/topEarn3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"/>
+
+            <TextView style="@style/frontPage_textStyleAdd"
+                android:id="@+id/topEarn3Text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:id="@+id/topEarn3Name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal|bottom"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_xxxsmall" />
+        </RelativeLayout>
+
+        <View style="@style/emptyPaddingStyle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+
+        <RelativeLayout
+            android:id="@+id/otherEarnPanel"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/circle"
+                android:tint="@color/dark_red"
+                android:padding="5dp"/>
+
+            <ImageView  style="@style/frontPage_iconStylePlus"
+                android:id="@+id/otherEarn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/svg_other"
+                android:layout_margin="5dp"/>
+
+            <TextView
+                android:id="@+id/otherEarnName"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Other"
+                android:gravity="center_horizontal|bottom"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_xxxsmall" />
+        </RelativeLayout>
+    </LinearLayout>
 </RelativeLayout>

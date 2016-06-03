@@ -1,30 +1,34 @@
 package com.emoon.balance.Activity;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.emoon.balance.Etc.Constants;
 import com.emoon.balance.Fragment.MainFragment;
 import com.emoon.balance.Fragment.SettingFragment;
+import com.emoon.balance.Fragment.TransactionFragment;
+import com.emoon.balance.Model.BalanceType;
 import com.emoon.balance.R;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
+    private final static String TAG = "MainActivity";
+
     private MainFragment mainFragment;
+    private TransactionFragment transactionFragment;
     private SettingFragment settingFragment;
 
     private DrawerLayout drawer;
@@ -35,14 +39,17 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        createFragments();
-        init();
+        initRealm();
     }
 
-    private void init(){
-        initRealm();
+    @Override
+    protected int getActivityLayout() {
+        return R.layout.activity_main;
+    }
+
+    @Override
+    protected void init(){
+        createFragments();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -50,7 +57,7 @@ public class MainActivity extends AppCompatActivity
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -61,18 +68,19 @@ public class MainActivity extends AppCompatActivity
         navigationView.getMenu().getItem(0).setChecked(true);
     }
 
-    private void createFragments(){
-        mainFragment = new MainFragment();
-        settingFragment = new SettingFragment();
-    }
-
     private void initRealm(){
-        RealmConfiguration config = new RealmConfiguration.Builder(getApplicationContext())
+        RealmConfiguration config = new RealmConfiguration.Builder(this)
                 .name(Constants.REALM_NAME)
                 .deleteRealmIfMigrationNeeded()
                 .schemaVersion(1)
                 .build();
         Realm.setDefaultConfiguration(config);
+    }
+
+    private void createFragments(){
+        mainFragment = new MainFragment();
+        settingFragment = new SettingFragment();
+        transactionFragment = new TransactionFragment();
     }
 
     @Override
@@ -84,7 +92,7 @@ public class MainActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
-
+/*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -105,7 +113,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -119,9 +127,9 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
 
         //Creates a 250 millisecond delay to remove lag when drawer is closing
-        new Handler().postDelayed(new Runnable() {
+        /*new Handler().postDelayed(new Runnable() {
             @Override
-            public void run() {
+            public void run() {*/
                 Fragment fragment = null;
                 String title = getString(R.string.app_name);
 
@@ -133,6 +141,10 @@ public class MainActivity extends AppCompatActivity
                     case R.id.nav_setting:
                         fragment = settingFragment;
                         title = "Setting";
+                        break;
+                    case R.id.nav_transaction:
+                        fragment = transactionFragment;
+                        title = "Transaction";
                         break;
                 }
 
@@ -146,7 +158,7 @@ public class MainActivity extends AppCompatActivity
                 if (getSupportActionBar() != null) {
                     getSupportActionBar().setTitle(title);
                 }
-            }
-        }, 300);
+            /*}
+        }, 300);*/
     }
 }

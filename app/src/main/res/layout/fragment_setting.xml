@@ -1,13 +1,131 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
     tools:context="com.emoon.balance.Fragment.SettingFragment">
 
-    <Button
-        android:id="@+id/backupButton"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Back Up"/>
+        android:padding="5dp"
+        android:orientation="vertical">
 
-</FrameLayout>
+        <TextView style="@style/SettingsTextViewHeaderStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
+            android:text="GENERAL" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/colorPrimaryDark"/>
+
+        <LinearLayout
+            android:id="@+id/minMaxBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:clickable="true"
+            android:background="?attr/themeColorBtn"
+            android:focusable="true">
+
+            <TextView style="@style/SettingsTextViewButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Set Min/Max"/>
+
+            <TextView style="@style/SettingsTextViewContentStyle"
+                android:id="@+id/minMaxContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Current : 20"/>
+        </LinearLayout>
+<!--
+        <TextView style="@style/SettingsTextViewHeaderStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
+            android:text="DATA"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/colorPrimaryDark"/>
+
+        <LinearLayout
+            android:id="@+id/resetBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:clickable="true"
+            android:background="?attr/themeColorBtn"
+            android:focusable="true">
+
+            <TextView style="@style/SettingsTextViewButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Reset data"/>
+
+        </LinearLayout>
+
+        <TextView style="@style/SettingsTextViewHeaderStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
+            android:text="FEEDBACK"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/colorPrimaryDark"/>
+        <LinearLayout
+            android:id="@+id/emailBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:clickable="true"
+            android:background="?attr/themeColorBtn"
+            android:focusable="true">
+            <TextView style="@style/SettingsTextViewButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:background="?attr/themeColorBtn"
+                android:text="Email me"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp" />
+
+        <LinearLayout
+            android:id="@+id/faqBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:clickable="true"
+            android:background="?attr/themeColorBtn"
+            android:focusable="true">
+            <TextView style="@style/SettingsTextViewButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:background="?attr/themeColorBtn"
+                android:text="FAQ"/>
+        </LinearLayout>
+-->
+        <TextView
+            android:id="@+id/appVersionTextId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:paddingBottom="10dp"
+            android:layout_margin="10dp"
+            android:gravity="center_horizontal" />
+    </LinearLayout>
+</ScrollView>

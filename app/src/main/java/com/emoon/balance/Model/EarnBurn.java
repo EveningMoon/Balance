@@ -1,23 +1,23 @@
 package com.emoon.balance.Model;
 
-import org.parceler.Parcel;
-
-import io.realm.EarnBurnRealmProxy;
+import io.realm.RealmList;
 import io.realm.RealmObject;
+import io.realm.annotations.Ignore;
 import io.realm.annotations.PrimaryKey;
 
-@Parcel(implementations = {EarnBurnRealmProxy.class},
-        value = Parcel.Serialization.BEAN,
-        analyze = {EarnBurn.class})
 public class EarnBurn extends RealmObject {
     @PrimaryKey
     private String id;
-
     private String name;
     private String type;
+    private String icon;
+    private RealmList<Cost> costList;
 
-    private float cost;
-    private String unit;
+    //This value is used to determine if icon or text should be used in circularview
+    private String iconType;
+
+    //This value is simply used to determine where it should be in the top 3 section if at all
+    private int priority;
 
     public EarnBurn(){
         
@@ -39,14 +39,6 @@ public class EarnBurn extends RealmObject {
         this.name = name;
     }
 
-    public float getCost() {
-        return cost;
-    }
-
-    public void setCost(float cost) {
-        this.cost = cost;
-    }
-
     public String getType() {
         return type;
     }
@@ -55,11 +47,35 @@ public class EarnBurn extends RealmObject {
         this.type = type;
     }
 
-    public String getUnit() {
-        return unit;
+    public String getIcon() {
+        return icon;
     }
 
-    public void setUnit(String unit) {
-        this.unit = unit;
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public RealmList<Cost> getCostList() {
+        return costList;
+    }
+
+    public void setCostList(RealmList<Cost> costList) {
+        this.costList = costList;
+    }
+
+    public String getIconType() {
+        return iconType;
+    }
+
+    public void setIconType(String iconType) {
+        this.iconType = iconType;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
 }

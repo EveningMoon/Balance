@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+<!--
+    <EditText
+        android:id="@+id/pointsEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:hint="Points earned"
+        android:inputType="number"
+        android:textSize="@dimen/text_xsmall"
+        android:layout_gravity="center_vertical" />
+    >-->
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/pointsEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:hint="Points earned"
+        android:inputType="number"
+        android:textSize="@dimen/text_xsmall"
+        android:layout_gravity="center_vertical"
+        app:met_floatingLabel="highlight"
+        app:met_floatingLabelText="" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text=":"
+        android:id="@+id/textView"
+        android:layout_gravity="center_vertical"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp" />
+<!--
+    <EditText
+        android:id="@+id/valueEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:inputType="number"
+        android:textSize="@dimen/text_xsmall"
+        android:hint="eg: 1"
+        android:layout_gravity="center_vertical" />
+-->
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/valueEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:inputType="number"
+        android:textSize="@dimen/text_xsmall"
+        android:hint="eg: 1"
+        android:layout_gravity="center_vertical"
+        app:met_floatingLabel="highlight"
+        app:met_floatingLabelText="" />
+
+    <com.emoon.balance.View.ExtendedNumberPicker
+        android:id="@+id/measureNumberPicker"
+        android:layout_width="0dp"
+        android:layout_height="125dp"
+        android:layout_weight="1"/>
+</LinearLayout>

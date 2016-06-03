@@ -13,10 +13,23 @@ public class Constants {
 
     //First time
     public static final String FIRST_TIME = "First Time";
-/*
+
+    public static final  String  MIN_MAX = "MinMax";
+    public static final int MIN_MAX_VALUE = 20;
+
     //Activity request
-    public static final String REQUEST_NEW_TRANSACTION = "New Transaction";
-    public static final String REQUEST_NEW_TRANSACTION_DATE = "New Transaction Date";
+    public static final String REQUEST_LIST_OTHER_TYPE = "List type";
+
+    //List activity to Info activity
+    public static final String REQUEST_IS_EDIT_EARNBURN = "Is edit EarnBurn";
+    public static final String REQUEST_CREATE_EARNBURN = "Create EarnBurn";
+    public static final String REQUEST_EDIT_EARNBURN = "Edit EarnBurn";
+
+    //Return result
+    public static final int RETURN_NEW_EARN_BURN = 1;
+    public static final int RETURN_EDIT_EARN_BURN = 2;
+
+/*    public static final String REQUEST_NEW_TRANSACTION_DATE = "New Transaction Date";
     public static final String REQUEST_NEW_CATEGORY = "New Category";
     public static final String REQUEST_EDIT_CATEGORY = "Edit Category";
     public static final String REQUEST_ALL_TRANSACTION_FOR_CATEGORY_MONTH = "Request all transaction for category month";

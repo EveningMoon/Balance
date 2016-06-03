@@ -1,11 +1,18 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="android:textColor">@color/night_text</item>
+        <item name="android:windowBackground">@color/day</item>
+
+        <!-- For xml uses -->
+        <item name="themeColor">@color/day</item>
+        <item name="themeColorHighlight">@color/day_highlight</item>
+        <item name="themeColorText">@color/night_text</item>
+        <item name="themeColorBtn">@drawable/day_button</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -13,8 +20,104 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <!-- This keeps the text on the toolbar dark color-->
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <!-- This keeps the background on the menu popup light theme and thus dark text color -->
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
+
+
+    <style name="AppThemeDark" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/hanada</item>
+        <item name="colorPrimaryDark">@color/hanada</item>
+        <item name="colorAccent">@color/hanada</item>
+    </style>
+
+    <style name="AppThemeDark.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppThemeDark.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppThemeDark.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
+
+
+
+
+
+
+
+    <!-- Padding styles for earn and burn panel -->
+    <style name="emptyPaddingStyle">
+        <item name="android:layout_weight">0.5</item>
+    </style>
+
+    <style name="itemPaddingStyle">
+        <item name="android:layout_weight">1</item>
+        <item name="android:tint">@color/darkRed</item>
+    </style>
+
+
+    <!--Setting's style -->
+    <style name="SettingsTextViewButtonStyle">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:paddingTop">10dp</item>
+    </style>
+
+    <style name="SettingsTextViewContentStyle">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingLeft">35dp</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:paddingBottom">10dp</item>
+    </style>
+
+    <style name="SettingsTextViewHeaderStyle">
+        <item name="android:textSize">15sp</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+    </style>
+
+    <style name="CircularViewStyle_unselected">
+        <item name="cv_iconTopPadding">12dp</item>
+        <item name="cv_iconBottomPadding">12dp</item>
+        <item name="cv_iconLeftPadding">12dp</item>
+        <item name="cv_iconRightPadding">12dp</item>
+        <item name="cv_bgRadius">25dp</item>
+    </style>
+
+    <style name="frontPage_iconStylePlus">
+        <item name="android:tint">@color/iconRed</item>
+        <item name="android:paddingTop">32dp</item>
+        <item name="android:paddingBottom">32dp</item>
+    </style>
+
+    <style name="frontPage_iconStyleMinus">
+        <item name="android:tint">@color/iconBlue</item>
+        <item name="android:paddingTop">32dp</item>
+        <item name="android:paddingBottom">32dp</item>
+    </style>
+
+    <style name="frontPage_textStyleMinus">
+        <item name="android:textColor">@color/iconBlue</item>
+        <item name="android:textSize">25sp</item>
+        <item name="android:gravity">center_vertical|center_horizontal</item>
+        <item name="android:paddingTop">25dp</item>
+        <item name="android:paddingBottom">25dp</item>
+    </style>
+
+    <style name="frontPage_textStyleAdd">
+        <item name="android:textColor">@color/iconRed</item>
+        <item name="android:textSize">25sp</item>
+        <item name="android:gravity">center_vertical|center_horizontal</item>
+        <item name="android:paddingTop">25dp</item>
+        <item name="android:paddingBottom">25dp</item>
+    </style>
 
 </resources>

@@ -9,6 +9,115 @@
         <item>@string/motivation5</item>
         <item>@string/motivation6</item>
         <item>@string/motivation7</item>
+        <item>@string/motivation8</item>
+        <item>@string/motivation9</item>
+        <item>@string/motivation10</item>
+    </string-array>
+
+    <!-- List of strings -->
+    <string-array name="list_activity_name">
+        <item>@string/badminton</item>
+        <item>@string/baseball</item>
+        <item>@string/basketball</item>
+        <item>@string/beachVolleyball</item>
+        <item>@string/biking</item>
+        <item>@string/billiards</item>
+        <item>@string/bowling</item>
+        <item>@string/boxing</item>
+        <item>@string/budget</item>
+        <item>@string/cricket</item>
+        <item>@string/driving</item>
+        <item>@string/education</item>
+        <item>@string/football</item>
+        <item>@string/groceryShopping</item>
+        <item>@string/hiking</item>
+        <item>@string/jogging</item>
+        <item>@string/jumpRope</item>
+        <item>@string/mountainBiking</item>
+        <item>@string/other</item>
+        <item>@string/pingPong</item>
+        <item>@string/publicTransit</item>
+        <item>@string/reading</item>
+        <item>@string/rockClimbing</item>
+        <item>@string/running</item>
+        <item>@string/savedMoney</item>
+        <item>@string/skiing</item>
+        <item>@string/soccer</item>
+        <item>@string/stairClimbing</item>
+        <item>@string/studying</item>
+        <item>@string/tennis</item>
+        <item>@string/volleyball</item>
+        <item>@string/walking</item>
+        <item>@string/weightLifting</item>
+        <item>@string/work</item>
+    </string-array>
+
+    <string-array name="list_reward_name">
+        <item>@string/alcohol</item>
+        <item>@string/beer</item>
+        <item>@string/desserts</item>
+        <item>@string/drink</item>
+        <item>@string/food</item>
+        <item>@string/fruit</item>
+        <item>@string/movie</item>
+        <item>@string/shopping</item>
+        <item>@string/sweets</item>
+        <item>@string/vegetable</item>
+        <item>@string/videoGames</item>
+        <item>@string/tv</item>
+    </string-array>
+
+    <!-- List of icons -->
+    <string-array name="list_activity_icon">
+        <item>@drawable/svg_badminton</item>
+        <item>@drawable/svg_baseball</item>
+        <item>@drawable/svg_basketball</item>
+        <item>@drawable/svg_beach_volleyball</item>
+        <item>@drawable/svg_biking</item>
+        <item>@drawable/svg_billiards</item>
+        <item>@drawable/svg_bowling</item>
+        <item>@drawable/svg_boxing</item>
+        <item>@drawable/svg_budget</item>
+        <item>@drawable/svg_cricket</item>
+        <item>@drawable/svg_driving</item>
+        <item>@drawable/svg_education</item>
+        <item>@drawable/svg_soccer</item>
+        <item>@drawable/svg_grocery_shopping</item>
+        <item>@drawable/svg_hiking</item>
+        <item>@drawable/svg_running_stick_figure</item>
+        <item>@drawable/svg_jump_rope</item>
+        <item>@drawable/svg_mountain_bike</item>
+        <item>@drawable/svg_other</item>
+        <item>@drawable/svg_ping_pong</item>
+        <item>@drawable/svg_public_transit</item>
+        <item>@drawable/svg_reading</item>
+        <item>@drawable/svg_rock_climbing</item>
+        <item>@drawable/svg_running_stick_figure</item>
+        <item>@drawable/svg_savings</item>
+        <item>@drawable/svg_skiing</item>
+        <item>@drawable/svg_soccer</item>
+        <item>@drawable/svg_stair_climbing</item>
+        <item>@drawable/svg_study</item>
+        <item>@drawable/svg_tennis</item>
+        <item>@drawable/svg_volleyball</item>
+        <item>@drawable/svg_walking</item>
+        <item>@drawable/svg_weight_lifting</item>
+        <item>@drawable/svg_work</item>
+    </string-array>
+
+    <string-array name="list_reward_icon">
+        <item>@drawable/svg_beer</item>
+        <item>@drawable/svg_beer</item>
+        <item>@drawable/svg_desserts</item>
+        <item>@drawable/svg_drink</item>
+        <item>@drawable/svg_fruit</item>
+        <item>@drawable/svg_fruit</item>
+        <item>@drawable/svg_movie</item>
+        <item>@drawable/svg_shopping</item>
+        <item>@drawable/svg_candy</item>
+        <item>@drawable/svg_vegetable</item>
+        <item>@drawable/svg_video_game</item>
+        <item>@drawable/svg_tv</item>
     </string-array>
 
 </resources>

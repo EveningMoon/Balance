@@ -21,6 +21,25 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".Activity.ListActivity"
+            android:label="@string/title_activity_list"
+            android:parentActivityName=".Activity.MainActivity"
+            android:theme="@style/AppThemeDark.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.emoon.balance.Activity.MainActivity" />
+        </activity>
+        <activity
+            android:name=".Activity.InfoActivity"
+            android:label="@string/title_activity_info"
+            android:parentActivityName=".Activity.MainActivity"
+            android:theme="@style/AppThemeDark.NoActionBar"
+            android:windowSoftInputMode="adjustPan">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.emoon.balance.Activity.MainActivity" />
+        </activity>
     </application>
-s
+
 </manifest>

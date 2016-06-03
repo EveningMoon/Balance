@@ -1,34 +1,45 @@
 package com.emoon.balance.Fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.emoon.balance.BuildConfig;
 import com.emoon.balance.Etc.Constants;
 import com.emoon.balance.R;
+import com.emoon.balance.Util.BalancePreference;
+import com.emoon.balance.Util.Util;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.channels.FileChannel;
 
+import io.realm.Realm;
+
 public class SettingFragment extends Fragment {
 
     private View view;
-    private Button backUpBtn;
+    private ViewGroup resetBtn, minMaxBtn;
+    private TextView minMaxContent, versionNumber;
+
 
     public SettingFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,17 +57,36 @@ public class SettingFragment extends Fragment {
     }
 
     private void init() {
-        backUpBtn = (Button) view.findViewById(R.id.backupButton);
+        //resetBtn = (ViewGroup) view.findViewById(R.id.resetBtn);
+        minMaxBtn = (ViewGroup) view.findViewById(R.id.minMaxBtn);
+        minMaxContent = (TextView) view.findViewById(R.id.minMaxContent);
+
+        minMaxContent.setText("Current : "+BalancePreference.getMinMax(getContext()));
+
+        versionNumber = (TextView) view.findViewById(R.id.appVersionTextId);
+
+
+        int versionCode = BuildConfig.VERSION_CODE;
+        String versionName = BuildConfig.VERSION_NAME;
+
+        versionNumber.setText("v"+versionName);
     }
 
     private void addListeners(){
-        backUpBtn.setOnClickListener(new View.OnClickListener() {
+        minMaxBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "backup click", Toast.LENGTH_SHORT).show();
-                exportDB();
+                createMinMaxPopup();
             }
         });
+
+        /*resetBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "reset click", Toast.LENGTH_SHORT).show();
+                resetData();
+            }
+        });*/
     }
 
     private void exportDB() {
@@ -113,4 +143,126 @@ public class SettingFragment extends Fragment {
         // start email intent
         startActivity(Intent.createChooser(intent, "YOUR CHOOSER TITLE"));
     }
+
+    private void resetData(){
+        // get alertdialog_generic_message.xml view
+        LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+
+        //It is ok to put null as the 2nd parameter as this custom layout is being attached to a
+        //AlertDialog, where it not necessary to know what the parent is.
+        View promptView = layoutInflater.inflate(R.layout.alertdialog_generic_message, null);
+
+        TextView message = (TextView) promptView.findViewById(R.id.genericMessage);
+
+        message.setText("Resetting data will remove all data you've entered, are you sure you want to reset?");
+
+        final AlertDialog resetDialog = new AlertDialog.Builder(getActivity())
+                .setTitle("Confirm Delete")
+                .setView(promptView)
+                .setCancelable(true)
+                .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Toast.makeText(getContext(), "RESETTING...", Toast.LENGTH_SHORT).show();
+                        /*
+                        RealmConfiguration config = new RealmConfiguration.Builder(getContext())
+                                .name(Constants.REALM_NAME)
+                                .deleteRealmIfMigrationNeeded()
+                                .schemaVersion(1)
+                                .build();
+                        */
+                        BalancePreference.resetFirstTime(getContext());
+
+                        //Realm.deleteRealm(config);
+
+
+                        //Manually delete realm file
+                        Realm myRealm = Realm.getDefaultInstance();
+                        String path = myRealm.getPath();
+                        myRealm.close();
+                        File file = new File(path);
+                        file.delete();
+
+                        //Restarts the activity
+                        getActivity().finish();
+                        //getActivity().startActivity(new Intent(getActivity(), getActivity().getClass()));
+                        //getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                    }
+                })
+                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .create();
+
+        resetDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface arg0) {
+                resetDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(getContext(), R.color.black));
+                resetDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(getContext(), R.color.black));
+            }
+        });
+
+        resetDialog.show();
+    }
+
+    private void createMinMaxPopup(){
+        // get prompts.xml view
+        LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+
+        //It is ok to put null as the 2nd parameter as this custom layout is being attached to a
+        //AlertDialog, where it not necessary to know what the parent is.
+        View promptView = layoutInflater.inflate(R.layout.alertdialog_generic_edittext, null);
+
+        final EditText input = (EditText) promptView.findViewById(R.id.genericEditText);
+        input.setText(""+BalancePreference.getMinMax(getContext()));
+        input.setHint("Min/Max");
+
+
+        TextView title = (TextView) promptView.findViewById(R.id.genericTitle);
+        title.setText("Set min/max");
+
+
+        final AlertDialog minMaxDialog = new AlertDialog.Builder(getActivity())
+                .setView(promptView)
+                .setCancelable(true)
+                .setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        if(Util.isNotNullNotEmptyNotWhiteSpaceOnlyByJava(input.getText().toString())) {
+                            try{
+                                int newVal = Integer.parseInt(input.getText().toString());
+                                BalancePreference.setMinMax(getContext(), newVal);
+
+                                minMaxContent.setText("Current : "+newVal);
+
+                            }catch(NumberFormatException e){
+                                Toast.makeText(getContext(), "Please enter a number only", Toast.LENGTH_SHORT).show();
+                            }
+                        }else{
+                            Toast.makeText(getContext(), "Cannot process empty string", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .create();
+
+        minMaxDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                minMaxDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(getContext(), R.color.black));
+                minMaxDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(getContext(), R.color.black));
+            }
+        });
+
+        minMaxDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        minMaxDialog.show();
+
+    }
+
 }

@@ -52,6 +52,11 @@ public class EarnBurnHorizontalListAdapter extends RecyclerView.Adapter<EarnBurn
         this.list = list;
     }
 
+    public void setData(List<EarnBurn> list){
+        this.list = list;
+        notifyDataSetChanged();
+    }
+
     // Usually involves inflating a layout from XML and returning the holder
     @Override
     public EarnBurnHorizontalListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){

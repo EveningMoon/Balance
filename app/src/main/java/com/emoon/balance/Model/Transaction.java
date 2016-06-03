@@ -1,22 +1,19 @@
 package com.emoon.balance.Model;
 
-import org.parceler.Parcel;
-
 import java.util.Date;
 
 import io.realm.RealmObject;
-import io.realm.TransactionRealmProxy;
 import io.realm.annotations.PrimaryKey;
 
-@Parcel(implementations = {TransactionRealmProxy.class},
-        value = Parcel.Serialization.BEAN,
-        analyze = {Transaction.class})
 public class Transaction extends RealmObject{
 
     @PrimaryKey
     private String id;
     private Date date;
     private EarnBurn earnBurn;
+    private int unitCost;
+    private String costType;
+
 
     public Transaction(){
 
@@ -44,5 +41,21 @@ public class Transaction extends RealmObject{
 
     public void setEarnBurn(EarnBurn earnBurn) {
         this.earnBurn = earnBurn;
+    }
+
+    public int getUnitCost() {
+        return unitCost;
+    }
+
+    public void setUnitCost(int unitCost) {
+        this.unitCost = unitCost;
+    }
+
+    public String getCostType() {
+        return costType;
+    }
+
+    public void setCostType(String costType) {
+        this.costType = costType;
     }
 }

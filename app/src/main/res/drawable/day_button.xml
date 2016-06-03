@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true" android:drawable="@color/darkgray" /> <!-- pressed -->
+    <item android:state_focused="true" android:drawable="@color/colorPrimary" /> <!-- focused -->
+    <item android:state_hovered="true" android:drawable="@color/colorPrimary" /> <!-- hovered -->
+    <item  android:drawable="@color/colorPrimary" />  <!-- default -->
+</selector>
