@@ -857,9 +857,9 @@ public class MainFragment extends BaseRealmFragment {
     }
 
     private void updateHeaderValue(float value){
-        if(value > 0){
+        if(Math.round(value) > 0){
             headerText.setText("+"+Math.round(value));
-        }else if(value <= 0){
+        }else if(Math.round(value) <= 0){
             headerText.setText(""+Math.round(value));
         }
 
