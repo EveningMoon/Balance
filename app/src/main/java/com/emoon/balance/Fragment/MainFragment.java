@@ -638,6 +638,20 @@ public class MainFragment extends BaseRealmFragment {
 
                 List<String> sortedList = Util.sortByComparatorList(transactionMap);
 
+                if(type.toString().equalsIgnoreCase(BalanceType.BURN.toString())){
+                    Log.d(TAG, "BURN defaults are ");
+                    Log.d(TAG, 0+" "+burn1Default);
+                    Log.d(TAG, 1+" "+burn2Default);
+                    Log.d(TAG, 2+" "+burn3Default);
+                }else{
+                    Log.d(TAG, "EARN defaults are ");
+                    Log.d(TAG, 0+" "+earn1Default);
+                    Log.d(TAG, 1+" "+earn2Default);
+                    Log.d(TAG, 2+" "+earn3Default);
+                }
+
+
+
                 Log.d(TAG, "Top 3 are : ");
                 for (int i = 0; i < sortedList.size(); i++) {
                     Log.d(TAG, i+" : "+sortedList.get(i));
@@ -741,7 +755,7 @@ public class MainFragment extends BaseRealmFragment {
                 topEarn2Icon.setVisibility(View.VISIBLE);
                 topEarn2Text.setVisibility(View.INVISIBLE);
             }else if(earnBurn2.getIconType().equalsIgnoreCase(IconType.NUMBER.toString())){
-                topEarn2Text.setText(""+Util.getFirstCharacterFromString(earnBurn1.getName().toUpperCase()));
+                topEarn2Text.setText(""+Util.getFirstCharacterFromString(earnBurn2.getName().toUpperCase()));
                 topEarn2Icon.setVisibility(View.INVISIBLE);
                 topEarn2Text.setVisibility(View.VISIBLE);
             }
@@ -751,7 +765,7 @@ public class MainFragment extends BaseRealmFragment {
                 topEarn3Icon.setVisibility(View.VISIBLE);
                 topEarn3Text.setVisibility(View.INVISIBLE);
             }else if(earnBurn3.getIconType().equalsIgnoreCase(IconType.NUMBER.toString())){
-                topEarn3Text.setText(""+Util.getFirstCharacterFromString(earnBurn1.getName().toUpperCase()));
+                topEarn3Text.setText(""+Util.getFirstCharacterFromString(earnBurn3.getName().toUpperCase()));
                 topEarn3Icon.setVisibility(View.INVISIBLE);
                 topEarn3Text.setVisibility(View.VISIBLE);
             }
@@ -779,7 +793,7 @@ public class MainFragment extends BaseRealmFragment {
                 topBurn2Icon.setVisibility(View.VISIBLE);
                 topBurn2Text.setVisibility(View.INVISIBLE);
             }else if(earnBurn2.getIconType().equalsIgnoreCase(IconType.NUMBER.toString())){
-                topBurn2Text.setText(""+Util.getFirstCharacterFromString(earnBurn1.getName().toUpperCase()));
+                topBurn2Text.setText(""+Util.getFirstCharacterFromString(earnBurn2.getName().toUpperCase()));
                 topBurn2Icon.setVisibility(View.INVISIBLE);
                 topBurn2Text.setVisibility(View.VISIBLE);
             }
@@ -789,7 +803,7 @@ public class MainFragment extends BaseRealmFragment {
                 topBurn3Icon.setVisibility(View.VISIBLE);
                 topBurn3Text.setVisibility(View.INVISIBLE);
             }else if(earnBurn3.getIconType().equalsIgnoreCase(IconType.NUMBER.toString())){
-                topBurn3Text.setText(""+Util.getFirstCharacterFromString(earnBurn1.getName().toUpperCase()));
+                topBurn3Text.setText(""+Util.getFirstCharacterFromString(earnBurn3.getName().toUpperCase()));
                 topBurn3Icon.setVisibility(View.INVISIBLE);
                 topBurn3Text.setVisibility(View.VISIBLE);
             }

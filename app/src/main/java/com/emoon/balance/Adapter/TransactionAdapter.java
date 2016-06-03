@@ -77,7 +77,9 @@ public class TransactionAdapter extends ArrayAdapter<Transaction>{
         if(transaction.getEarnBurn().getIconType().equalsIgnoreCase(IconType.ICON.toString())){
             viewHolder.icon.setIconResource(Util.getIconID(this.context, transaction.getEarnBurn().getIcon()));
             viewHolder.icon.setIconColor(R.color.white);
+            viewHolder.icon.setText("");
         }else if(transaction.getEarnBurn().getIconType().equalsIgnoreCase(IconType.NUMBER.toString())){
+            viewHolder.icon.setIconResource(0);
             viewHolder.icon.setText(""+Util.getFirstCharacterFromString(transaction.getEarnBurn().getName().toUpperCase()));
             viewHolder.icon.setTextColor(R.color.white);
         }

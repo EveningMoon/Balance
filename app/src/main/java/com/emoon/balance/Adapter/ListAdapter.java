@@ -80,6 +80,7 @@ public class ListAdapter extends ArrayAdapter<EarnBurn> {
         Log.d("ZHAPS","earnBurn : "+earnBurn.getName() + " -> "+earnBurn.getIconType() );
         if(earnBurn.getIconType().equalsIgnoreCase(IconType.ICON.toString())){
             viewHolder.iconView.setIconResource(Util.getIconID(context, earnBurn.getIcon()));
+            viewHolder.iconView.setText("");
         }else{
             viewHolder.iconView.setIconResource(0);
             viewHolder.iconView.setText((""+Util.getFirstCharacterFromString(earnBurn.getName())).toUpperCase());
