@@ -23,6 +23,7 @@ import com.emoon.balance.Adapter.TransactionAdapter;
 import com.emoon.balance.Etc.Constants;
 import com.emoon.balance.Model.BalanceType;
 import com.emoon.balance.Model.EarnBurn;
+import com.emoon.balance.Model.IconType;
 import com.emoon.balance.Model.Transaction;
 import com.emoon.balance.R;
 import com.emoon.balance.Util.Util;
@@ -193,8 +194,13 @@ public class TransactionFragment extends BaseRealmFragment{
 
         //Circular view
         CircularView cv = (CircularView) promptView.findViewById(R.id.genericCircularView);
-        cv.setIconResource(Util.getIconID(getContext(), data.getIcon()));
-        cv.setIconColor(R.color.white);
+        if(data.getIconType().equalsIgnoreCase(IconType.ICON.toString())){
+            cv.setIconResource(Util.getIconID(getContext(), data.getIcon()));
+            cv.setIconColor(R.color.white);
+        }else if(data.getIconType().equalsIgnoreCase(IconType.NUMBER.toString())){
+            cv.setText(""+Util.getFirstCharacterFromString(data.getName().toUpperCase()));
+            cv.setTextColor(R.color.white);
+        }
 
         //Edit text
         input = (MaterialEditText) promptView.findViewById(R.id.genericEditText);
