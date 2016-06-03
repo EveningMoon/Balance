@@ -16,12 +16,12 @@ android {
     signingConfigs{
         release {
             try {
-                storeFile file('/Users/Zhan/AndroidStudioProjects/Keystores/Balance.keystore')
+                storeFile file(KEYSTORE_PATH)
                 storePassword KEYSTORE_PASSWORD
                 keyAlias 'Balance'
                 keyPassword KEY_PASSWORD
             } catch (ex) {
-                throw new InvalidUserDataException("You should define KEYSTORE_PASSWORD and KEY_PASSWORD in gradle.properties.")
+                throw new InvalidUserDataException("You should define KEYSTORE_PATH, KEYSTORE_PASSWORD, and KEY_PASSWORD in gradle.properties.")
             }
         }
     }
