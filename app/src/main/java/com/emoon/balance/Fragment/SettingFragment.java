@@ -17,8 +17,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.emoon.balance.BuildConfig;
 import com.emoon.balance.Etc.Constants;
-import com.emoon.balance.Model.BalanceType;
 import com.emoon.balance.R;
 import com.emoon.balance.Util.BalancePreference;
 import com.emoon.balance.Util.Util;
@@ -29,13 +29,12 @@ import java.io.FileOutputStream;
 import java.nio.channels.FileChannel;
 
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 
 public class SettingFragment extends Fragment {
 
     private View view;
     private ViewGroup resetBtn, minMaxBtn;
-    private TextView minMaxContent;
+    private TextView minMaxContent, versionNumber;
 
 
     public SettingFragment() {
@@ -58,11 +57,19 @@ public class SettingFragment extends Fragment {
     }
 
     private void init() {
-        resetBtn = (ViewGroup) view.findViewById(R.id.resetBtn);
+        //resetBtn = (ViewGroup) view.findViewById(R.id.resetBtn);
         minMaxBtn = (ViewGroup) view.findViewById(R.id.minMaxBtn);
         minMaxContent = (TextView) view.findViewById(R.id.minMaxContent);
 
         minMaxContent.setText("Current : "+BalancePreference.getMinMax(getContext()));
+
+        versionNumber = (TextView) view.findViewById(R.id.appVersionTextId);
+
+
+        int versionCode = BuildConfig.VERSION_CODE;
+        String versionName = BuildConfig.VERSION_NAME;
+
+        versionNumber.setText("v"+versionName);
     }
 
     private void addListeners(){
@@ -73,13 +80,13 @@ public class SettingFragment extends Fragment {
             }
         });
 
-        resetBtn.setOnClickListener(new View.OnClickListener() {
+        /*resetBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(), "reset click", Toast.LENGTH_SHORT).show();
                 resetData();
             }
-        });
+        });*/
     }
 
     private void exportDB() {
