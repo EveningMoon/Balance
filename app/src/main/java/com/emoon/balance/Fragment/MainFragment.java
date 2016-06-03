@@ -3,9 +3,7 @@ package com.emoon.balance.Fragment;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.ColorUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,7 +42,6 @@ import java.util.Set;
 import java.util.Vector;
 
 import io.realm.RealmChangeListener;
-import io.realm.RealmList;
 import io.realm.RealmResults;
 
 public class MainFragment extends BaseRealmFragment {
@@ -473,9 +470,12 @@ public class MainFragment extends BaseRealmFragment {
         //AlertDialog, where it not necessary to know what the parent is.
         View promptView = layoutInflater.inflate(R.layout.alertdialog_cost, null);
 
-        final EditText points = (EditText) promptView.findViewById(R.id.pointsEditText);
-        final EditText value = (EditText) promptView.findViewById(R.id.valueEditText);
+        final MaterialEditText points = (MaterialEditText) promptView.findViewById(R.id.pointsEditText);
+        final MaterialEditText value = (MaterialEditText) promptView.findViewById(R.id.valueEditText);
         final ExtendedNumberPicker measureNumberPicker = (ExtendedNumberPicker) promptView.findViewById(R.id.measureNumberPicker);
+
+        points.setFloatingLabelText("Points earned");
+        value.setFloatingLabelText("eg: 1");
 
         //Gets all list of units
         final List<String> values1 = Util.getListOfUnits1();
@@ -506,9 +506,25 @@ public class MainFragment extends BaseRealmFragment {
         ccost = new Cost();
         ccost.setId(Util.generateUUID());
 
-        String title = "Add new -";
+        String title = "";
         if(data.getType().equalsIgnoreCase(BalanceType.EARN.toString())){
             title = "Add new +";
+            points.setBaseColor(ContextCompat.getColor(getContext(), R.color.red));
+            points.setPrimaryColor(ContextCompat.getColor(getContext(), R.color.red));
+            points.setMetHintTextColor(ContextCompat.getColor(getContext(), R.color.red));
+
+            value.setBaseColor(ContextCompat.getColor(getContext(), R.color.red));
+            value.setPrimaryColor(ContextCompat.getColor(getContext(), R.color.red));
+            value.setMetHintTextColor(ContextCompat.getColor(getContext(), R.color.red));
+        }else if(data.getType().equalsIgnoreCase(BalanceType.BURN.toString())){
+            title = "Add new -";
+            points.setBaseColor(ContextCompat.getColor(getContext(), R.color.blue));
+            points.setPrimaryColor(ContextCompat.getColor(getContext(), R.color.blue));
+            points.setMetHintTextColor(ContextCompat.getColor(getContext(), R.color.blue));
+
+            value.setBaseColor(ContextCompat.getColor(getContext(), R.color.blue));
+            value.setPrimaryColor(ContextCompat.getColor(getContext(), R.color.blue));
+            value.setMetHintTextColor(ContextCompat.getColor(getContext(), R.color.blue));
         }
 
         final AlertDialog noteDialog = new AlertDialog.Builder(getContext())

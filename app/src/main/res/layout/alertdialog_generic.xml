@@ -61,11 +61,7 @@
             android:paddingBottom="10dp"
             android:focusableInTouchMode="true"
             app:met_floatingLabel="highlight"
-            app:met_floatingLabelText=""
-            app:met_baseColor="@color/red"
-            app:met_primaryColor="@color/red"
-            app:met_textColor="@color/black"
-            app:met_textColorHint="@color/red"/>
+            app:met_floatingLabelText="" />
         <requestFocus />
 
         <com.emoon.balance.View.ExtendedNumberPicker

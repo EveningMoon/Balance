@@ -380,9 +380,12 @@ public class ListActivity extends BaseRealmActivity {
         //AlertDialog, where it not necessary to know what the parent is.
         View promptView = layoutInflater.inflate(R.layout.alertdialog_cost, null);
 
-        final EditText points = (EditText) promptView.findViewById(R.id.pointsEditText);
-        final EditText value = (EditText) promptView.findViewById(R.id.valueEditText);
+        final MaterialEditText points = (MaterialEditText) promptView.findViewById(R.id.pointsEditText);
+        final MaterialEditText value = (MaterialEditText) promptView.findViewById(R.id.valueEditText);
         final ExtendedNumberPicker measureNumberPicker = (ExtendedNumberPicker) promptView.findViewById(R.id.measureNumberPicker);
+
+        points.setFloatingLabelText("Points earned");
+        value.setFloatingLabelText("eg: 1");
 
         //Gets all list of units
         final List<String> values1 = Util.getListOfUnits1();
@@ -413,9 +416,30 @@ public class ListActivity extends BaseRealmActivity {
         ccost = new Cost();
         ccost.setId(Util.generateUUID());
 
+        String title = "";
+        if(data.getType().equalsIgnoreCase(BalanceType.EARN.toString())){
+            title = "Add new +";
+            points.setBaseColor(ContextCompat.getColor(this, R.color.red));
+            points.setPrimaryColor(ContextCompat.getColor(this, R.color.red));
+            points.setMetHintTextColor(ContextCompat.getColor(this, R.color.red));
+
+            value.setBaseColor(ContextCompat.getColor(this, R.color.red));
+            value.setPrimaryColor(ContextCompat.getColor(this, R.color.red));
+            value.setMetHintTextColor(ContextCompat.getColor(this, R.color.red));
+        }else if(data.getType().equalsIgnoreCase(BalanceType.BURN.toString())){
+            title = "Add new -";
+            points.setBaseColor(ContextCompat.getColor(this, R.color.blue));
+            points.setPrimaryColor(ContextCompat.getColor(this, R.color.blue));
+            points.setMetHintTextColor(ContextCompat.getColor(this, R.color.blue));
+
+            value.setBaseColor(ContextCompat.getColor(this, R.color.blue));
+            value.setPrimaryColor(ContextCompat.getColor(this, R.color.blue));
+            value.setMetHintTextColor(ContextCompat.getColor(this, R.color.blue));
+        }
+
         final AlertDialog noteDialog = new AlertDialog.Builder(this)
                 .setView(promptView)
-                .setTitle("Add new cost")
+                .setTitle(title)
                 .setPositiveButton("DONE", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         if (Util.isNotNullNotEmptyNotWhiteSpaceOnlyByJava(points.getText().toString()) &&

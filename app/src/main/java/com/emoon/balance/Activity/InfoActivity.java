@@ -29,19 +29,17 @@ import com.emoon.balance.Model.BalanceType;
 import com.emoon.balance.Model.Cost;
 import com.emoon.balance.Model.EarnBurn;
 import com.emoon.balance.Model.IconType;
-import com.emoon.balance.Model.UnitType;
 import com.emoon.balance.R;
 import com.emoon.balance.Util.Util;
 import com.emoon.balance.View.ExtendedNumberPicker;
+import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import io.realm.RealmList;
-import io.realm.RealmResults;
 
 public class InfoActivity extends BaseRealmActivity {
 
@@ -215,7 +213,7 @@ public class InfoActivity extends BaseRealmActivity {
         Toast.makeText(getApplicationContext(), value, Toast.LENGTH_SHORT).show();
     }
 
-    private EditText pointsEditText, valueEditText;
+    private MaterialEditText pointsEditText, valueEditText;
     private ExtendedNumberPicker measureNumberPicker;
     private Cost editCost;
     private void editCostDialog(final int position){
@@ -228,11 +226,13 @@ public class InfoActivity extends BaseRealmActivity {
 
         editCost = costList.get(position);
 
-        pointsEditText = (EditText) promptView.findViewById(R.id.pointsEditText);
-        valueEditText = (EditText) promptView.findViewById(R.id.valueEditText);
+        pointsEditText = (MaterialEditText) promptView.findViewById(R.id.pointsEditText);
+        valueEditText = (MaterialEditText) promptView.findViewById(R.id.valueEditText);
         measureNumberPicker = (ExtendedNumberPicker) promptView.findViewById(R.id.measureNumberPicker);
 
         pointsEditText.setHint("Points earned per");
+        pointsEditText.setFloatingLabelText("Points earned");
+        valueEditText.setFloatingLabelText("eg: 1");
 
         pointsEditText.setText(String.valueOf(editCost.getPointsEarnPer()));
         valueEditText.setText(String.valueOf(editCost.getUnitCost()));
@@ -261,9 +261,30 @@ public class InfoActivity extends BaseRealmActivity {
         });
         Log.d("ZHAP", "dialog ");
 
+        String title = "";
+        if(editEarnBurn.getType().equalsIgnoreCase(BalanceType.EARN.toString())){
+            title = "Add new +";
+            pointsEditText.setBaseColor(ContextCompat.getColor(this, R.color.red));
+            pointsEditText.setPrimaryColor(ContextCompat.getColor(this, R.color.red));
+            pointsEditText.setMetHintTextColor(ContextCompat.getColor(this, R.color.red));
+
+            valueEditText.setBaseColor(ContextCompat.getColor(this, R.color.red));
+            valueEditText.setPrimaryColor(ContextCompat.getColor(this, R.color.red));
+            valueEditText.setMetHintTextColor(ContextCompat.getColor(this, R.color.red));
+        }else if(editEarnBurn.getType().equalsIgnoreCase(BalanceType.BURN.toString())){
+            title = "Add new -";
+            pointsEditText.setBaseColor(ContextCompat.getColor(this, R.color.blue));
+            pointsEditText.setPrimaryColor(ContextCompat.getColor(this, R.color.blue));
+            pointsEditText.setMetHintTextColor(ContextCompat.getColor(this, R.color.blue));
+
+            valueEditText.setBaseColor(ContextCompat.getColor(this, R.color.blue));
+            valueEditText.setPrimaryColor(ContextCompat.getColor(this, R.color.blue));
+            valueEditText.setMetHintTextColor(ContextCompat.getColor(this, R.color.blue));
+        }
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setView(promptView)
-                .setTitle("Add new cost")
+                .setTitle(title)
                 .setPositiveButton("DONE", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         Log.d("ZHAP", "click done on dialog "+position);
@@ -304,9 +325,12 @@ public class InfoActivity extends BaseRealmActivity {
         //AlertDialog, where it not necessary to know what the parent is.
         View promptView = layoutInflater.inflate(R.layout.alertdialog_cost, null);
 
-        final EditText points = (EditText) promptView.findViewById(R.id.pointsEditText);
-        final EditText value = (EditText) promptView.findViewById(R.id.valueEditText);
+        final MaterialEditText points = (MaterialEditText) promptView.findViewById(R.id.pointsEditText);
+        final MaterialEditText value = (MaterialEditText) promptView.findViewById(R.id.valueEditText);
         final ExtendedNumberPicker measureNumberPicker = (ExtendedNumberPicker) promptView.findViewById(R.id.measureNumberPicker);
+
+        points.setFloatingLabelText("Points earned");
+        value.setFloatingLabelText("eg: 1");
 
         //Gets all list of units
         final List<String> values1 = Util.getListOfUnits1();
@@ -341,9 +365,25 @@ public class InfoActivity extends BaseRealmActivity {
         ccost = new Cost();
         ccost.setId(Util.generateUUID());
 
-        String title = "Add new -";
+        String title = "";
         if(editEarnBurn.getType().equalsIgnoreCase(BalanceType.EARN.toString())){
             title = "Add new +";
+            points.setBaseColor(ContextCompat.getColor(this, R.color.red));
+            points.setPrimaryColor(ContextCompat.getColor(this, R.color.red));
+            points.setMetHintTextColor(ContextCompat.getColor(this, R.color.red));
+
+            value.setBaseColor(ContextCompat.getColor(this, R.color.red));
+            value.setPrimaryColor(ContextCompat.getColor(this, R.color.red));
+            value.setMetHintTextColor(ContextCompat.getColor(this, R.color.red));
+        }else if(editEarnBurn.getType().equalsIgnoreCase(BalanceType.BURN.toString())){
+            title = "Add new -";
+            points.setBaseColor(ContextCompat.getColor(this, R.color.blue));
+            points.setPrimaryColor(ContextCompat.getColor(this, R.color.blue));
+            points.setMetHintTextColor(ContextCompat.getColor(this, R.color.blue));
+
+            value.setBaseColor(ContextCompat.getColor(this, R.color.blue));
+            value.setPrimaryColor(ContextCompat.getColor(this, R.color.blue));
+            value.setMetHintTextColor(ContextCompat.getColor(this, R.color.blue));
         }
 
         AlertDialog noteDialog = new AlertDialog.Builder(this)
