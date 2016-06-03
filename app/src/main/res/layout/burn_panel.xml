@@ -33,12 +33,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/circle"
-                android:tint="@color/dark_blue"/>
+                android:tint="@color/dark_blue"
+                android:padding="5dp"/>
 
             <ImageView  style="@style/frontPage_iconStyleMinus"
                 android:id="@+id/topBurn1"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"/>
 
             <TextView style="@style/frontPage_textStyleMinus"
                 android:id="@+id/topBurn1Text"
@@ -68,12 +70,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/circle"
-                android:tint="@color/dark_blue"/>
+                android:tint="@color/dark_blue"
+                android:padding="5dp"/>
 
             <ImageView  style="@style/frontPage_iconStyleMinus"
                 android:id="@+id/topBurn2"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"/>
 
             <TextView style="@style/frontPage_textStyleMinus"
                 android:id="@+id/topBurn2Text"
@@ -103,12 +107,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/circle"
-                android:tint="@color/dark_blue"/>
+                android:tint="@color/dark_blue"
+                android:padding="5dp"/>
 
             <ImageView  style="@style/frontPage_iconStyleMinus"
                 android:id="@+id/topBurn3"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"/>
 
             <TextView style="@style/frontPage_textStyleMinus"
                 android:id="@+id/topBurn3Text"
@@ -138,13 +144,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/circle"
-                android:tint="@color/dark_blue"/>
+                android:tint="@color/dark_blue"
+                android:padding="5dp"/>
 
             <ImageView style="@style/frontPage_iconStyleMinus"
                 android:id="@+id/otherBurn"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/svg_other" />
+                android:src="@drawable/svg_other"
+                android:layout_margin="5dp"/>
 
             <TextView
                 android:id="@+id/otherBurnName"
