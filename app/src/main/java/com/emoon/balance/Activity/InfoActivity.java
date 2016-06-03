@@ -99,6 +99,9 @@ public class InfoActivity extends BaseRealmActivity {
 
             Log.d(TAG, "in add new mode : "+balanceType);
 
+            editEarnBurn = new EarnBurn();
+            editEarnBurn.setType(balanceType.toString());
+
             costAdapter.clear();
             costAdapter.addAll(costList);
         }

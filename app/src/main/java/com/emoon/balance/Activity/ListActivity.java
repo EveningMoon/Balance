@@ -43,6 +43,7 @@ import java.util.Set;
 
 import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
+import io.realm.Sort;
 
 public class ListActivity extends BaseRealmActivity {
 
@@ -184,7 +185,7 @@ public class ListActivity extends BaseRealmActivity {
     @Override
     public void onStart(){
         super.onStart();
-        realmResults = myRealm.where(EarnBurn.class).equalTo("type", balanceType).findAllAsync();
+        realmResults = myRealm.where(EarnBurn.class).equalTo("type", balanceType).findAllSortedAsync("name", Sort.ASCENDING);
         realmResults.addChangeListener(new RealmChangeListener<RealmResults<EarnBurn>>() {
             @Override
             public void onChange(RealmResults<EarnBurn> element) {
